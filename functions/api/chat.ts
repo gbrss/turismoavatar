@@ -98,7 +98,7 @@ const HUMANO = /(human|persona real|(hablar|conversar|comunicarme|contactarme) c
 
 function waHandoff(c: Catalog, messages: Msg[]) {
   const preguntas = messages.filter((m) => m.role === 'user').slice(-3).map((m) => `• ${m.content}`).join('\n');
-  const text = `Hola Turismo Avatar 👋 Vengo del chat de la web y quiero hablar con una persona.\n${preguntas}`;
+  const text = `Hola Turismo Avatar 👋 Vengo del chat de la web.\n${preguntas}`;
   return `https://wa.me/${c.site.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
@@ -123,7 +123,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
 
   // Derivación a una persona: respuesta fija + botón de WhatsApp con la consulta ya escrita
   if (HUMANO.test(last.content)) {
-    const handoff = { label: 'Hablar por WhatsApp', href: waHandoff(catalog, messages) };
+    const handoff = { label: 'Hablar con una persona', href: waHandoff(catalog, messages) };
     reply = '¡Claro! Te dejo con una persona de nuestro equipo por WhatsApp. Ya va tu consulta escrita, solo presiona el botón y envía el mensaje 😊';
     if (env.DB) {
       waitUntil(
@@ -158,6 +158,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
         .run()
         .catch(() => {}),
     );
+  }
+  // Cada vez que Cami sugiere WhatsApp, se agrega el botón con la consulta ya escrita
+  const mencionaWa = /whats ?app|wa\.me|wsp|\+?56 ?9 ?4998 ?1427/i.test(reply);
+  if (mencionaWa) {
+    reply = reply.replace(/:?\s*https?:\/\/(?:wa\.me|api\.whatsapp\.com)\/\S+/gi, '').trim();
+    return json({ reply, handoff: { label: 'Escribir por WhatsApp', href: waHandoff(catalog, messages) } });
   }
   return json({ reply });
 };

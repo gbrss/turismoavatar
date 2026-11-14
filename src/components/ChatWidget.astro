@@ -408,7 +408,11 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
       await loadTitles();
       t.remove();
       const li = add('assistant', data.reply);
-      if (data.handoff) li.append(handoffButton(data.handoff));
+      if (data.handoff) {
+        // Un solo botón de WhatsApp: quitamos los enlaces de WhatsApp sueltos del mensaje
+        li.querySelectorAll('a[href*="wa.me"]').forEach((a) => (a.parentElement?.childElementCount === 1 ? a.parentElement.remove() : a.remove()));
+        li.append(handoffButton(data.handoff));
+      }
     } catch {
       t.remove();
       add('assistant', `No pude responder ahora. Escríbenos por WhatsApp y te ayudamos al tiro: ${WA}`);
