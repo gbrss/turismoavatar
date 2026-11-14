@@ -1,0 +1,188 @@
+---
+import Base from '@/layouts/Base.astro';
+import Media from '@/components/Media.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import LodgingCard from '@/components/LodgingCard.astro';
+import DestinosMap from '@/components/DestinosMap.astro';
+import Gallery from '@/components/Gallery.astro';
+import YouTube from '@/components/YouTube.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+import { categorias } from '@/content.config';
+import { site, whatsappLink } from '@/data/site';
+import { galeria } from '@/data/galeria';
+import { faq } from '@/data/faq';
+
+const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
+const featured = exps.filter((e) => e.data.featured).slice(0, 4);
+const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order - b.data.order);
+const progs = (await getCollection('programas')).sort((a, b) => a.data.order - b.data.order);
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.slice(0, 4).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<Base transparentHeader jsonLd={faqLd} image="2024/11/Sup-agua-Cristalina-Penco.jpg">
+  <!-- Portada -->
+  <section class="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden bg-rio text-white">
+    <div class="absolute inset-0 -z-10">
+      <Media src="2024/11/Sup-agua-Cristalina-Penco.jpg" alt="Personas remando en SUP sobre aguas cristalinas en Penco" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-t from-rio-900 via-rio-900/45 to-rio-900/30"></div>
+    </div>
+    <div class="wrap pb-10 pt-36 sm:pb-14">
+      <p class="font-display text-xl font-semibold text-atardecer">Concepción y la Región del Biobío</p>
+      <h1 class="mt-3 max-w-5xl text-display">Diseñamos experiencias memorables en el Biobío</h1>
+      <p class="mt-6 max-w-xl text-lg text-white/85 sm:text-xl">
+        City tours, trekking, SUP, kayak, cabalgatas y alojamientos frente al mar. Guías locales que conocen cada rincón del Gran Concepción.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/experiencias" class="btn btn-primary">Ver experiencias</a>
+        <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-ghost" data-track="whatsapp_hero">Cotizar por WhatsApp</a>
+      </div>
+
+      <nav aria-label="¿Qué quieres vivir?" class="mt-12 border-t border-white/20 pt-5">
+        <ul class="flex gap-x-6 gap-y-2 overflow-x-auto whitespace-nowrap font-display text-lg font-semibold sm:flex-wrap">
+          {Object.entries(categorias).map(([k, label]) => (
+            <li><a href={`/experiencias?categoria=${k}`} class="text-white/80 hover:text-white hover:underline hover:decoration-copihue hover:decoration-2 hover:underline-offset-4">{label}</a></li>
+          ))}
+          <li><a href="/alojamientos" class="text-white/80 hover:text-white hover:underline hover:decoration-copihue hover:decoration-2 hover:underline-offset-4">Alojamientos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Experiencias destacadas -->
+  <section class="wrap py-20 sm:py-28" aria-labelledby="destacadas">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 id="destacadas" class="max-w-2xl text-h2">Lo que más reservan nuestros viajeros</h2>
+      <a href="/experiencias" class="font-semibold text-copihue underline decoration-2 underline-offset-4">Ver las {exps.length} experiencias</a>
+    </div>
+    <div class="mt-12 grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+      {featured[0] && <div class="md:col-span-2 lg:col-span-1 lg:row-span-2"><ExperienceCard exp={featured[0]} size="lg" /></div>}
+      {featured.slice(1).map((e) => <ExperienceCard exp={e} />)}
+      <a href="/programas" class="flex flex-col justify-between rounded-xl bg-rio p-6 text-white hover:bg-rio-900">
+        <span class="font-display text-[1.7rem] font-extrabold leading-tight">¿Vienes por varios días?</span>
+        <span class="mt-6 text-white/80">Programas de 1 a 3 días que combinan experiencias y alojamiento, coordinados por nosotros.</span>
+        <span class="mt-6 font-semibold text-atardecer">Ver programas</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Destinos -->
+  <section class="bg-white py-20 sm:py-28" aria-labelledby="destinos">
+    <div class="wrap">
+      <h2 id="destinos" class="text-h2">Escoge tu próximo destino</h2>
+      <p class="mt-3 max-w-2xl text-lg text-gris">Once comunas, del mar de Tomé al golfo de Arauco y la ribera del Biobío. Toca un punto para ver qué puedes hacer ahí.</p>
+      <div class="mt-12"><DestinosMap /></div>
+    </div>
+  </section>
+
+  <!-- Alojamientos -->
+  <section class="wrap grid gap-12 py-20 sm:py-28 lg:grid-cols-[1fr_1.6fr]" aria-labelledby="alojamientos">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="alojamientos" class="text-h2">¿Necesitas alojamiento en el Biobío?</h2>
+      <p class="mt-4 text-lg text-gris">Cabañas con tinaja en Coliumo, hotel en Dichato y opciones en Penco y Santa Bárbara para descansar después de un día de aventura.</p>
+      <a href="/alojamientos" class="btn btn-primary mt-8">Ver alojamientos</a>
+    </div>
+    <div class="grid gap-8 sm:grid-cols-2 sm:gap-x-8">
+      {alojs.map((a) => <LodgingCard item={a} />)}
+    </div>
+  </section>
+
+  <!-- Por qué Turismo Avatar -->
+  <section class="bg-rio py-20 text-white sm:py-28" aria-labelledby="porque">
+    <div class="wrap grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 id="porque" class="text-h2">Somos del Biobío y trabajamos con quienes lo hacen grande</h2>
+        <p class="mt-5 max-w-xl text-lg text-white/80">
+          Nacimos en {site.foundingYear} para conectar a quienes nos visitan con los atractivos de toda la región. Trabajamos junto a emprendedores locales, con un turismo de triple impacto: bueno para ti, para las comunidades y para el entorno.
+        </p>
+        <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8">
+          <div><dt class="text-white/70">Operando desde</dt><dd class="font-display text-5xl font-extrabold">{site.foundingYear}</dd></div>
+          <div><dt class="text-white/70">Comunas donde operamos</dt><dd class="font-display text-5xl font-extrabold">11</dd></div>
+          <div class="col-span-2">
+            <dt class="text-white/70">Somos parte de</dt>
+            <dd class="mt-1 text-lg">{site.memberships.join(', ')}</dd>
+          </div>
+        </dl>
+      </div>
+      <div>
+        <YouTube id={site.featuredVideo} title="Conoce Turismo Avatar" />
+        <ul class="mt-6 grid gap-3">
+          {site.press.map((p) => (
+            <li>
+              <a href={p.url} target="_blank" rel="noopener" class="group block border-l-2 border-atardecer pl-4">
+                <span class="text-sm text-white/65">{p.outlet}</span>
+                <span class="block font-medium group-hover:underline">{p.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programas -->
+  <section class="wrap py-20 sm:py-28" aria-labelledby="programas">
+    <h2 id="programas" class="text-h2">Programas armados para ti</h2>
+    <p class="mt-3 max-w-2xl text-lg text-gris">Itinerarios listos que puedes ajustar a tu medida. Nosotros coordinamos guías, actividades y alojamiento.</p>
+    <ol class="mt-12 grid gap-8 md:grid-cols-3">
+      {progs.map((p) => (
+        <li class="group relative">
+          <div class="aspect-[3/2] overflow-hidden rounded-xl bg-rio"><Media src={p.data.image} alt={p.data.title} /></div>
+          <p class="mt-4 font-semibold text-laguna">{p.data.days} {p.data.days === 1 ? 'día' : 'días'}</p>
+          <h3 class="font-display text-[1.7rem] font-extrabold leading-tight"><a href={`/programas#${p.id}`} class="after:absolute after:inset-0 group-hover:text-rio">{p.data.title}</a></h3>
+          <p class="mt-2 text-gris">{p.data.summary}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Galería -->
+  <section class="bg-white py-20 sm:py-28" aria-labelledby="galeria">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <h2 id="galeria" class="max-w-2xl text-h2">Nuestra galería de aventuras</h2>
+        <a href={site.social.instagram} target="_blank" rel="noopener" class="font-semibold text-copihue underline decoration-2 underline-offset-4">Síguenos en Instagram @turismoavatar</a>
+      </div>
+      <div class="mt-10"><Gallery items={galeria.slice(0, 8)} layout="strip" /></div>
+      <a href="/galeria" class="btn btn-ghost mt-8 text-rio">Ver galería completa</a>
+    </div>
+  </section>
+
+  <!-- Grupos y emprendedores: dos oportunidades de negocio -->
+  <section class="wrap grid gap-6 py-20 sm:py-28 md:grid-cols-2">
+    <a href="/empresas" class="group rounded-2xl bg-laguna p-8 text-white sm:p-10">
+      <h2 class="text-h3 sm:text-[2.2rem]">Empresas, colegios y grupos</h2>
+      <p class="mt-3 max-w-md text-white/90">Team building, giras de estudio y salidas privadas con logística resuelta. Cotización en 24 horas.</p>
+      <span class="mt-8 inline-block font-semibold underline decoration-2 underline-offset-4 group-hover:decoration-atardecer">Cotizar para mi grupo</span>
+    </a>
+    <a href="/publica-tu-experiencia" class="group rounded-2xl border-2 border-rio p-8 sm:p-10">
+      <h2 class="text-h3 sm:text-[2.2rem]">¿Quieres publicar tu experiencia turística?</h2>
+      <p class="mt-3 max-w-md text-gris">Si tienes cabañas, tours o un emprendimiento turístico en el Biobío, súmate a nuestra red y llega a más viajeros.</p>
+      <span class="mt-8 inline-block font-semibold text-copihue underline decoration-2 underline-offset-4">Quiero ser parte</span>
+    </a>
+  </section>
+
+  <!-- Preguntas -->
+  <section class="wrap pb-20 sm:pb-28" aria-labelledby="faq">
+    <h2 id="faq" class="text-h2">Preguntas frecuentes</h2>
+    <div class="mt-8 max-w-3xl divide-y divide-roca border-y border-roca">
+      {faq.slice(0, 4).map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-xl font-semibold">
+            {f.q}
+            <span class="text-2xl text-copihue transition group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <p class="mt-3 text-gris">{f.a}</p>
+        </details>
+      ))}
+    </div>
+    <a href="/preguntas-frecuentes" class="mt-6 inline-block font-semibold text-copihue underline decoration-2 underline-offset-4">Ver todas las preguntas</a>
+  </section>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,47 @@
+# ── Migración WordPress → Astro (301 permanentes para conservar SEO) ──
+# Alojamientos (antes "habitaciones_pro" del plugin de reservas)
+/habitaciones_pro/cabana-y-relax-en-coliumo/* /alojamientos/cabana-relax-coliumo 301
+/habitaciones_pro/cabana-con-tinaja-y-piscina-coliumo/* /alojamientos/cabana-tinaja-coliumo 301
+/habitaciones_pro/habitacion-de-hotel-bahia-azul-dichato/* /alojamientos/hotel-bahia-azul-dichato 301
+/habitaciones_pro/hostal-casas/* /alojamientos/cabana-los-quiyalles 301
+/habitaciones_pro/hostal-ashpai/* /alojamientos/hostal-ndc-penco 301
+/habitaciones_pro/cabana-en-santa-barbara/* /alojamientos/cabana-santa-barbara 301
+/habitaciones_pro/* /alojamientos 301
+/habitaciones_pro /alojamientos 301
+
+# WooCommerce (tienda, carrito, checkout)
+/carrito/* /reservas 301
+/carrito /reservas 301
+/finalizar-compra/* /reservas 301
+/checkout/* /reservas 301
+/cart/* /reservas 301
+/mi-cuenta/* / 301
+/tienda/* /experiencias 301
+/tienda /experiencias 301
+/shop/* /experiencias 301
+/product-category/* /experiencias 301
+/categoria-producto/* /experiencias 301
+/product/* /experiencias 301
+/producto/* /experiencias 301
+
+# Páginas con otro nombre en el sitio nuevo
+/itinerario/* /programas 301
+/itinerarios/* /programas 301
+/nosotros/* /quienes-somos 301
+/hospedaje/* /alojamientos 301
+/alojamiento/* /alojamientos 301
+/tours/* /experiencias 301
+/faq/* /preguntas-frecuentes 301
+
+# Restos de WordPress
+/wp-admin/* / 301
+/wp-login.php / 301
+/feed/* / 301
+/comments/feed/* / 301
+/category/* / 301
+/tag/* / 301
+/author/* / 301
+/xmlrpc.php / 301
+/wp-sitemap.xml /sitemap-index.xml 301
+/sitemap_index.xml /sitemap-index.xml 301
+/sitemap.xml /sitemap-index.xml 301

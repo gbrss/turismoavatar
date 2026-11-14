@@ -1,0 +1,87 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import Gallery from '@/components/Gallery.astro';
+import BookingForm from '@/components/BookingForm.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import { getCollection, render } from 'astro:content';
+import { clp, site, whatsappLink } from '@/data/site';
+
+export async function getStaticPaths() {
+  const items = await getCollection('alojamientos');
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+const { item } = Astro.props;
+const d = item.data;
+const { Content } = await render(item);
+const nearby = (await getCollection('experiencias')).filter((e) => e.data.destinos.includes(d.destino)).slice(0, 3);
+const wa = whatsappLink(`${site.whatsappGreeting} el alojamiento "${d.title}". ¿Tienen disponibilidad para estas fechas?`);
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Accommodation',
+  name: d.title,
+  description: d.summary,
+  address: { '@type': 'PostalAddress', addressLocality: d.location, addressRegion: 'Región del Biobío', addressCountry: 'CL' },
+  occupancy: { '@type': 'QuantitativeValue', maxValue: d.capacity },
+  numberOfBedrooms: d.beds,
+  amenityFeature: d.amenities.map((a) => ({ '@type': 'LocationFeatureSpecification', name: a, value: true })),
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'CLP',
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: d.pricePerNight, priceCurrency: 'CLP', unitText: 'noche' },
+    seller: { '@id': `${site.url}/#org` },
+  },
+};
+---
+
+<Base title={`${d.title} — ${d.location}`} description={`${d.summary} Desde ${clp(d.pricePerNight)} por noche.`} image={d.image} jsonLd={ld} transparentHeader>
+  <PageHero title={d.title} lead={d.summary} image={d.image} crumbs={[{ href: '/alojamientos', label: 'Alojamientos' }]}>
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+      <a href="#reservar" class="btn btn-primary">Reservar</a>
+      <p class="font-display text-2xl font-extrabold">{clp(d.pricePerNight)} <span class="font-sans text-base font-normal text-white/75">por noche</span></p>
+    </div>
+  </PageHero>
+
+  <div class="wrap grid gap-14 py-16 lg:grid-cols-[1fr_22rem]">
+    <div class="min-w-0">
+      <div class="prose-ta text-lg"><Content /></div>
+      {d.amenities.length > 0 && (
+        <section class="mt-12">
+          <h2 class="font-display text-2xl font-extrabold">Lo que tiene</h2>
+          <ul class="mt-4 flex flex-wrap gap-2">{d.amenities.map((a) => <li class="rounded-full bg-white px-4 py-2 font-medium">{a}</li>)}</ul>
+        </section>
+      )}
+      {[d.image, ...d.gallery].length > 1 && <div class="mt-12"><Gallery items={[d.image, ...d.gallery].map((src) => ({ src, alt: d.title }))} layout="strip" /></div>}
+
+      <section id="reservar" class="mt-16 scroll-mt-28 rounded-2xl bg-white p-6 sm:p-10">
+        <h2 class="text-h3 sm:text-4xl">Reserva tu estadía</h2>
+        <p class="mb-8 mt-2 text-gris">Elige tus fechas y te confirmamos disponibilidad. Verás el total estimado antes de enviar.</p>
+        <BookingForm preselect={`alojamiento:${item.id}`} />
+      </section>
+    </div>
+    <aside class="lg:sticky lg:top-28 lg:self-start">
+      <div class="rounded-2xl bg-rio p-6 text-white">
+        <p class="font-display text-3xl font-extrabold">{clp(d.pricePerNight)}<span class="font-sans text-base font-normal text-white/70"> por noche</span></p>
+        <dl class="mt-5 grid gap-3 border-t border-white/15 pt-5">
+          <div class="grid grid-cols-[6.5rem_1fr]"><dt class="text-white/65">Ubicación</dt><dd>{d.location}</dd></div>
+          <div class="grid grid-cols-[6.5rem_1fr]"><dt class="text-white/65">Capacidad</dt><dd>Hasta {d.capacity} personas</dd></div>
+          <div class="grid grid-cols-[6.5rem_1fr]"><dt class="text-white/65">Camas</dt><dd>{d.beds}</dd></div>
+          {d.shared && <div class="grid grid-cols-[6.5rem_1fr]"><dt class="text-white/65">Tipo</dt><dd>Espacios compartidos</dd></div>}
+        </dl>
+        <div class="mt-6 grid gap-3">
+          <a href="#reservar" class="btn btn-primary">Reservar</a>
+          <a href={wa} target="_blank" rel="noopener" class="btn btn-wa" data-track="whatsapp_alojamiento">WhatsApp</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  {nearby.length > 0 && (
+    <section class="bg-white py-20">
+      <div class="wrap">
+        <h2 class="text-h2">Qué hacer cerca</h2>
+        <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{nearby.map((e) => <ExperienceCard exp={e} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>

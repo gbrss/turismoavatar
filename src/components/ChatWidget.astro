@@ -1,0 +1,163 @@
+---
+import { whatsappLink } from '@/data/site';
+const wa = whatsappLink();
+---
+
+<div data-chat class="fixed bottom-4 right-4 z-[60] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+  <section
+    id="chat-panel"
+    hidden
+    aria-label="Asistente de Turismo Avatar"
+    class="flex h-[min(36rem,calc(100dvh-7rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(8,42,48,.45)] ring-1 ring-rio/10"
+  >
+    <header class="flex items-center justify-between bg-rio px-4 py-3 text-white">
+      <div>
+        <p class="font-display text-xl font-semibold leading-tight">Asistente Avatar</p>
+        <p class="text-sm text-white/70">Responde al instante · reservas por WhatsApp</p>
+      </div>
+      <button type="button" data-chat-close class="grid h-10 w-10 place-items-center rounded-full hover:bg-white/10">
+        <span class="sr-only">Cerrar chat</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </header>
+
+    <ol data-chat-log class="flex-1 space-y-3 overflow-y-auto bg-niebla px-4 py-4 text-[0.98rem]" aria-live="polite">
+      <li class="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-3.5 py-2.5 shadow-sm">
+        Hola 👋 Soy el asistente de Turismo Avatar. Te ayudo a elegir experiencias, ver alojamientos y precios, o reservar en el Biobío. ¿Qué te gustaría hacer?
+      </li>
+    </ol>
+
+    <div data-chat-quick class="flex flex-wrap gap-2 border-t border-roca bg-white px-3 pt-3">
+      {
+        ['¿Qué tours tienen?', 'Alojamientos y precios', 'Quiero hacer SUP', 'Tour para empresa o colegio'].map((q) => (
+          <button type="button" data-q={q} class="rounded-full border border-laguna/40 px-3 py-1.5 text-sm text-rio hover:bg-laguna/10">
+            {q}
+          </button>
+        ))
+      }
+    </div>
+
+    <form data-chat-form class="flex gap-2 bg-white p-3">
+      <label for="chat-input" class="sr-only">Escribe tu mensaje</label>
+      <input
+        id="chat-input"
+        name="message"
+        autocomplete="off"
+        maxlength="500"
+        placeholder="Escribe tu pregunta…"
+        class="min-h-11 min-w-0 flex-1 rounded-full border border-roca px-4 focus:border-laguna focus:outline-none"
+      />
+      <button class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-copihue text-white hover:bg-copihue-700">
+        <span class="sr-only">Enviar</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5l18-8.5L3 3.5v6.6l12 1.9-12 1.9z" /></svg>
+      </button>
+    </form>
+  </section>
+
+  <div class="flex items-center gap-3">
+    <a
+      href={wa}
+      target="_blank"
+      rel="noopener"
+      class="grid h-14 w-14 place-items-center rounded-full bg-[#1f9d55] text-white shadow-lg hover:bg-[#187d44]"
+      data-track="whatsapp_float"
+    >
+      <span class="sr-only">Escribir por WhatsApp</span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.4-.3z" /></svg>
+    </a>
+    <button
+      type="button"
+      data-chat-open
+      aria-controls="chat-panel"
+      aria-expanded="false"
+      class="flex h-14 min-w-14 items-center justify-center gap-2 rounded-full bg-rio px-4 sm:pl-4 sm:pr-5 font-display text-lg font-semibold text-white shadow-lg hover:bg-rio-900"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>
+      <span class="hidden sm:inline">¿Te ayudo?</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  type Msg = { role: 'user' | 'assistant'; content: string };
+  const root = document.querySelector<HTMLElement>('[data-chat]')!;
+  const panel = root.querySelector<HTMLElement>('#chat-panel')!;
+  const openBtn = root.querySelector<HTMLButtonElement>('[data-chat-open]')!;
+  const closeBtn = root.querySelector<HTMLButtonElement>('[data-chat-close]')!;
+  const log = root.querySelector<HTMLOListElement>('[data-chat-log]')!;
+  const form = root.querySelector<HTMLFormElement>('[data-chat-form]')!;
+  const input = form.querySelector<HTMLInputElement>('input')!;
+  const quick = root.querySelector<HTMLElement>('[data-chat-quick]')!;
+  const history: Msg[] = [];
+  const WA = 'https://wa.me/56949981427';
+
+  const setOpen = (open: boolean) => {
+    panel.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    if (open) input.focus();
+  };
+  openBtn.addEventListener('click', () => setOpen(Boolean(panel.hidden)));
+  closeBtn.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && !panel.hidden && setOpen(false));
+  document.querySelectorAll('[data-open-chat]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); setOpen(true); }));
+
+  // Texto seguro → nodos con enlaces internos (/ruta) y externos
+  function render(text: string) {
+    const frag = document.createDocumentFragment();
+    const re = /(https?:\/\/[^\s)]+|(?<![\w/])\/[a-z0-9\-\/?=&%]+)/gi;
+    let last = 0;
+    for (const m of text.matchAll(re)) {
+      frag.append(text.slice(last, m.index));
+      const a = document.createElement('a');
+      a.href = m[0];
+      a.textContent = m[0].startsWith('http') ? (m[0].includes('wa.me') ? 'WhatsApp' : m[0]) : `turismoavatar.cl${m[0]}`;
+      a.className = 'font-semibold text-copihue underline';
+      if (m[0].startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; }
+      frag.append(a);
+      last = (m.index ?? 0) + m[0].length;
+    }
+    frag.append(text.slice(last));
+    return frag;
+  }
+
+  function add(role: Msg['role'], content: string) {
+    const li = document.createElement('li');
+    li.className =
+      role === 'user'
+        ? 'ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-rio px-3.5 py-2.5 text-white'
+        : 'max-w-[85%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-white px-3.5 py-2.5 shadow-sm';
+    li.append(render(content));
+    log.append(li);
+    log.scrollTop = log.scrollHeight;
+    return li;
+  }
+
+  async function send(text: string) {
+    const msg = text.trim();
+    if (!msg) return;
+    add('user', msg);
+    history.push({ role: 'user', content: msg });
+    input.value = '';
+    quick.hidden = true;
+    const typing = add('assistant', 'Escribiendo…');
+    typing.classList.add('text-gris');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: history.slice(-10), page: location.pathname }),
+      });
+      if (!res.ok) throw new Error();
+      const data: { reply: string } = await res.json();
+      typing.remove();
+      add('assistant', data.reply);
+      history.push({ role: 'assistant', content: data.reply });
+    } catch {
+      typing.remove();
+      add('assistant', `No pude responder ahora. Escríbenos por WhatsApp y te ayudamos al tiro: ${WA}`);
+    }
+  }
+
+  form.addEventListener('submit', (e) => { e.preventDefault(); send(input.value); });
+  quick.querySelectorAll<HTMLButtonElement>('[data-q]').forEach((b) => b.addEventListener('click', () => send(b.dataset.q!)));
+</script>

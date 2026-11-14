@@ -1,0 +1,30 @@
+# Configuración de Cloudflare Pages (proyecto: turismoavatar)
+# Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+name = "turismoavatar"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Base de datos de reservas, leads y newsletter (opcional al inicio: sin ella las
+# reservas igual llegan por email y WhatsApp). Para activarla:
+#   1) npx wrangler d1 create turismoavatar
+#   2) descomenta el bloque y pega el database_id
+#   3) npm run db:init
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "turismoavatar"
+# database_id = "PEGAR_AQUI"
+
+# Workers AI para el chatbot (sin API keys externas).
+[ai]
+binding = "AI"
+
+[vars]
+SITE_NAME = "Turismo Avatar"
+WHATSAPP_NUMBER = "56949981427"
+NOTIFY_EMAIL = "contacto@turismoavatar.cl"
+MAIL_FROM = "Turismo Avatar <reservas@turismoavatar.cl>"
+# Secrets (configurar en el dashboard o con `wrangler pages secret put`):
+#   RESEND_API_KEY      → envío de emails de reservas
+#   TURNSTILE_SECRET    → antispam de formularios (opcional)
+#   ADMIN_PASSWORD      → acceso a /admin/reservas

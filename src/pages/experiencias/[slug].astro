@@ -1,0 +1,157 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import Gallery from '@/components/Gallery.astro';
+import BookingForm from '@/components/BookingForm.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import { getCollection, render } from 'astro:content';
+import { categorias } from '@/content.config';
+import { destinoBySlug } from '@/data/destinos';
+import { clp, site, whatsappLink } from '@/data/site';
+
+export async function getStaticPaths() {
+  const exps = await getCollection('experiencias');
+  return exps.map((exp) => ({ params: { slug: exp.id }, props: { exp } }));
+}
+const { exp } = Astro.props;
+const d = exp.data;
+const { Content } = await render(exp);
+const lugares = d.destinos.map((s) => destinoBySlug(s)).filter(Boolean);
+const related = (await getCollection('experiencias'))
+  .filter((e) => e.id !== exp.id && (e.data.category === d.category || e.data.destinos.some((x) => d.destinos.includes(x))))
+  .slice(0, 3);
+const price = d.priceFrom ? `Desde ${clp(d.priceFrom)} por ${d.priceUnit}` : 'Precio a consultar';
+const wa = whatsappLink(`${site.whatsappGreeting} "${d.title}". ¿Tienen disponibilidad?`);
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: d.title,
+    description: d.summary,
+    touristType: categorias[d.category],
+    provider: { '@id': `${site.url}/#org` },
+    itinerary: d.itinerary.length
+      ? { '@type': 'ItemList', itemListElement: d.itinerary.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, description: s.description })) }
+      : undefined,
+    ...(d.priceFrom ? { offers: { '@type': 'Offer', price: d.priceFrom, priceCurrency: 'CLP', availability: 'https://schema.org/InStock', url: `${site.url}/experiencias/${exp.id}` } } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Experiencias', item: `${site.url}/experiencias` },
+      { '@type': 'ListItem', position: 3, name: d.title },
+    ],
+  },
+];
+const facts = [
+  ['Duración', d.duration],
+  ['Dificultad', d.difficulty],
+  ['Dónde', lugares.map((l) => l!.name).join(', ')],
+  d.minAge ? ['Edad mínima', `${d.minAge} años`] : null,
+  d.groupSize ? ['Grupo', d.groupSize] : null,
+  d.schedule ? ['Horarios', d.schedule] : null,
+  ['Temporada', d.seasons.join(', ')],
+].filter(Boolean) as [string, string][];
+---
+
+<Base title={d.title} description={d.summary} image={d.image} jsonLd={ld} transparentHeader>
+  <PageHero title={d.title} lead={d.summary} image={d.image} crumbs={[{ href: '/experiencias', label: 'Experiencias' }, { href: `/experiencias?categoria=${d.category}`, label: categorias[d.category] }]}>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="#reservar" class="btn btn-primary">Reservar</a>
+      <a href={wa} target="_blank" rel="noopener" class="btn btn-ghost">Preguntar por WhatsApp</a>
+    </div>
+  </PageHero>
+
+  <div class="wrap grid gap-14 py-16 lg:grid-cols-[1fr_22rem]">
+    <div class="min-w-0">
+      <div class="prose-ta text-lg"><Content /></div>
+
+      {d.itinerary.length > 0 && (
+        <section class="mt-14" aria-labelledby="recorrido">
+          <h2 id="recorrido" class="text-h3 sm:text-4xl">El recorrido</h2>
+          <ol class="mt-6 grid gap-0">
+            {d.itinerary.map((s, i) => (
+              <li class="relative grid grid-cols-[2.5rem_1fr] gap-4 pb-8 last:pb-0">
+                <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-rio font-display text-lg font-extrabold text-white">{i + 1}</span>
+                {i < d.itinerary.length - 1 && <span class="absolute left-5 top-10 h-[calc(100%-2.5rem)] w-0.5 bg-laguna/40" aria-hidden="true" />}
+                <div class="pt-1.5">
+                  <h3 class="font-display text-xl font-semibold">{s.title}</h3>
+                  <p class="mt-1 text-gris">{s.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <div class="mt-14 grid gap-10 sm:grid-cols-2">
+        {d.includes.length > 0 && (
+          <section>
+            <h2 class="font-display text-2xl font-extrabold">Incluye</h2>
+            <ul class="mt-4 grid gap-2">{d.includes.map((x) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-laguna" />{x}</li>)}</ul>
+          </section>
+        )}
+        {d.bring.length > 0 && (
+          <section>
+            <h2 class="font-display text-2xl font-extrabold">Qué llevar</h2>
+            <ul class="mt-4 grid gap-2">{d.bring.map((x) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-atardecer" />{x}</li>)}</ul>
+          </section>
+        )}
+      </div>
+
+      {d.meetingPoint && (
+        <section class="mt-14">
+          <h2 class="font-display text-2xl font-extrabold">Punto de encuentro</h2>
+          <p class="mt-2 text-lg">{d.meetingPoint}</p>
+        </section>
+      )}
+
+      {[d.image, ...d.gallery].length > 1 && (
+        <section class="mt-14">
+          <h2 class="font-display text-2xl font-extrabold">Fotos</h2>
+          <div class="mt-5"><Gallery items={[d.image, ...d.gallery].map((src) => ({ src, alt: d.title }))} layout="strip" /></div>
+        </section>
+      )}
+
+      <section id="reservar" class="mt-16 scroll-mt-28 rounded-2xl bg-white p-6 sm:p-10">
+        <h2 class="text-h3 sm:text-4xl">Reserva {d.title}</h2>
+        <p class="mt-2 mb-8 text-gris">Envía tu solicitud y te confirmamos disponibilidad y forma de pago.</p>
+        <BookingForm preselect={`experiencia:${exp.id}`} />
+      </section>
+    </div>
+
+    <aside class="lg:sticky lg:top-28 lg:self-start">
+      <div class="rounded-2xl bg-rio p-6 text-white">
+        <p class="font-display text-3xl font-extrabold">{price}</p>
+        <dl class="mt-5 grid gap-3 border-t border-white/15 pt-5">
+          {facts.map(([k, v]) => (
+            <div class="grid grid-cols-[6.5rem_1fr] gap-3"><dt class="text-white/65">{k}</dt><dd>{v}</dd></div>
+          ))}
+        </dl>
+        <div class="mt-6 grid gap-3">
+          <a href="#reservar" class="btn btn-primary">Reservar</a>
+          <a href={wa} target="_blank" rel="noopener" class="btn btn-wa" data-track="whatsapp_experiencia">WhatsApp</a>
+        </div>
+      </div>
+      {lugares.map((l) => (
+        <a href={`/destinos/${l!.slug}`} class="mt-4 block rounded-2xl border border-roca p-5 hover:border-laguna">
+          <span class="text-sm font-semibold text-laguna">Destino</span>
+          <span class="block font-display text-2xl font-extrabold">{l!.name}</span>
+          <span class="mt-1 block text-sm text-gris">{l!.summary}</span>
+        </a>
+      ))}
+    </aside>
+  </div>
+
+  {related.length > 0 && (
+    <section class="bg-white py-20">
+      <div class="wrap">
+        <h2 class="text-h2">También te puede gustar</h2>
+        <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{related.map((e) => <ExperienceCard exp={e} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>

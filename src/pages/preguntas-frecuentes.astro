@@ -1,0 +1,22 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { faq } from '@/data/faq';
+const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+---
+
+<Base title="Preguntas frecuentes" description="Cómo reservar, qué pasa si hay mal tiempo, tours para empresas, retiro en hotel y más." jsonLd={ld}>
+  <PageHero title="Preguntas frecuentes" crumbs={[{ href: '/preguntas-frecuentes', label: 'Preguntas frecuentes' }]} />
+  <section class="wrap pb-24">
+    <div class="max-w-3xl divide-y divide-roca border-y border-roca">
+      {faq.map((f, i) => (
+        <details class="group py-5" open={i === 0}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-xl font-semibold">{f.q}<span class="text-2xl text-copihue transition group-open:rotate-45" aria-hidden="true">+</span></summary>
+          <p class="mt-3 text-gris">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+  <CtaBand title="¿Te quedó alguna duda?" />
+</Base>

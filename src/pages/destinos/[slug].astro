@@ -1,0 +1,55 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import LodgingCard from '@/components/LodgingCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+import { destinos, type Destino } from '@/data/destinos';
+import { site } from '@/data/site';
+
+export function getStaticPaths() {
+  return destinos.map((d) => ({ params: { slug: d.slug }, props: { d } }));
+}
+const { d } = Astro.props as { d: Destino };
+const exps = (await getCollection('experiencias')).filter((e) => e.data.destinos.includes(d.slug)).sort((a, b) => a.data.order - b.data.order);
+const alojs = (await getCollection('alojamientos')).filter((a) => a.data.destino === d.slug);
+const image = d.image ?? exps[0]?.data.image;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: `${d.name}, Región del Biobío`,
+  description: d.summary,
+  geo: { '@type': 'GeoCoordinates', latitude: d.lat, longitude: d.lng },
+  includesAttraction: d.highlights.map((h) => ({ '@type': 'TouristAttraction', name: h })),
+  provider: { '@id': `${site.url}/#org` },
+};
+---
+
+<Base title={`Qué hacer en ${d.name}: tours y experiencias`} description={`${d.summary} Tours y experiencias en ${d.name} con Turismo Avatar.`} image={image} jsonLd={ld} transparentHeader={!!image}>
+  <PageHero title={`Qué hacer en ${d.name}`} lead={d.summary} image={image} crumbs={[{ href: '/destinos', label: 'Destinos' }]} />
+  <section class="wrap py-16">
+    <h2 class="font-display text-2xl font-extrabold">Imperdibles de {d.name}</h2>
+    <ul class="mt-4 flex flex-wrap gap-2">{d.highlights.map((h) => <li class="rounded-full bg-white px-4 py-2 font-medium">{h}</li>)}</ul>
+  </section>
+  <section class="wrap pb-20">
+    <h2 class="text-h2">Experiencias en {d.name}</h2>
+    {exps.length ? (
+      <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{exps.map((e) => <ExperienceCard exp={e} />)}</div>
+    ) : (
+      <div class="mt-6 max-w-2xl rounded-xl bg-white p-8">
+        <p class="text-lg">Organizamos salidas a medida en {d.name}. Cuéntanos qué te gustaría hacer y te enviamos una propuesta.</p>
+        <a href="/reservas?item=cotizacion:a-medida" class="btn btn-primary mt-5">Pedir propuesta</a>
+      </div>
+    )}
+  </section>
+  {alojs.length > 0 && (
+    <section class="bg-white py-20">
+      <div class="wrap">
+        <h2 class="text-h2">Dónde dormir en {d.name}</h2>
+        <div class="mt-10 grid gap-8 md:grid-cols-2">{alojs.map((a) => <LodgingCard item={a} />)}</div>
+      </div>
+    </section>
+  )}
+  <CtaBand message={`Hola Turismo Avatar 👋 Quiero hacer algo en ${d.name}.`} />
+</Base>

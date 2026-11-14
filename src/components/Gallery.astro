@@ -1,0 +1,121 @@
+---
+import { getImage } from 'astro:assets';
+import Media from './Media.astro';
+import { getMedia } from '@/lib/media';
+
+interface Item { src: string; alt: string; tag?: string }
+interface Props { items: Item[]; filters?: Record<string, string>; layout?: 'masonry' | 'strip' }
+const { items, filters, layout = 'masonry' } = Astro.props;
+
+const prepared = await Promise.all(
+  items.map(async (it) => {
+    const meta = getMedia(it.src);
+    const full = meta ? await getImage({ src: meta, width: Math.min(1800, meta.width), format: 'webp' }) : undefined;
+    return { ...it, full: full?.src, ratio: meta ? meta.width / meta.height : 1 };
+  }),
+);
+---
+
+<div data-gallery>
+  {
+    filters && (
+      <div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar fotos">
+        <button type="button" data-filter="" aria-pressed="true" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">Todas</button>
+        {Object.entries(filters).map(([k, label]) => (
+          <button type="button" data-filter={k} aria-pressed="false" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">{label}</button>
+        ))}
+      </div>
+    )
+  }
+
+  <ul class:list={[layout === 'masonry' ? 'columns-2 gap-3 sm:gap-4 md:columns-3 lg:columns-4' : 'flex snap-x gap-3 overflow-x-auto pb-2']}>
+    {
+      prepared.map((it, i) => (
+        <li data-tag={it.tag} class:list={[layout === 'masonry' ? 'mb-3 break-inside-avoid sm:mb-4' : 'w-72 shrink-0 snap-start']}>
+          <button
+            type="button"
+            data-index={i}
+            data-full={it.full}
+            data-alt={it.alt}
+            disabled={!it.full}
+            class="group relative block w-full overflow-hidden rounded-xl bg-rio text-left disabled:cursor-default"
+            style={layout === 'strip' ? 'aspect-ratio: 4/3' : `aspect-ratio: ${it.full ? it.ratio : 0.8}`}
+          >
+            <span class="sr-only">Ampliar: {it.alt}</span>
+            <Media src={it.src} alt={it.alt} widths={[320, 640, 900]} sizes="(min-width: 1024px) 25vw, 50vw" class="transition duration-500 group-hover:scale-[1.03] group-hover:brightness-110" />
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+
+  <dialog data-lightbox class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-rio-900/92" aria-label="Foto ampliada">
+    <figure class="grid h-dvh w-screen grid-rows-[1fr_auto] place-items-center gap-3 p-4 sm:p-10">
+      <img data-lb-img alt="" class="max-h-full max-w-full rounded-lg object-contain" />
+      <figcaption data-lb-cap class="text-center text-white/85"></figcaption>
+    </figure>
+    <button type="button" data-lb-close class="absolute right-4 top-4 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20">
+      <span class="sr-only">Cerrar</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <button type="button" data-lb-prev class="absolute left-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20">
+      <span class="sr-only">Foto anterior</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <button type="button" data-lb-next class="absolute right-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20">
+      <span class="sr-only">Foto siguiente</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+  </dialog>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((root) => {
+    const dialog = root.querySelector<HTMLDialogElement>('[data-lightbox]')!;
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const cap = dialog.querySelector<HTMLElement>('[data-lb-cap]')!;
+    const buttons = () => [...root.querySelectorAll<HTMLButtonElement>('button[data-full]')].filter((b) => !b.closest('li')!.hidden && b.dataset.full);
+    let current = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      const list = buttons();
+      if (!list.length) return;
+      current = (i + list.length) % list.length;
+      const b = list[current];
+      img.src = b.dataset.full!;
+      img.alt = b.dataset.alt ?? '';
+      cap.textContent = `${b.dataset.alt ?? ''} (${current + 1} de ${list.length})`;
+    };
+
+    root.querySelectorAll<HTMLButtonElement>('button[data-full]').forEach((b) =>
+      b.addEventListener('click', () => {
+        opener = b;
+        show(buttons().indexOf(b));
+        dialog.showModal();
+      }),
+    );
+    dialog.querySelector('[data-lb-close]')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(current - 1));
+    dialog.querySelector('[data-lb-next]')!.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('click', (e) => e.target === dialog && dialog.close());
+    dialog.addEventListener('close', () => opener?.focus());
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+    let x0 = 0;
+    dialog.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    dialog.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((f) =>
+      f.addEventListener('click', () => {
+        root.querySelectorAll('[data-filter]').forEach((o) => o.setAttribute('aria-pressed', String(o === f)));
+        root.querySelectorAll<HTMLElement>('li[data-tag]').forEach((li) => (li.hidden = !!f.dataset.filter && li.dataset.tag !== f.dataset.filter));
+      }),
+    );
+  });
+</script>

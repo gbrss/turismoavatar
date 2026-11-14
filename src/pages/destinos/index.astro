@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import DestinosMap from '@/components/DestinosMap.astro';
+import CtaBand from '@/components/CtaBand.astro';
+---
+
+<Base title="Destinos en el Gran Concepción y el Biobío" description="Concepción, Tomé, Penco, Talcahuano, Hualpén, San Pedro de la Paz, Chiguayante, Coronel, Lota, Arauco y Santa Juana: qué hacer en cada comuna.">
+  <PageHero title="Escoge tu próximo destino" lead="Lugares cuidadosamente seleccionados, desde los cerros de Concepción hasta las playas de Tomé y el golfo de Arauco." crumbs={[{ href: '/destinos', label: 'Destinos' }]} />
+  <section class="wrap pb-24"><DestinosMap /></section>
+  <CtaBand />
+</Base>

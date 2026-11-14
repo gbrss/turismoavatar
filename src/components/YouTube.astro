@@ -1,0 +1,28 @@
+---
+interface Props { id: string; title: string }
+const { id, title } = Astro.props;
+---
+
+<div class="relative aspect-video overflow-hidden rounded-2xl bg-rio-900" data-yt={id}>
+  <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover opacity-80" width="480" height="360" />
+  <button type="button" class="absolute inset-0 grid place-items-center text-white" data-yt-play>
+    <span class="grid h-20 w-20 place-items-center rounded-full bg-copihue shadow-xl transition hover:scale-105">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+    </span>
+    <span class="sr-only">Reproducir video: {title}</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-yt]').forEach((box) => {
+    box.querySelector('[data-yt-play]')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0`;
+      f.title = 'Video de Turismo Avatar';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture';
+      f.allowFullscreen = true;
+      f.className = 'absolute inset-0 h-full w-full';
+      box.replaceChildren(f);
+    });
+  });
+</script>

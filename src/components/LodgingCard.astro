@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Media from './Media.astro';
+import { clp } from '@/data/site';
+interface Props { item: CollectionEntry<'alojamientos'> }
+const { item } = Astro.props;
+const d = item.data;
+---
+
+<article class="group relative grid grid-cols-[7.5rem_1fr] gap-4 sm:grid-cols-[10rem_1fr]">
+  <div class="aspect-square overflow-hidden rounded-xl bg-rio">
+    <Media src={d.image} alt={d.title} widths={[240, 400]} sizes="10rem" />
+  </div>
+  <div class="self-center">
+    <p class="text-sm font-semibold text-laguna">{d.location}</p>
+    <h3 class="mt-0.5 font-display text-[1.45rem] font-extrabold leading-[1.05]">
+      <a href={`/alojamientos/${item.id}`} class="after:absolute after:inset-0 hover:text-rio">{d.title}</a>
+    </h3>
+    <p class="mt-1.5 text-gris">Hasta {d.capacity} personas, {d.beds} {d.beds === 1 ? 'cama' : 'camas'}{d.shared ? ', espacios compartidos' : ''}</p>
+    <p class="mt-1 font-semibold">{clp(d.pricePerNight)} <span class="font-normal text-gris">por noche</span></p>
+  </div>
+</article>

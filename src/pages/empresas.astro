@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import { site, whatsappLink } from '@/data/site';
+const offers = [
+  ['Team building', 'Desafíos en SUP, kayak, trekking o canopy para equipos de trabajo, con cierre y alimentación coordinados.'],
+  ['Giras de estudio y colegios', 'Recorridos educativos por la historia, el patrimonio y la naturaleza del Biobío, con guías y logística.'],
+  ['Visitas corporativas', 'City tours y programas para clientes, ejecutivos y delegaciones que vienen a Concepción.'],
+  ['Eventos y celebraciones', 'Cumpleaños, despedidas y paseos de fin de año con actividades al aire libre.'],
+];
+---
+
+<Base title="Tours para empresas, colegios y grupos en Concepción" description="Team building, giras de estudio y salidas privadas en el Biobío. Cotización para grupos en 24 horas.">
+  <PageHero title="Experiencias para empresas, colegios y grupos" lead="Diseñamos salidas privadas con la logística resuelta: guías, equipos, traslados, alimentación y alojamiento." crumbs={[{ href: '/empresas', label: 'Grupos y empresas' }]} />
+  <section class="wrap grid gap-14 pb-24 lg:grid-cols-[1fr_1.2fr]">
+    <div>
+      <dl class="grid gap-8">
+        {offers.map(([t, d]) => (<div><dt class="font-display text-2xl font-extrabold">{t}</dt><dd class="mt-1 text-gris">{d}</dd></div>))}
+      </dl>
+      <a href={whatsappLink(`${site.whatsappGreeting} una actividad para un grupo / empresa.`)} target="_blank" rel="noopener" class="btn btn-wa mt-10">Cotizar por WhatsApp</a>
+    </div>
+    <div class="rounded-2xl bg-white p-6 sm:p-10">
+      <h2 class="text-h3 sm:text-4xl">Pide tu cotización</h2>
+      <p class="mb-6 mt-2 text-gris">Respondemos en menos de 24 horas.</p>
+      <LeadForm kind="empresa" submitLabel="Pedir cotización" />
+    </div>
+  </section>
+</Base>

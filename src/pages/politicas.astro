@@ -1,0 +1,20 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import { site } from '@/data/site';
+---
+
+<Base title="Políticas de reserva y privacidad" description="Condiciones de reserva, cambios por clima y tratamiento de datos personales de Turismo Avatar.">
+  <PageHero title="Políticas de reserva y privacidad" crumbs={[{ href: '/politicas', label: 'Políticas' }]} />
+  <section class="wrap pb-24">
+    <div class="prose-ta grid gap-4 text-lg">
+      <h2 class="mt-4 font-display text-3xl font-extrabold">Reservas</h2>
+      <p>Enviar una solicitud de reserva no genera cobro. La reserva queda confirmada cuando te enviamos la confirmación por WhatsApp o correo y se recibe el pago o abono indicado.</p>
+      <p>Las condiciones de pago, cancelación y devolución de cada experiencia o alojamiento se informan al momento de confirmar la reserva.</p>
+      <h2 class="mt-6 font-display text-3xl font-extrabold">Clima y seguridad</h2>
+      <p>Las actividades al aire libre dependen de las condiciones del clima y del mar. Si no es posible realizarlas con seguridad, ofrecemos reprogramar o una alternativa equivalente.</p>
+      <h2 class="mt-6 font-display text-3xl font-extrabold">Datos personales</h2>
+      <p>Usamos los datos que nos entregas (nombre, correo y teléfono) solo para gestionar tu reserva o consulta y, si te suscribes, para enviarte novedades. No vendemos ni compartimos tus datos con terceros con fines comerciales. Puedes pedir que los eliminemos escribiendo a <a class="underline" href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+  </section>
+</Base>

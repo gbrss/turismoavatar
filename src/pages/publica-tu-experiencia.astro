@@ -1,0 +1,23 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import LeadForm from '@/components/LeadForm.astro';
+---
+
+<Base title="Publica tu experiencia turística" description="¿Tienes cabañas, tours o un emprendimiento turístico en el Biobío? Súmate a la red de Turismo Avatar y llega a más viajeros.">
+  <PageHero title="¿Quieres publicar tu experiencia turística?" lead="Buscamos cooperar con prestadores de servicios turísticos del Biobío: alojamientos, guías, gastronomía, arriendo de equipos y experiencias locales." crumbs={[{ href: '/publica-tu-experiencia', label: 'Publica tu experiencia' }]} />
+  <section class="wrap grid gap-14 pb-24 lg:grid-cols-[1fr_1.2fr]">
+    <div class="prose-ta text-lg">
+      <p>Queremos ser el puente entre los emprendedores turísticos de la región y los viajeros. Si te sumas, tu servicio aparece en nuestro sitio, en nuestros programas y en las recomendaciones de nuestro equipo.</p>
+      <ul class="mt-6 grid gap-3">
+        <li class="border-l-2 border-laguna pl-4">Publicación de tu alojamiento o experiencia con fotos y precios.</li>
+        <li class="border-l-2 border-laguna pl-4">Reservas y consultas gestionadas por nuestro equipo.</li>
+        <li class="border-l-2 border-laguna pl-4">Inclusión en programas y salidas para grupos y empresas.</li>
+      </ul>
+    </div>
+    <div class="rounded-2xl bg-white p-6 sm:p-10">
+      <h2 class="text-h3 sm:text-4xl">Cuéntanos de tu emprendimiento</h2>
+      <div class="mt-6"><LeadForm kind="proveedor" submitLabel="Postular mi emprendimiento" /></div>
+    </div>
+  </section>
+</Base>

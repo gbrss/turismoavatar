@@ -1,0 +1,84 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import ChatWidget from '@/components/ChatWidget.astro';
+import { site } from '@/data/site';
+import { getMedia } from '@/lib/media';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  transparentHeader?: boolean;
+}
+const { title, description = site.description, image, jsonLd, noindex = false, transparentHeader = false } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — Tours y experiencias en Concepción y el Biobío`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const ogSource = getMedia(image) ?? getMedia('2024/11/Sup-agua-Cristalina-Penco.jpg');
+const og = ogSource ? await getImage({ src: ogSource, width: 1200, height: 630, format: 'jpg', fit: 'cover' }) : undefined;
+const ogUrl = og ? new URL(og.src, site.url).href : undefined;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  '@id': `${site.url}/#org`,
+  name: site.name,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  foundingDate: String(site.foundingYear),
+  founder: { '@type': 'Person', name: site.founder },
+  description: site.description,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.region, addressCountry: site.country },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  areaServed: 'Región del Biobío, Chile',
+  sameAs: Object.values(site.social),
+  ...(ogUrl ? { image: ogUrl } : {}),
+};
+const schemas = [org, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
+---
+
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#0e3b43" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    {ogUrl && <meta property="og:image:width" content="1200" />}
+    {ogUrl && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body class="min-h-dvh overflow-x-clip antialiased">
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-white focus:px-4 focus:py-2">
+      Saltar al contenido
+    </a>
+    <Header transparent={transparentHeader} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <ChatWidget />
+  </body>
+</html>

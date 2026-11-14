@@ -1,0 +1,106 @@
+---
+// Mapa ilustrado del Gran Concepción. Proyección equirectangular simple corregida por latitud.
+import { destinos } from '@/data/destinos';
+import { getCollection } from 'astro:content';
+
+const exps = await getCollection('experiencias');
+const count = (slug: string) => exps.filter((e) => e.data.destinos.includes(slug)).length;
+
+const LNG0 = -73.4;
+const LAT0 = -36.5;
+const px = (lng: number) => +((lng - LNG0) * 800).toFixed(1);
+const py = (lat: number) => +((LAT0 - lat) * 1000).toFixed(1);
+const path = (pts: [number, number][]) => pts.map(([lat, lng], i) => `${i ? 'L' : 'M'}${px(lng)} ${py(lat)}`).join(' ');
+
+const coast: [number, number][] = [
+  [-36.5, -72.925], [-36.545, -72.935], [-36.53, -72.962], [-36.565, -72.967], [-36.615, -72.955], [-36.66, -72.98],
+  [-36.71, -72.975], [-36.737, -72.995], [-36.77, -73.04], [-36.765, -73.09], [-36.722, -73.112], [-36.66, -73.09],
+  [-36.615, -73.1], [-36.655, -73.125], [-36.728, -73.142], [-36.752, -73.172], [-36.772, -73.207], [-36.8, -73.19],
+  [-36.82, -73.166], [-36.87, -73.165], [-36.95, -73.168], [-37.02, -73.162], [-37.09, -73.168], [-37.14, -73.21],
+  [-37.17, -73.195], [-37.245, -73.322], [-37.3, -73.385],
+];
+const land = `${path(coast)} L${px(-72.85)} ${py(-37.3)} L${px(-72.85)} ${py(-36.5)} Z`;
+const river = path([
+  [-37.14, -72.85], [-37.07, -72.92], [-37.0, -72.945], [-36.93, -73.015], [-36.86, -73.055], [-36.835, -73.1], [-36.82, -73.166],
+]);
+const W = px(-72.85);
+const H = py(-37.3);
+// Etiqueta a la izquierda para los puntos costeros del oeste
+const labelLeft = new Set(['talcahuano', 'hualpen', 'coronel', 'lota', 'arauco', 'san-pedro-de-la-paz', 'santa-juana']);
+---
+
+<div class="grid gap-8 lg:grid-cols-[minmax(0,26rem)_1fr] lg:items-start" data-map>
+  <figure class="relative mx-auto w-full max-w-md overflow-hidden rounded-2xl bg-[#cfe5e1]">
+    <svg viewBox={`0 0 ${W} ${H}`} class="block h-auto w-full" role="group" aria-labelledby="mapa-titulo">
+      <title id="mapa-titulo">Mapa de destinos de Turismo Avatar en el Gran Concepción</title>
+      <defs>
+        <pattern id="olas" width="22" height="10" patternUnits="userSpaceOnUse">
+          <path d="M0 6 Q5.5 2 11 6 T22 6" fill="none" stroke="#2e8c87" stroke-opacity=".22" stroke-width="1.2" />
+        </pattern>
+      </defs>
+      <rect width={W} height={H} fill="url(#olas)" />
+      <path d={land} fill="#eef2ef" stroke="#0e3b43" stroke-width="1.6" stroke-linejoin="round" />
+      <path d={river} fill="none" stroke="#2e8c87" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <text x={px(-72.99)} y={py(-36.985)} transform={`rotate(-48 ${px(-72.99)} ${py(-36.985)})`} class="fill-laguna font-display text-[15px] font-semibold italic">río Biobío</text>
+      <text x={px(-73.33)} y={py(-36.62)} class="fill-rio font-display text-[17px] font-semibold opacity-60">Océano Pacífico</text>
+      <text x={px(-73.06)} y={py(-36.69)} class="fill-rio font-display text-[12px] font-semibold opacity-60">Bahía de</text>
+      <text x={px(-73.06)} y={py(-36.705)} class="fill-rio font-display text-[12px] font-semibold opacity-60">Concepción</text>
+      <text x={px(-73.32)} y={py(-37.12)} class="fill-rio font-display text-[14px] font-semibold opacity-60">Golfo de Arauco</text>
+      {
+        destinos.map((d) => {
+          const x = px(d.lng);
+          const y = py(d.lat);
+          const left = labelLeft.has(d.slug);
+          return (
+            <a href={`/destinos/${d.slug}`} data-dest={d.slug} class="group outline-none" aria-label={`${d.name}: ${count(d.slug)} experiencias`}>
+              <circle cx={x} cy={y} r="16" fill="transparent" />
+              <circle cx={x} cy={y} r="7" class="fill-copihue stroke-white transition-[r] group-hover:[r:10] group-focus-visible:[r:10] group-[.is-active]:[r:10]" stroke-width="2.5" />
+              <text
+                x={left ? x - 13 : x + 13}
+                y={y + 5}
+                text-anchor={left ? 'end' : 'start'}
+                class="fill-tinta font-display text-[15px] font-semibold [paint-order:stroke] [stroke:#eef2ef] [stroke-width:4px] group-hover:fill-copihue group-[.is-active]:fill-copihue"
+              >
+                {d.name}
+              </text>
+            </a>
+          );
+        })
+      }
+    </svg>
+    <figcaption class="sr-only">Mapa ilustrativo, no a escala exacta.</figcaption>
+  </figure>
+
+  <ul class="grid gap-x-8 sm:grid-cols-2">
+    {
+      destinos.map((d) => (
+        <li class="border-b border-roca">
+          <a href={`/destinos/${d.slug}`} data-dest-item={d.slug} class="group flex items-baseline justify-between gap-4 py-4">
+            <span>
+              <span class="block font-display text-[1.6rem] font-extrabold leading-tight group-hover:text-copihue">{d.name}</span>
+              <span class="mt-1 line-clamp-2 block text-[0.95rem] text-gris">{d.summary}</span>
+            </span>
+            <span class="shrink-0 text-sm font-semibold text-laguna">{count(d.slug) ? `${count(d.slug)} exp.` : 'Ver'}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  // Sincroniza el resaltado entre la lista y el mapa
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((root) => {
+    const pins = new Map<string, Element>();
+    root.querySelectorAll('[data-dest]').forEach((el) => pins.set((el as HTMLElement).dataset.dest!, el));
+    root.querySelectorAll<HTMLElement>('[data-dest-item]').forEach((item) => {
+      const pin = pins.get(item.dataset.destItem!);
+      const on = () => pin?.classList.add('is-active');
+      const off = () => pin?.classList.remove('is-active');
+      item.addEventListener('mouseenter', on);
+      item.addEventListener('mouseleave', off);
+      item.addEventListener('focus', on);
+      item.addEventListener('blur', off);
+    });
+  });
+</script>

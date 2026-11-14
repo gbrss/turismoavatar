@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/800.css';
+
+/* Paleta "Biobío": río, laguna, niebla costera, copihue y atardecer */
+@theme {
+  --color-rio: #0e3b43;
+  --color-rio-900: #082a30;
+  --color-laguna: #2e8c87;
+  --color-laguna-200: #b9dcd8;
+  --color-niebla: #eef2ef;
+  --color-roca: #d9e0db;
+  --color-copihue: #c2264b;
+  --color-copihue-700: #9d1b3b;
+  --color-atardecer: #f2b544;
+  --color-tinta: #13201f;
+  --color-gris: #55625f;
+
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, sans-serif;
+
+  /* Escala tipográfica modular (≈1.25) */
+  --text-display: clamp(3rem, 2rem + 5vw, 6.5rem);
+  --text-display--line-height: 0.92;
+  --text-h1: clamp(2.5rem, 1.8rem + 3vw, 4.25rem);
+  --text-h1--line-height: 0.98;
+  --text-h2: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --text-h2--line-height: 1.02;
+  --text-h3: 1.6rem;
+  --text-h3--line-height: 1.1;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-niebla);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-atardecer);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: min(100% - 2.5rem, 78rem);
+    margin-inline: auto;
+  }
+  .prose-ta p + p {
+    margin-top: 1em;
+  }
+  .prose-ta {
+    max-width: 68ch;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.4rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 0.01em;
+    border-radius: 999px;
+    transition: background-color 0.15s, color 0.15s, transform 0.15s;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--color-copihue);
+    color: white;
+  }
+  .btn-primary:hover {
+    background: var(--color-copihue-700);
+  }
+  .btn-ghost {
+    border: 2px solid currentColor;
+  }
+  .btn-ghost:hover {
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+  .btn-wa {
+    background: #1f9d55;
+    color: white;
+  }
+  .btn-wa:hover {
+    background: #187d44;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--color-roca);
+    border-radius: 0.6rem;
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    color: var(--color-tinta);
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--color-laguna);
+    outline: 2px solid color-mix(in srgb, var(--color-laguna) 35%, transparent);
+    outline-offset: 0;
+  }
+  /* Línea de ruta: el motivo gráfico del sitio (trazo de sendero discontinuo) */
+  .trail {
+    background-image: linear-gradient(90deg, currentColor 55%, transparent 0);
+    background-size: 14px 2px;
+    background-repeat: repeat-x;
+    background-position: left center;
+    height: 2px;
+  }
+}

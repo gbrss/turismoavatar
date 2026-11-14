@@ -1,0 +1,80 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+import { categorias } from '@/content.config';
+import { destinos } from '@/data/destinos';
+
+const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
+const usedDest = destinos.filter((d) => exps.some((e) => e.data.destinos.includes(d.slug)));
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: exps.map((e, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://www.turismoavatar.cl/experiencias/${e.id}`, name: e.data.title })),
+};
+---
+
+<Base title="Experiencias y tours en Concepción y el Biobío" description="City tours, trekking al Cerro Caracol, SUP en Penco y Tomé, kayak, canopy y cabalgatas en Hualpén. Reserva tu experiencia en el Biobío con guías locales." jsonLd={itemList}>
+  <PageHero title="Experiencias en el Biobío" lead="Actividades para todos los gustos: desde un paseo tranquilo por las lagunas de Concepción hasta remar en el mar o cabalgar por Hualpén." crumbs={[{ href: '/experiencias', label: 'Experiencias' }]} />
+
+  <section class="wrap pb-24" data-filters>
+    <div class="sticky top-20 z-20 -mx-5 flex flex-wrap items-center gap-3 border-b border-roca bg-niebla/95 px-5 py-4 backdrop-blur">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Tipo de experiencia">
+        <button type="button" data-cat="" aria-pressed="true" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">Todas</button>
+        {Object.entries(categorias).map(([k, v]) => (
+          <button type="button" data-cat={k} aria-pressed="false" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">{v}</button>
+        ))}
+      </div>
+      <label class="ml-auto flex items-center gap-2">
+        <span class="text-sm font-semibold">Dónde</span>
+        <select data-dest class="rounded-full border border-rio/25 bg-white px-4 py-2">
+          <option value="">Todas las comunas</option>
+          {usedDest.map((d) => <option value={d.slug}>{d.name}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <p data-count class="mt-8 text-gris" aria-live="polite">{exps.length} experiencias</p>
+    <div class="mt-6 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3" data-list>
+      {exps.map((e) => <ExperienceCard exp={e} />)}
+    </div>
+    <div data-empty hidden class="mt-6 rounded-xl bg-white p-8">
+      <p class="font-display text-2xl font-extrabold">No hay experiencias con ese filtro todavía</p>
+      <p class="mt-2 text-gris">Cuéntanos qué buscas y la armamos a tu medida.</p>
+      <a href="/reservas?item=cotizacion:a-medida" class="btn btn-primary mt-5">Pedir experiencia a medida</a>
+    </div>
+  </section>
+  <CtaBand title="¿No encuentras lo que buscas?" text="Diseñamos salidas a medida para familias, parejas, empresas y colegios en todo el Biobío." />
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-filters]')!;
+  const cards = [...root.querySelectorAll<HTMLElement>('[data-list] > article')];
+  const sel = root.querySelector<HTMLSelectElement>('[data-dest]')!;
+  const count = root.querySelector<HTMLElement>('[data-count]')!;
+  const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+  const params = new URLSearchParams(location.search);
+  let cat = params.get('categoria') ?? '';
+  sel.value = params.get('destino') ?? '';
+
+  function apply() {
+    root.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === cat)));
+    let n = 0;
+    cards.forEach((c) => {
+      const ok = (!cat || c.dataset.category === cat) && (!sel.value || c.dataset.destinos!.split(' ').includes(sel.value));
+      c.hidden = !ok;
+      if (ok) n++;
+    });
+    count.textContent = `${n} ${n === 1 ? 'experiencia' : 'experiencias'}`;
+    empty.hidden = n > 0;
+    const p = new URLSearchParams();
+    if (cat) p.set('categoria', cat);
+    if (sel.value) p.set('destino', sel.value);
+    history.replaceState(null, '', p.size ? `?${p}` : location.pathname);
+  }
+  root.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((b) => b.addEventListener('click', () => { cat = b.dataset.cat!; apply(); }));
+  sel.addEventListener('change', apply);
+  apply();
+</script>

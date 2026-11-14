@@ -1,0 +1,16 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import Gallery from '@/components/Gallery.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { galeria, galeriaTags } from '@/data/galeria';
+import { site } from '@/data/site';
+---
+
+<Base title="Galería de aventuras en el Biobío" description="Fotos de nuestras salidas: SUP en Penco y Dichato, Cerro Caracol, cabalgatas en Hualpén, la costa de Tomé y nuestros alojamientos.">
+  <PageHero title="Nuestra galería de aventuras" lead="Deja que cada foto te inspire a conquistar lo desconocido." crumbs={[{ href: '/galeria', label: 'Galería' }]}>
+    <p class="mt-4"><a href={site.social.instagram} target="_blank" rel="noopener" class="font-semibold text-copihue underline decoration-2 underline-offset-4">Más fotos y videos en Instagram @turismoavatar</a></p>
+  </PageHero>
+  <section class="wrap pb-24"><Gallery items={galeria} filters={galeriaTags} /></section>
+  <CtaBand />
+</Base>

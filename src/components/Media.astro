@@ -1,0 +1,58 @@
+---
+import { Picture } from 'astro:assets';
+import { getMedia } from '@/lib/media';
+
+interface Props {
+  src?: string;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+const {
+  src,
+  alt,
+  widths = [400, 800, 1200],
+  sizes = '(min-width: 1024px) 33vw, 100vw',
+  class: className = '',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+} = Astro.props;
+const img = getMedia(src);
+// Variación de color estable por imagen para los marcadores de posición
+const hue = [...(src ?? alt)].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
+const tones = [
+  ['#0e3b43', '#2e8c87'],
+  ['#082a30', '#3f7d6f'],
+  ['#14505a', '#c2264b'],
+][hue];
+---
+
+{
+  img ? (
+    <Picture
+      src={img}
+      alt={alt}
+      widths={widths.filter((w) => w <= img.width).length ? widths.filter((w) => w <= img.width) : [img.width]}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      class:list={['h-full w-full object-cover', className]}
+    />
+  ) : (
+    <div
+      role="img"
+      aria-label={alt}
+      class:list={['relative h-full w-full overflow-hidden', className]}
+      style={`background: radial-gradient(120% 90% at 20% 10%, ${tones[1]} 0%, ${tones[0]} 60%);`}
+    >
+      <svg class="absolute inset-x-0 bottom-0 w-full opacity-30" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 80 C60 40 110 100 170 70 S290 30 400 60 L400 120 L0 120Z" fill="#eef2ef" />
+        <path d="M0 100 C80 80 140 115 220 95 S330 80 400 92 L400 120 L0 120Z" fill="#eef2ef" opacity=".6" />
+      </svg>
+    </div>
+  )
+}

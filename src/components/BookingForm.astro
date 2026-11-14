@@ -1,0 +1,192 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '@/data/site';
+
+interface Props { preselect?: string; compact?: boolean }
+const { preselect, compact = false } = Astro.props;
+const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
+const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order - b.data.order);
+const progs = (await getCollection('programas')).sort((a, b) => a.data.order - b.data.order);
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY as string | undefined;
+const today = new Date().toISOString().slice(0, 10);
+const uid = Math.random().toString(36).slice(2, 7);
+---
+
+<form data-booking class="grid gap-5" action="/api/reservas" method="post" novalidate>
+  <div class="field">
+    <label for={`item-${uid}`}>¿Qué quieres reservar?</label>
+    <select id={`item-${uid}`} name="item" required>
+      <option value="">Elige una experiencia o alojamiento</option>
+      <optgroup label="Experiencias">
+        {exps.map((e) => <option value={`experiencia:${e.id}`} data-kind="experiencia" selected={preselect === `experiencia:${e.id}`}>{e.data.title}</option>)}
+      </optgroup>
+      <optgroup label="Programas">
+        {progs.map((p) => <option value={`programa:${p.id}`} data-kind="programa" selected={preselect === `programa:${p.id}`}>{p.data.title}</option>)}
+      </optgroup>
+      <optgroup label="Alojamientos">
+        {
+          alojs.map((a) => (
+            <option value={`alojamiento:${a.id}`} data-kind="alojamiento" data-price={a.data.pricePerNight} data-capacity={a.data.capacity} selected={preselect === `alojamiento:${a.id}`}>
+              {a.data.title}
+            </option>
+          ))
+        }
+      </optgroup>
+      <option value="cotizacion:a-medida" selected={preselect === 'cotizacion:a-medida'}>Experiencia a medida / grupo / empresa</option>
+    </select>
+  </div>
+
+  <div class:list={['grid gap-5', compact ? '' : 'sm:grid-cols-3']}>
+    <div class="field">
+      <label for={`date-${uid}`} data-date-label>Fecha</label>
+      <input id={`date-${uid}`} name="date" type="date" min={today} required />
+    </div>
+    <div class="field" data-checkout hidden>
+      <label for={`out-${uid}`}>Salida</label>
+      <input id={`out-${uid}`} name="dateEnd" type="date" min={today} />
+    </div>
+    <div class="field">
+      <label for={`people-${uid}`}>Personas</label>
+      <input id={`people-${uid}`} name="people" type="number" min="1" max="60" value="2" required inputmode="numeric" />
+    </div>
+  </div>
+
+  <p data-estimate class="hidden rounded-lg bg-laguna/10 px-4 py-3 text-rio" aria-live="polite"></p>
+
+  <div class:list={['grid gap-5', compact ? '' : 'sm:grid-cols-2']}>
+    <div class="field">
+      <label for={`name-${uid}`}>Nombre y apellido</label>
+      <input id={`name-${uid}`} name="name" autocomplete="name" required maxlength="120" />
+    </div>
+    <div class="field">
+      <label for={`phone-${uid}`}>WhatsApp o teléfono</label>
+      <input id={`phone-${uid}`} name="phone" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required maxlength="30" />
+    </div>
+  </div>
+  <div class="field">
+    <label for={`email-${uid}`}>Correo</label>
+    <input id={`email-${uid}`} name="email" type="email" autocomplete="email" required maxlength="160" />
+  </div>
+  <div class="field">
+    <label for={`notes-${uid}`}>Comentarios <span class="font-normal text-gris">(opcional)</span></label>
+    <textarea id={`notes-${uid}`} name="notes" rows="3" maxlength="1500" placeholder="Edades, hotel donde te alojas, idioma, si es un grupo o empresa…"></textarea>
+  </div>
+  <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+  {sitekey && <div class="cf-turnstile" data-sitekey={sitekey} data-language="es"></div>}
+
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+    <button class="btn btn-primary">Enviar solicitud de reserva</button>
+    <p class="text-sm text-gris">Te confirmamos disponibilidad y pago por WhatsApp o correo. No se cobra nada ahora.</p>
+  </div>
+  <p data-error role="alert" class="hidden rounded-lg bg-copihue/10 px-4 py-3 font-medium text-copihue-700"></p>
+</form>
+
+<div data-booking-ok hidden class="rounded-2xl bg-rio p-6 text-white sm:p-8" tabindex="-1">
+  <h2 class="font-display text-h3">Recibimos tu solicitud</h2>
+  <p class="mt-2 text-white/85">Tu código es <strong data-code class="text-atardecer"></strong>. Te escribiremos pronto para confirmar. Si quieres acelerar la confirmación, envíanos el código por WhatsApp.</p>
+  <a data-wa href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" class="btn btn-wa mt-5">Confirmar por WhatsApp</a>
+</div>
+
+{sitekey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  const clp = (n: number) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
+
+  document.querySelectorAll<HTMLFormElement>('[data-booking]').forEach((form) => {
+    const okBox = form.nextElementSibling as HTMLElement;
+    const select = form.querySelector<HTMLSelectElement>('select[name=item]')!;
+    const date = form.querySelector<HTMLInputElement>('input[name=date]')!;
+    const dateEnd = form.querySelector<HTMLInputElement>('input[name=dateEnd]')!;
+    const people = form.querySelector<HTMLInputElement>('input[name=people]')!;
+    const checkoutField = form.querySelector<HTMLElement>('[data-checkout]')!;
+    const dateLabel = form.querySelector<HTMLElement>('[data-date-label]')!;
+    const estimate = form.querySelector<HTMLElement>('[data-estimate]')!;
+    const errorBox = form.querySelector<HTMLElement>('[data-error]')!;
+    let blocked: [string, string][] = [];
+
+    // Preselección por URL: /reservas?item=experiencia:sup-penco&fecha=2026-12-01
+    const params = new URLSearchParams(location.search);
+    if (params.get('item')) select.value = params.get('item')!;
+    if (params.get('fecha')) date.value = params.get('fecha')!;
+    if (params.get('personas')) people.value = params.get('personas')!;
+
+    const selected = () => select.selectedOptions[0];
+    const isLodging = () => selected()?.dataset.kind === 'alojamiento';
+    const nights = () => {
+      if (!date.value || !dateEnd.value) return 0;
+      return Math.round((Date.parse(dateEnd.value) - Date.parse(date.value)) / 86400000);
+    };
+    const overlaps = () =>
+      blocked.some(([s, e]) => date.value && dateEnd.value && date.value < e && dateEnd.value > s);
+
+    function update() {
+      const lodging = isLodging();
+      checkoutField.hidden = !lodging;
+      dateEnd.required = lodging;
+      dateLabel.textContent = lodging ? 'Llegada' : 'Fecha';
+      if (date.value) dateEnd.min = date.value;
+      const opt = selected();
+      const msgs: string[] = [];
+      if (lodging && opt) {
+        const n = nights();
+        const price = Number(opt.dataset.price);
+        const cap = Number(opt.dataset.capacity);
+        if (n > 0) msgs.push(`${n} ${n === 1 ? 'noche' : 'noches'} × ${clp(price)} = ${clp(n * price)} (total estimado)`);
+        if (Number(people.value) > cap) msgs.push(`Este alojamiento recibe hasta ${cap} personas.`);
+        if (overlaps()) msgs.push('Esas fechas aparecen ocupadas. Envía igual la solicitud y te proponemos alternativas.');
+      }
+      estimate.textContent = msgs.join(' · ');
+      estimate.classList.toggle('hidden', msgs.length === 0);
+    }
+
+    async function loadAvailability() {
+      blocked = [];
+      if (!isLodging()) return update();
+      try {
+        const slug = select.value.split(':')[1];
+        const res = await fetch(`/api/disponibilidad?item=${encodeURIComponent(slug)}`);
+        if (res.ok) blocked = (await res.json()).blocked ?? [];
+      } catch {}
+      update();
+    }
+
+    select.addEventListener('change', loadAvailability);
+    [date, dateEnd, people].forEach((el) => el.addEventListener('input', update));
+    loadAvailability();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.add('hidden');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (isLodging() && nights() < 1) {
+        errorBox.textContent = 'La fecha de salida debe ser posterior a la llegada.';
+        errorBox.classList.remove('hidden');
+        dateEnd.focus();
+        return;
+      }
+      const btn = form.querySelector<HTMLButtonElement>('button')!;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'No pudimos enviar la solicitud.');
+        okBox.querySelector('[data-code]')!.textContent = data.code;
+        okBox.querySelector<HTMLAnchorElement>('[data-wa]')!.href = data.whatsapp;
+        form.hidden = true;
+        okBox.hidden = false;
+        okBox.focus();
+        (window as any).dataLayer?.push({ event: 'booking_request', item: select.value });
+      } catch (err) {
+        errorBox.textContent = `${err instanceof Error ? err.message : 'No pudimos enviar la solicitud.'} También puedes escribirnos por WhatsApp al +56 9 4998 1427.`;
+        errorBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud de reserva';
+      }
+    });
+  });
+</script>

@@ -1,0 +1,33 @@
+---
+import Media from './Media.astro';
+interface Props { title: string; lead?: string; image?: string; crumbs?: { href: string; label: string }[] }
+const { title, lead, image, crumbs = [] } = Astro.props;
+---
+
+<section class:list={['relative overflow-hidden', image ? 'bg-rio text-white' : 'bg-niebla']}>
+  {
+    image && (
+      <div class="absolute inset-0">
+        <Media src={image} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
+        <div class="absolute inset-0 bg-gradient-to-t from-rio-900/90 via-rio-900/50 to-rio-900/20" />
+      </div>
+    )
+  }
+  <div class:list={['wrap relative', image ? 'pb-14 pt-40 sm:pt-52' : 'pb-10 pt-12']}>
+    {
+      crumbs.length > 0 && (
+        <nav aria-label="Ruta de navegación" class:list={['mb-4 text-sm', image ? 'text-white/75' : 'text-gris']}>
+          <ol class="flex flex-wrap gap-x-2">
+            <li><a href="/" class="hover:underline">Inicio</a></li>
+            {crumbs.map((c) => (
+              <li class="before:mr-2 before:content-['/']"><a href={c.href} class="hover:underline">{c.label}</a></li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    <h1 class="max-w-4xl text-h1">{title}</h1>
+    {lead && <p class:list={['mt-4 max-w-2xl text-lg', image ? 'text-white/85' : 'text-gris']}>{lead}</p>}
+    <slot />
+  </div>
+</section>

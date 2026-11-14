@@ -1,0 +1,67 @@
+---
+import Logo from './Logo.astro';
+import Newsletter from './Newsletter.astro';
+import { site, nav, whatsappLink } from '@/data/site';
+import { destinos } from '@/data/destinos';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-rio-900 text-white/85">
+  <div class="wrap grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
+    <div>
+      <Logo light />
+      <p class="mt-5 max-w-xs text-white/70">Tour operador en Concepción desde {site.foundingYear}. Conectamos a quienes nos visitan con lo mejor del Biobío.</p>
+      <ul class="mt-6 flex gap-2" aria-label="Redes sociales">
+        {
+          [
+            ['Instagram', site.social.instagram, 'M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm6-1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z'],
+            ['Facebook', site.social.facebook, 'M14 8h3V4h-3a4 4 0 00-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8z'],
+            ['YouTube', site.social.youtube, 'M22 8s-.2-1.6-.9-2.3c-.8-.9-1.8-.9-2.2-1C15.8 4.5 12 4.5 12 4.5s-3.8 0-6.9.2c-.4.1-1.4.1-2.2 1C2.2 6.4 2 8 2 8s-.2 1.9-.2 3.8v1.8c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.8.9 1.9.8 2.4.9 1.7.2 7.3.2 7.3.2s3.8 0 6.9-.3c.4 0 1.4-.1 2.2-.9.7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.8C22.2 9.9 22 8 22 8zM10 15.5v-7l6 3.5-6 3.5z'],
+            ['TikTok', site.social.tiktok, 'M16 3c.4 2.3 1.9 3.8 4 4v3.2c-1.5 0-2.9-.4-4-1.2V16a6 6 0 11-6-6v3.3a2.8 2.8 0 102.8 2.7V3H16z'],
+          ].map(([label, href, d]) => (
+            <li>
+              <a href={href} target="_blank" rel="noopener" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-white/20">
+                <span class="sr-only">{label}</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={d} /></svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <nav aria-label="Sitio">
+      <h2 class="font-display text-xl font-semibold text-white">Explora</h2>
+      <ul class="mt-4 grid gap-2">
+        {nav.map((i) => <li><a class="hover:text-white hover:underline" href={i.href}>{i.label}</a></li>)}
+        <li><a class="hover:text-white hover:underline" href="/empresas">Grupos y empresas</a></li>
+        <li><a class="hover:text-white hover:underline" href="/publica-tu-experiencia">Publica tu experiencia</a></li>
+        <li><a class="hover:text-white hover:underline" href="/preguntas-frecuentes">Preguntas frecuentes</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Destinos">
+      <h2 class="font-display text-xl font-semibold text-white">Destinos</h2>
+      <ul class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-1">
+        {destinos.map((d) => <li><a class="hover:text-white hover:underline" href={`/destinos/${d.slug}`}>{d.name}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="font-display text-xl font-semibold text-white">Contacto</h2>
+      <ul class="mt-4 grid gap-2">
+        <li><a class="hover:text-white hover:underline" href={whatsappLink()} target="_blank" rel="noopener">WhatsApp {site.phoneDisplay}</a></li>
+        <li><a class="hover:text-white hover:underline" href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li>{site.city}, {site.region}</li>
+        <li class="text-white/60">{site.hours}</li>
+      </ul>
+      <div class="mt-8"><Newsletter dark /></div>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="wrap flex flex-col gap-2 py-6 text-sm text-white/55 sm:flex-row sm:justify-between">
+      <p>© {year} {site.name}. Concepción, Chile.</p>
+      <p><a href="/politicas" class="hover:underline">Políticas de reserva y privacidad</a></p>
+    </div>
+  </div>
+</footer>

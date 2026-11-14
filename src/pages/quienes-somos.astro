@@ -1,0 +1,45 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import Media from '@/components/Media.astro';
+import YouTube from '@/components/YouTube.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { site } from '@/data/site';
+---
+
+<Base title="Quiénes somos" description={`Turismo Avatar es tour operador en Concepción desde ${site.foundingYear}. Conectamos a visitantes con los atractivos y emprendedores de la Región del Biobío.`}>
+  <PageHero title="Somos el puente entre el Biobío y quienes lo visitan" crumbs={[{ href: '/quienes-somos', label: 'Quiénes somos' }]} />
+  <section class="wrap grid gap-14 pb-20 lg:grid-cols-[1.1fr_1fr]">
+    <div class="prose-ta text-lg">
+      <p>
+        Turismo Avatar nació en {site.foundingYear} en Concepción, en respuesta a una necesidad concreta: muchos de los turistas que llegan a la región no logran conocer todos los atractivos que tiene el Biobío. Quisimos resolver esa brecha entre la demanda turística y la oferta local.
+      </p>
+      <p>
+        Hoy diseñamos city tours, trekking, actividades náuticas como SUP y kayak, cabalgatas y programas de varios días, y administramos alojamientos en la costa de Tomé, Penco y Santa Bárbara.
+      </p>
+      <p>
+        Queremos ser el puente entre cientos de emprendedores turísticos de la región y quienes nos visitan, con un turismo de economía circular y triple impacto: que genere valor para los viajeros, para las comunidades locales y para el entorno natural.
+      </p>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2">
+        <section><h2 class="font-display text-2xl font-extrabold">Misión</h2><p class="mt-2 text-base text-gris">{site.mission}</p></section>
+        <section><h2 class="font-display text-2xl font-extrabold">Visión</h2><p class="mt-2 text-base text-gris">{site.vision}</p></section>
+      </div>
+    </div>
+    <div class="grid gap-6">
+      <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-rio"><Media src="2024/10/IMG_20230826_153908-scaled.jpg" alt="Grupo de Turismo Avatar en una salida" sizes="(min-width: 1024px) 40vw, 100vw" /></div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20">
+    <div class="wrap grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 class="text-h2">Somos parte de la red turística local</h2>
+        <ul class="mt-6 grid gap-3 text-lg">{site.memberships.map((m) => <li class="border-l-2 border-laguna pl-4">{m}</li>)}</ul>
+        <h3 class="mt-10 font-display text-2xl font-extrabold">En los medios</h3>
+        <ul class="mt-3 grid gap-3">{site.press.map((p) => <li><a href={p.url} target="_blank" rel="noopener" class="hover:underline"><span class="text-sm text-gris">{p.outlet}</span><span class="block font-medium">{p.title}</span></a></li>)}</ul>
+      </div>
+      <YouTube id={site.featuredVideo} title="Conoce Turismo Avatar" />
+    </div>
+  </section>
+  <CtaBand />
+</Base>

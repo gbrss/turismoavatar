@@ -1,0 +1,22 @@
+---
+import { whatsappLink } from '@/data/site';
+interface Props { title?: string; text?: string; message?: string }
+const {
+  title = '¿Armamos tu próxima salida?',
+  text = 'Cuéntanos fecha, cuántas personas y qué te gustaría vivir. Te respondemos por WhatsApp, normalmente el mismo día.',
+  message,
+} = Astro.props;
+---
+
+<section class="bg-copihue text-white">
+  <div class="wrap grid gap-6 py-14 md:grid-cols-[1fr_auto] md:items-center">
+    <div>
+      <h2 class="text-h2">{title}</h2>
+      <p class="mt-3 max-w-2xl text-lg text-white/90">{text}</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <a href="/reservas" class="btn bg-white text-copihue-700 hover:bg-niebla">Solicitar reserva</a>
+      <a href={whatsappLink(message)} target="_blank" rel="noopener" class="btn btn-ghost">WhatsApp</a>
+    </div>
+  </div>
+</section>

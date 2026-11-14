@@ -1,0 +1,57 @@
+---
+// Formulario genérico de contacto / cotización / postulación de proveedores → /api/contacto (se guarda en D1 y notifica por email)
+interface Props { kind: 'contacto' | 'empresa' | 'proveedor'; submitLabel?: string }
+const { kind, submitLabel = 'Enviar mensaje' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 7);
+const extra = {
+  contacto: null,
+  empresa: { label: 'Empresa, colegio u organización', placeholder: 'Nombre de la organización' },
+  proveedor: { label: 'Tu emprendimiento', placeholder: 'Nombre y tipo (cabañas, tours, gastronomía…)' },
+}[kind];
+const msgPlaceholder = {
+  contacto: '¿En qué te podemos ayudar?',
+  empresa: 'Cantidad de personas, fechas tentativas, tipo de actividad y presupuesto aproximado',
+  proveedor: 'Cuéntanos qué ofreces, dónde y cómo te gustaría trabajar con nosotros',
+}[kind];
+---
+
+<form data-lead class="grid gap-5" action="/api/contacto" method="post">
+  <input type="hidden" name="kind" value={kind} />
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div class="field"><label for={`n-${uid}`}>Nombre</label><input id={`n-${uid}`} name="name" required autocomplete="name" maxlength="120" /></div>
+    <div class="field"><label for={`p-${uid}`}>WhatsApp o teléfono</label><input id={`p-${uid}`} name="phone" type="tel" autocomplete="tel" maxlength="30" /></div>
+  </div>
+  <div class="field"><label for={`e-${uid}`}>Correo</label><input id={`e-${uid}`} name="email" type="email" required autocomplete="email" maxlength="160" /></div>
+  {extra && <div class="field"><label for={`o-${uid}`}>{extra.label}</label><input id={`o-${uid}`} name="org" placeholder={extra.placeholder} maxlength="160" /></div>}
+  <div class="field"><label for={`m-${uid}`}>Mensaje</label><textarea id={`m-${uid}`} name="message" rows="5" required maxlength="3000" placeholder={msgPlaceholder}></textarea></div>
+  <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+  <div><button class="btn btn-primary">{submitLabel}</button></div>
+  <p data-status role="status" class="hidden rounded-lg px-4 py-3 font-medium"></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-lead]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector<HTMLElement>('[data-status]')!;
+      const btn = form.querySelector('button')!;
+      const label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'No pudimos enviar tu mensaje.');
+        status.className = 'rounded-lg bg-laguna/15 px-4 py-3 font-medium text-rio';
+        status.textContent = 'Mensaje enviado. Te responderemos dentro de 24 horas.';
+        form.reset();
+      } catch (err) {
+        status.className = 'rounded-lg bg-copihue/10 px-4 py-3 font-medium text-copihue-700';
+        status.textContent = `${err instanceof Error ? err.message : 'No pudimos enviar tu mensaje.'} Escríbenos por WhatsApp al +56 9 4998 1427.`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    });
+  });
+</script>
