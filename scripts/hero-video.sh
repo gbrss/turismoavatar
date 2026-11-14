@@ -8,9 +8,31 @@ MODE=$(jq -r .mode $CFG)
 OUT=migration/hero-video
 mkdir -p $OUT public/media/video /tmp/yt
 dl() {
-  yt-dlp -q --no-warnings -f "bv*[height<=1080][ext=mp4]/bv*[height<=1080]/b" -o "/tmp/yt/$1.%(ext)s" "https://www.youtube.com/watch?v=$1" \
-    || yt-dlp -q --no-warnings --extractor-args "youtube:player_client=tv,ios,web_safari" -f "bv*[height<=1080]/b" -o "/tmp/yt/$1.%(ext)s" "https://www.youtube.com/watch?v=$1"
-  ls /tmp/yt/$1.* | head -1
+  local id=$1 f
+  for client in "web_embedded" "tv_embedded" "mweb" "ios" "android_vr"; do
+    yt-dlp -q --no-warnings --extractor-args "youtube:player_client=$client" -f "bv*[height<=1080][ext=mp4]/bv*[height<=1080]/b" \
+      -o "/tmp/yt/$id.%(ext)s" "https://www.youtube.com/watch?v=$id" 2>>/tmp/yt/err.log && break
+  done
+  f=$(ls /tmp/yt/$id.* 2>/dev/null | grep -v err | head -1 || true)
+  if [ -z "$f" ]; then
+    # Espejos públicos (Invidious / Piped) como respaldo
+    for inst in https://inv.nadeko.net https://invidious.nerdvpn.de https://yewtu.be https://invidious.f5.si https://iv.melmac.space; do
+      for itag in 137 136 22 18; do
+        curl -sfL --max-time 120 -A "Mozilla/5.0" -o "/tmp/yt/$id.mp4" "$inst/latest_version?id=$id&itag=$itag&local=true" && \
+          ffprobe -v error "/tmp/yt/$id.mp4" >/dev/null 2>&1 && { echo "via $inst itag $itag" >&2; f=/tmp/yt/$id.mp4; break 2; }
+        rm -f "/tmp/yt/$id.mp4"
+      done
+    done
+  fi
+  if [ -z "$f" ]; then
+    for api in https://pipedapi.kavin.rocks https://pipedapi.adminforge.de https://api.piped.private.coffee; do
+      url=$(curl -sf --max-time 30 "$api/streams/$id" | jq -r '[.videoStreams[] | select(.videoOnly==true and (.mimeType|test("mp4")) and .height<=1080)] | sort_by(.height) | last | .url' 2>/dev/null || true)
+      if [ -n "$url" ] && [ "$url" != "null" ]; then
+        curl -sfL --max-time 180 -o "/tmp/yt/$id.mp4" "$url" && ffprobe -v error "/tmp/yt/$id.mp4" >/dev/null 2>&1 && { echo "via $api" >&2; f=/tmp/yt/$id.mp4; break; }
+      fi
+    done
+  fi
+  [ -n "$f" ] && echo "$f" || return 1
 }
 if [ "$MODE" = preview ]; then
   for id in $(jq -r '.ids[]' $CFG); do
