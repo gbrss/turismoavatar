@@ -1,25 +1,26 @@
 ---
 import Base from '@/layouts/Base.astro';
-import PageHero from '@/components/PageHero.astro';
-import BookingForm from '@/components/BookingForm.astro';
+import BookingWizard from '@/components/BookingWizard.astro';
 import { site, whatsappLink } from '@/data/site';
 ---
 
-<Base title="Reservas" description="Reserva experiencias, programas y alojamientos de Turismo Avatar en Concepción y el Biobío. Confirmación rápida por WhatsApp.">
-  <PageHero title="Reserva tu experiencia" lead="Completa el formulario y te confirmamos disponibilidad y forma de pago, normalmente el mismo día. No se cobra nada al enviar la solicitud." crumbs={[{ href: '/reservas', label: 'Reservas' }]} />
-  <section class="wrap grid gap-12 pb-24 lg:grid-cols-[1.5fr_1fr]">
-    <div class="rounded-2xl bg-white p-6 sm:p-10"><BookingForm /></div>
-    <aside class="grid content-start gap-6">
-      <section class="rounded-2xl bg-marino p-6 text-white">
-        <h2 class="font-display text-2xl font-extrabold">Cómo funciona</h2>
-        <ol class="mt-4 grid gap-3">
-          <li><strong>1. Envías tu solicitud</strong> con fecha y número de personas.</li>
-          <li><strong>2. Te confirmamos</strong> disponibilidad y te enviamos los datos de pago.</li>
-          <li><strong>3. Recibes los detalles</strong> de tu experiencia: punto de encuentro, horario y qué llevar.</li>
-        </ol>
-      </section>
-      <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-wa">¿Prefieres WhatsApp? {site.phoneDisplay}</a>
-      <p class="text-sm text-gris">Al enviar aceptas nuestras <a href="/politicas" class="underline">políticas de reserva y privacidad</a>.</p>
-    </aside>
+<Base title="Reservas" description="Reserva experiencias, programas y alojamientos de Turismo Avatar en Concepción y el Biobío en 3 pasos. Sin cobro al enviar, confirmación rápida por WhatsApp.">
+  <section class="relative overflow-hidden bg-marino pb-40 pt-12 text-white sm:pt-16">
+    <svg class="pointer-events-none absolute -right-20 -top-28 h-[30rem] w-[30rem] text-naranja opacity-[0.1]" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5" />
+      <path d="M50 12 L61 44 L94 44 L67 63 L77 94 L50 75 L23 94 L33 63 L6 44 L39 44 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" />
+    </svg>
+    <div class="wrap relative">
+      <nav aria-label="Ruta de navegación" class="mb-4 text-sm text-white/70"><a href="/" class="hover:underline">Inicio</a> / Reservas</nav>
+      <h1 class="max-w-3xl text-h1">Reserva en tres pasos</h1>
+      <p class="mt-4 max-w-2xl text-lg text-white/80">Elige tu experiencia, la fecha y cuántos son. Te confirmamos disponibilidad y forma de pago, normalmente el mismo día.</p>
+    </div>
+  </section>
+  <section class="wrap relative -mt-28 pb-20">
+    <BookingWizard heading="¿Qué quieres reservar?" />
+    <p class="mt-8 text-center text-gris">
+      ¿Prefieres hablar con una persona?
+      <a href={whatsappLink()} target="_blank" rel="noopener" class="font-bold text-naranja-700 underline decoration-2 underline-offset-4">Escríbenos por WhatsApp al {site.phoneDisplay}</a>
+    </p>
   </section>
 </Base>

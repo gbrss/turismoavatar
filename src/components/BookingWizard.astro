@@ -1,0 +1,825 @@
+---
+// Flujo de reserva en 3 pasos: 1) elegir · 2) fecha y personas · 3) tus datos → confirmación.
+// Sin dependencias: radios nativos para elegir, calendario propio accesible y resumen con total en vivo.
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import { getMedia } from '@/lib/media';
+import { destinoBySlug } from '@/data/destinos';
+import { site, clp } from '@/data/site';
+import marca from '@/assets/brand/marca.png';
+
+interface Props { preselect?: string; heading?: string }
+const { preselect, heading = 'Reserva tu experiencia' } = Astro.props;
+
+const thumb = async (src?: string) => {
+  const m = getMedia(src);
+  return m ? (await getImage({ src: m, width: 480, height: 360, fit: 'cover', format: 'webp' })).src : null;
+};
+const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
+const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order - b.data.order);
+const progs = (await getCollection('programas')).sort((a, b) => a.data.order - b.data.order);
+
+type Item = {
+  key: string;
+  kind: 'experiencia' | 'alojamiento' | 'programa' | 'cotizacion';
+  title: string;
+  subtitle: string;
+  price: number | null;
+  unit: 'persona' | 'grupo' | 'noche';
+  img: string | null;
+  maxPeople: number;
+  info: string[];
+  days?: number;
+};
+const items: Item[] = [
+  ...(await Promise.all(
+    exps.map(async (e) => ({
+      key: `experiencia:${e.id}`,
+      kind: 'experiencia' as const,
+      title: e.data.title,
+      subtitle: `${e.data.duration} · ${e.data.destinos.map((d) => destinoBySlug(d)?.name ?? d).join(' y ')}`,
+      price: e.data.priceFrom ?? null,
+      unit: e.data.priceUnit,
+      img: await thumb(e.data.image),
+      maxPeople: 60,
+      info: [
+        `Duración: ${e.data.duration}`,
+        e.data.meetingPoint ? `Encuentro: ${e.data.meetingPoint}` : '',
+        e.data.minAge ? `Desde ${e.data.minAge} años` : '',
+        `Dificultad ${e.data.difficulty.toLowerCase()}`,
+      ].filter(Boolean),
+    })),
+  )),
+  ...(await Promise.all(
+    alojs.map(async (a) => ({
+      key: `alojamiento:${a.id}`,
+      kind: 'alojamiento' as const,
+      title: a.data.title,
+      subtitle: `${a.data.location} · hasta ${a.data.capacity} personas`,
+      price: a.data.pricePerNight,
+      unit: 'noche' as const,
+      img: await thumb(a.data.image),
+      maxPeople: a.data.capacity,
+      info: [`Capacidad: hasta ${a.data.capacity} personas`, `${a.data.beds} camas${a.data.shared ? ' · espacios compartidos' : ''}`, ...a.data.amenities.slice(0, 2)],
+    })),
+  )),
+  ...(await Promise.all(
+    progs.map(async (p) => ({
+      key: `programa:${p.id}`,
+      kind: 'programa' as const,
+      title: p.data.group === 'tercera-edad' ? `Tercera Edad 2026: ${p.data.title}` : p.data.title,
+      subtitle: `${p.data.days} ${p.data.days === 1 ? 'día' : 'días'}${p.data.nights ? ` / ${p.data.nights} noches` : ''}`,
+      price: p.data.priceFrom ?? null,
+      unit: 'persona' as const,
+      img: await thumb(p.data.image),
+      maxPeople: 60,
+      days: p.data.days,
+      info: [`${p.data.days} ${p.data.days === 1 ? 'día' : 'días'}${p.data.nights ? ` / ${p.data.nights} noches` : ''}`, p.data.idealFor],
+    })),
+  )),
+  {
+    key: 'cotizacion:a-medida',
+    kind: 'cotizacion',
+    title: 'Experiencia a medida',
+    subtitle: 'Grupos, empresas, colegios o una idea propia',
+    price: null,
+    unit: 'persona',
+    img: null,
+    maxPeople: 200,
+    info: ['Cuéntanos tu idea en el último paso', 'Te enviamos una propuesta en 24 horas'],
+  },
+];
+const tabs = [
+  ['experiencia', 'Experiencias'],
+  ['alojamiento', 'Alojamientos'],
+  ['programa', 'Programas'],
+  ['cotizacion', 'A medida'],
+] as const;
+const preKind = preselect?.split(':')[0];
+const markSrc = (await getImage({ src: marca, width: 160, format: 'webp' })).src;
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY as string | undefined;
+const unitLabel = { persona: 'por persona', grupo: 'por grupo', noche: 'por noche' };
+---
+
+<section data-booking-wizard data-preselect={preselect ?? ''} class="overflow-hidden rounded-[1.75rem] bg-white shadow-[0_30px_80px_-40px_rgba(25,42,61,.45)] ring-1 ring-roca">
+  <script type="application/json" data-items set:html={JSON.stringify({ items, wa: site.whatsapp, mark: markSrc })} />
+
+  <div data-flow class="grid lg:grid-cols-[minmax(0,1fr)_22rem]">
+    <!-- Pasos -->
+    <form data-form action="/api/reservas" method="post" novalidate class="min-w-0 p-5 sm:p-8 lg:p-10">
+      <header class="mb-8">
+        <h2 class="font-display text-2xl font-extrabold sm:text-3xl" tabindex="-1" data-heading>{heading}</h2>
+        <ol class="mt-6 grid grid-cols-3 gap-2" aria-label="Pasos de la reserva">
+          {['Elige', 'Fecha y personas', 'Tus datos'].map((label, i) => (
+            <li>
+              <button type="button" data-goto={i} disabled={i > 0} class="group flex w-full flex-col gap-2 text-left disabled:cursor-default">
+                <span class="h-1.5 w-full rounded-full bg-roca transition-colors group-data-[state=done]:bg-naranja group-data-[state=current]:bg-naranja" data-bar />
+                <span class="flex items-center gap-2 text-sm font-bold text-gris group-data-[state=current]:text-tinta group-data-[state=done]:text-tinta">
+                  <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-roca text-xs group-data-[state=current]:border-naranja group-data-[state=current]:bg-naranja group-data-[state=current]:text-marino group-data-[state=done]:border-marino group-data-[state=done]:bg-marino group-data-[state=done]:text-white">
+                    <span class="group-data-[state=done]:hidden">{i + 1}</span>
+                    <svg class="hidden h-3.5 w-3.5 group-data-[state=done]:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+                  </span>
+                  <span class="hidden sm:inline">{label}</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-3 text-sm font-bold sm:hidden" data-step-label aria-hidden="true"></p>
+      </header>
+
+      <!-- Resumen compacto (móvil) -->
+      <div data-mini hidden class="mb-6 flex items-center gap-3 rounded-2xl bg-niebla p-3 lg:hidden">
+        <img data-mini-img alt="" class="h-14 w-14 shrink-0 rounded-xl object-cover" width="56" height="56" />
+        <div class="min-w-0 flex-1">
+          <p data-mini-title class="truncate font-display font-bold"></p>
+          <p data-mini-meta class="truncate text-sm text-gris"></p>
+        </div>
+        <p data-mini-total class="shrink-0 text-right font-display font-extrabold"></p>
+      </div>
+
+      <!-- Paso 1: elegir -->
+      <fieldset data-step="0" class="step min-w-0">
+        <legend class="sr-only">Elige qué quieres reservar</legend>
+        <div class="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Tipo de reserva">
+          {tabs.map(([k, label]) => (
+            <button
+              type="button"
+              role="tab"
+              data-tab={k}
+              aria-selected={(preKind ? preKind === k : k === 'experiencia') ? 'true' : 'false'}
+              class="shrink-0 rounded-full px-4 py-2.5 font-display text-sm font-bold text-gris transition aria-selected:bg-marino aria-selected:text-white hover:text-tinta"
+            >
+              {label} <span class="ml-1 opacity-60">{items.filter((x) => x.kind === k).length}</span>
+            </button>
+          ))}
+        </div>
+        <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3" data-cards>
+          {items.map((it) => (
+            <label data-kind={it.kind} class="group relative flex cursor-pointer gap-3 rounded-2xl p-2.5 ring-1 ring-roca transition hover:ring-marino/40 has-[:checked]:bg-naranja/[0.06] has-[:checked]:ring-2 has-[:checked]:ring-naranja has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cielo sm:flex-col sm:gap-0 sm:p-2">
+              <input type="radio" name="item" value={it.key} class="sr-only" checked={preselect === it.key} />
+              <span class="relative block aspect-square w-24 shrink-0 overflow-hidden rounded-xl bg-marino sm:aspect-[4/3] sm:w-full">
+                {it.img ? (
+                  <img src={it.img} alt="" loading="lazy" decoding="async" width="480" height="360" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                ) : (
+                  <span class="grid h-full w-full place-items-center bg-[radial-gradient(120%_90%_at_20%_10%,#0a72a8,#192a3d_65%)]">
+                    <img src={markSrc} alt="" width="64" height="64" class="h-10 w-10 opacity-90 sm:h-14 sm:w-14" loading="lazy" />
+                  </span>
+                )}
+                <span class="absolute right-2 top-2 hidden h-7 w-7 place-items-center rounded-full bg-naranja text-marino shadow group-has-[:checked]:grid">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+                </span>
+              </span>
+              <span class="flex min-w-0 flex-1 flex-col justify-center sm:px-1.5 sm:pb-1.5 sm:pt-3">
+                <span class="font-display font-bold leading-snug">{it.title}</span>
+                <span class="mt-0.5 text-sm text-gris">{it.subtitle}</span>
+                <span class="mt-1.5 text-sm font-bold">
+                  {it.price ? <>Desde {clp(it.price)} <span class="font-normal text-gris">{unitLabel[it.unit]}</span></> : <span class="text-cielo-700">Cotización personalizada</span>}
+                </span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p data-error="0" role="alert" class="mt-4 hidden font-semibold text-naranja-700"></p>
+        <div class="mt-8 flex justify-end">
+          <button type="button" data-next class="btn btn-primary min-w-44">Continuar</button>
+        </div>
+      </fieldset>
+
+      <!-- Paso 2: fecha y personas -->
+      <fieldset data-step="1" class="step min-w-0" hidden>
+        <legend class="sr-only">Elige fecha y número de personas</legend>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,1fr)_15rem]">
+          <div>
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="font-display text-lg font-extrabold" data-cal-title>¿Qué día?</h3>
+              <p class="text-sm text-gris" data-cal-hint></p>
+            </div>
+            <div class="mt-4 rounded-2xl p-4 ring-1 ring-roca sm:p-5" data-calendar>
+              <div class="flex items-center justify-between">
+                <button type="button" data-cal-prev class="grid h-10 w-10 place-items-center rounded-full hover:bg-niebla disabled:opacity-30" aria-label="Mes anterior">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                </button>
+                <p class="font-display font-extrabold" data-cal-month aria-live="polite"></p>
+                <button type="button" data-cal-next class="grid h-10 w-10 place-items-center rounded-full hover:bg-niebla" aria-label="Mes siguiente">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+                </button>
+              </div>
+              <div class="mt-3 grid grid-cols-7 text-center text-xs font-bold uppercase text-gris" aria-hidden="true">
+                {['lu', 'ma', 'mi', 'ju', 'vi', 'sá', 'do'].map((d) => <span class="py-1">{d}</span>)}
+              </div>
+              <div class="mt-1 grid grid-cols-7 gap-y-1" role="grid" data-cal-grid></div>
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gris">
+                <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full bg-naranja"></span>Elegido</span>
+                <span class="inline-flex items-center gap-1.5" data-legend-busy hidden><span class="h-3 w-3 rounded-full bg-roca"></span>Ocupado</span>
+              </div>
+            </div>
+            <p class="mt-3 font-semibold" data-date-text aria-live="polite"></p>
+          </div>
+
+          <div class="grid content-start gap-6">
+            <div>
+              <h3 class="font-display text-lg font-extrabold" id="people-label">¿Cuántas personas?</h3>
+              <div class="mt-4 flex items-center justify-between rounded-2xl p-2 ring-1 ring-roca" role="group" aria-labelledby="people-label">
+                <button type="button" data-people-minus class="grid h-12 w-12 place-items-center rounded-xl bg-niebla text-2xl font-bold hover:bg-roca disabled:opacity-30" aria-label="Quitar una persona">−</button>
+                <output data-people-out class="font-display text-3xl font-extrabold" aria-live="polite">2</output>
+                <button type="button" data-people-plus class="grid h-12 w-12 place-items-center rounded-xl bg-niebla text-2xl font-bold hover:bg-roca disabled:opacity-30" aria-label="Agregar una persona">+</button>
+              </div>
+              <p class="mt-2 text-sm text-gris" data-people-hint></p>
+            </div>
+            <ul class="grid gap-2 border-t border-roca pt-5 text-sm text-gris" data-info></ul>
+          </div>
+        </div>
+        <p data-error="1" role="alert" class="mt-4 hidden font-semibold text-naranja-700"></p>
+        <div class="mt-8 flex items-center justify-between gap-3">
+          <button type="button" data-back class="btn text-marino hover:bg-niebla">Atrás</button>
+          <button type="button" data-next class="btn btn-primary min-w-44">Continuar</button>
+        </div>
+      </fieldset>
+
+      <!-- Paso 3: tus datos -->
+      <fieldset data-step="2" class="step min-w-0" hidden>
+        <legend class="sr-only">Tus datos de contacto</legend>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="field">
+            <label for="bw-name">Nombre y apellido</label>
+            <input id="bw-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="bw-name-err" />
+            <p id="bw-name-err" class="hidden text-sm font-semibold text-naranja-700" data-field-err="name">Escribe tu nombre.</p>
+          </div>
+          <div class="field">
+            <label for="bw-phone">WhatsApp o teléfono</label>
+            <input id="bw-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+56 9 1234 5678" required maxlength="30" aria-describedby="bw-phone-err" />
+            <p id="bw-phone-err" class="hidden text-sm font-semibold text-naranja-700" data-field-err="phone">Revisa tu número (mínimo 8 dígitos).</p>
+          </div>
+          <div class="field sm:col-span-2">
+            <label for="bw-email">Correo</label>
+            <input id="bw-email" name="email" type="email" autocomplete="email" required maxlength="160" aria-describedby="bw-email-err" />
+            <p id="bw-email-err" class="hidden text-sm font-semibold text-naranja-700" data-field-err="email">Revisa tu correo.</p>
+          </div>
+          <fieldset class="min-w-0 sm:col-span-2">
+            <legend class="text-[0.95rem] font-semibold">¿Cómo prefieres que te contactemos?</legend>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {['WhatsApp', 'Llamada', 'Correo'].map((c, i) => (
+                <label class="cursor-pointer rounded-full px-4 py-2 font-semibold ring-1 ring-roca transition has-[:checked]:bg-marino has-[:checked]:text-white has-[:checked]:ring-marino has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-cielo">
+                  <input type="radio" name="contactPref" value={c} class="sr-only" checked={i === 0} />{c}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="field sm:col-span-2">
+            <label for="bw-notes" data-notes-label>Comentarios <span class="font-normal text-gris">(opcional)</span></label>
+            <textarea id="bw-notes" name="notes" rows="3" maxlength="1500" placeholder="Edades, hotel donde te alojas, idioma, si es un grupo o empresa…"></textarea>
+          </div>
+        </div>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <input type="hidden" name="date" />
+        <input type="hidden" name="dateEnd" />
+        <input type="hidden" name="people" value="2" />
+        {sitekey && <div class="cf-turnstile mt-5" data-sitekey={sitekey} data-language="es"></div>}
+        <p data-error="2" role="alert" class="mt-4 hidden rounded-xl bg-naranja/10 px-4 py-3 font-semibold text-naranja-700"></p>
+        <div class="mt-8 flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
+          <button type="button" data-back class="btn text-marino hover:bg-niebla">Atrás</button>
+          <button type="submit" data-submit class="btn btn-primary min-w-56">
+            <svg class="hidden h-5 w-5 animate-spin" data-spin viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity=".25" /><path d="M21 12a9 9 0 00-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" /></svg>
+            <span data-submit-label>Enviar solicitud</span>
+          </button>
+        </div>
+        <p class="mt-4 text-sm text-gris">No se cobra nada al enviar. Al hacerlo aceptas nuestras <a href="/politicas" class="underline">políticas de reserva y privacidad</a>.</p>
+      </fieldset>
+    </form>
+
+    <!-- Resumen -->
+    <aside class="relative hidden bg-marino text-white lg:block" aria-label="Resumen de tu reserva">
+      <div>
+        <div class="relative aspect-[16/10] overflow-hidden bg-marino-900">
+          <img data-sum-img alt="" class="h-full w-full object-cover opacity-0 transition-opacity duration-300" width="480" height="300" />
+          <div class="absolute inset-0 grid place-items-center" data-sum-placeholder>
+            <img src={markSrc} alt="" width="80" height="80" class="h-16 w-16 opacity-80" />
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-marino to-transparent"></div>
+        </div>
+        <div class="p-7 pt-2">
+          <p class="text-sm font-bold text-naranja">Tu reserva</p>
+          <p data-sum-title class="mt-1 font-display text-xl font-extrabold leading-tight">Elige una experiencia</p>
+          <p data-sum-sub class="mt-1 text-sm text-white/70"></p>
+          <dl class="mt-6 grid gap-3 border-t border-white/10 pt-5 text-sm">
+            <div class="flex justify-between gap-4"><dt class="text-white/60">Fecha</dt><dd data-sum-date class="text-right font-semibold">—</dd></div>
+            <div class="flex justify-between gap-4"><dt class="text-white/60">Personas</dt><dd data-sum-people class="text-right font-semibold">2</dd></div>
+            <div class="flex justify-between gap-4" data-sum-calc-row hidden><dt class="text-white/60">Cálculo</dt><dd data-sum-calc class="text-right font-semibold"></dd></div>
+          </dl>
+          <div class="mt-5 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+            <p class="text-sm text-white/60" data-sum-total-label>Total estimado</p>
+            <p data-sum-total class="font-display text-3xl font-extrabold" aria-live="polite">—</p>
+          </div>
+          <ul class="mt-6 grid gap-2.5 text-sm text-white/80">
+            {['Sin cobro al enviar la solicitud', 'Confirmación por WhatsApp, normalmente el mismo día', 'Si el clima no acompaña, reprogramamos'].map((t) => (
+              <li class="flex gap-2.5"><svg class="mt-0.5 h-4 w-4 shrink-0 text-naranja" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>{t}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Confirmación -->
+  <div data-done hidden class="grid lg:grid-cols-[1.1fr_1fr]" tabindex="-1">
+    <div class="p-6 sm:p-10 lg:p-14">
+      <svg class="h-16 w-16 text-naranja" viewBox="0 0 52 52" aria-hidden="true">
+        <circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="3" class="[stroke-dasharray:151] [stroke-dashoffset:151] motion-safe:animate-[dash_.6s_ease-out_forwards] motion-reduce:[stroke-dashoffset:0]" />
+        <path d="M15 27l7 7 15-16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="[stroke-dasharray:40] [stroke-dashoffset:40] motion-safe:animate-[dash_.4s_.5s_ease-out_forwards] motion-reduce:[stroke-dashoffset:0]" />
+      </svg>
+      <h2 class="mt-6 font-display text-3xl font-extrabold sm:text-4xl" data-done-heading tabindex="-1">¡Solicitud enviada!</h2>
+      <p class="mt-3 max-w-md text-lg text-gris">Te escribiremos pronto para confirmar disponibilidad y forma de pago. Para acelerar la confirmación, envíanos tu código por WhatsApp.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a data-done-wa href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" class="btn btn-wa">Confirmar por WhatsApp</a>
+        <button type="button" data-done-ics class="btn btn-ghost text-marino">Agregar a mi calendario</button>
+      </div>
+      <p class="mt-8 text-sm text-gris">¿Quieres sumar algo más? <a href="/experiencias" class="font-bold text-naranja-700 underline">Ver experiencias</a> · <button type="button" data-restart class="font-bold text-naranja-700 underline">Hacer otra reserva</button></p>
+    </div>
+    <div class="bg-marino p-6 text-white sm:p-10 lg:p-14">
+      <p class="text-sm font-bold text-naranja">Código de solicitud</p>
+      <p data-done-code class="mt-1 font-display text-4xl font-extrabold tracking-wide"></p>
+      <dl class="mt-8 grid gap-4 border-t border-white/10 pt-6">
+        <div><dt class="text-sm text-white/60">Reserva</dt><dd data-done-title class="font-display text-lg font-bold"></dd></div>
+        <div><dt class="text-sm text-white/60">Fecha</dt><dd data-done-date class="font-semibold"></dd></div>
+        <div><dt class="text-sm text-white/60">Personas</dt><dd data-done-people class="font-semibold"></dd></div>
+        <div data-done-total-row><dt class="text-sm text-white/60">Total estimado</dt><dd data-done-total class="font-display text-2xl font-extrabold"></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+{sitekey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+  @keyframes dash {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .step:not([hidden]) {
+    animation: step-in 0.28s ease-out;
+  }
+  @keyframes step-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .step:not([hidden]) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  type Item = {
+    key: string;
+    kind: 'experiencia' | 'alojamiento' | 'programa' | 'cotizacion';
+    title: string;
+    subtitle: string;
+    price: number | null;
+    unit: 'persona' | 'grupo' | 'noche';
+    img: string | null;
+    maxPeople: number;
+    info: string[];
+    days?: number;
+  };
+
+  const clp = (n: number) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
+  const todayISO = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago' }).format(new Date());
+  const parse = (iso: string) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(Date.UTC(y, m - 1, d));
+  };
+  const iso = (d: Date) => d.toISOString().slice(0, 10);
+  const addDays = (s: string, n: number) => iso(new Date(parse(s).getTime() + n * 86400000));
+  const diffDays = (a: string, b: string) => Math.round((parse(b).getTime() - parse(a).getTime()) / 86400000);
+  const fmt = (s: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' }) =>
+    new Intl.DateTimeFormat('es-CL', { timeZone: 'UTC', ...opts }).format(parse(s));
+  const fmtLong = (s: string) => fmt(s, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll<HTMLElement>('[data-booking-wizard]').forEach((root) => {
+    const data = JSON.parse(root.querySelector('[data-items]')!.textContent!) as { items: Item[]; wa: string; mark: string };
+    const byKey = new Map(data.items.map((i) => [i.key, i]));
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const $ = <T extends HTMLElement = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
+    const gotos = [...root.querySelectorAll<HTMLButtonElement>('[data-goto]')];
+
+    const state = {
+      step: 0,
+      item: null as Item | null,
+      date: '' as string,
+      dateEnd: '' as string,
+      people: 2,
+      view: todayISO.slice(0, 7) + '-01',
+      blocked: [] as [string, string][],
+      focus: todayISO,
+    };
+
+    // ── Pasos ──
+    function setStep(n: number, focus = true) {
+      state.step = n;
+      steps.forEach((s, i) => (s.hidden = i !== n));
+      gotos.forEach((g, i) => {
+        const st = i < n ? 'done' : i === n ? 'current' : 'todo';
+        g.dataset.state = st;
+        g.disabled = i > n;
+        if (i === n) g.setAttribute('aria-current', 'step');
+        else g.removeAttribute('aria-current');
+      });
+      $('[data-mini]').hidden = n === 0 || !state.item;
+      $('[data-step-label]').textContent = `Paso ${n + 1} de 3 · ${['Elige', 'Fecha y personas', 'Tus datos'][n]}`;
+      if (n === 1) renderCalendar();
+      if (focus) {
+        $('[data-heading]').focus({ preventScroll: true });
+        const top = root.getBoundingClientRect().top + scrollY - 90;
+        if (Math.abs(scrollY - top) > 120) scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    }
+    gotos.forEach((g, i) => g.addEventListener('click', () => i < state.step && setStep(i)));
+    root.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', () => setStep(state.step - 1)));
+    root.querySelectorAll('[data-next]').forEach((b) => b.addEventListener('click', () => validate(state.step) && setStep(state.step + 1)));
+
+    function showError(step: number, msg: string) {
+      const el = $(`[data-error="${step}"]`);
+      el.textContent = msg;
+      el.classList.toggle('hidden', !msg);
+    }
+
+    function validate(step: number) {
+      showError(step, '');
+      if (step === 0 && !state.item) return showError(0, 'Elige una experiencia, alojamiento o programa para continuar.'), false;
+      if (step === 1) {
+        if (!state.date) return showError(1, isLodging() ? 'Elige tu fecha de llegada en el calendario.' : 'Elige una fecha en el calendario.'), false;
+        if (isLodging() && !state.dateEnd) return showError(1, 'Ahora elige tu fecha de salida.'), false;
+      }
+      return true;
+    }
+
+    // ── Paso 1: elegir ──
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-cards] > label')];
+    function showTab(kind: string) {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === kind)));
+      cards.forEach((c) => (c.hidden = c.dataset.kind !== kind));
+    }
+    tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab!)));
+    form.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.name === 'item') selectItem(t.value);
+    });
+
+    function selectItem(key: string) {
+      const it = byKey.get(key);
+      if (!it) return;
+      const kindChanged = state.item?.kind !== it.kind;
+      state.item = it;
+      if (kindChanged) {
+        state.dateEnd = '';
+        if (it.kind === 'alojamiento') state.date = '';
+      }
+      state.people = Math.min(state.people, it.maxPeople);
+      showError(0, '');
+      state.blocked = [];
+      if (it.kind === 'alojamiento') loadAvailability(key.split(':')[1]);
+      $('[data-notes-label]').innerHTML = it.kind === 'cotizacion' ? 'Cuéntanos tu idea' : 'Comentarios <span class="font-normal text-gris">(opcional)</span>';
+      $<HTMLTextAreaElement>('#bw-notes').required = it.kind === 'cotizacion';
+      updateSummary();
+    }
+
+    async function loadAvailability(slug: string) {
+      try {
+        const res = await fetch(`/api/disponibilidad?item=${encodeURIComponent(slug)}`);
+        if (res.ok) state.blocked = (await res.json()).blocked ?? [];
+      } catch {}
+      $('[data-legend-busy]').hidden = state.blocked.length === 0;
+      if (state.step === 1) renderCalendar();
+    }
+
+    // ── Paso 2: calendario ──
+    const isLodging = () => state.item?.kind === 'alojamiento';
+    const isBlocked = (d: string) => state.blocked.some(([s, e]) => d >= s && d < e);
+    const rangeHasBlocked = (a: string, b: string) => state.blocked.some(([s, e]) => a < e && b > s);
+
+    function renderCalendar() {
+      const grid = $('[data-cal-grid]');
+      const view = parse(state.view);
+      const y = view.getUTCFullYear();
+      const m = view.getUTCMonth();
+      const mes = new Intl.DateTimeFormat('es-CL', { timeZone: 'UTC', month: 'long' }).format(view);
+      $('[data-cal-month]').textContent = `${mes[0].toUpperCase()}${mes.slice(1)} ${y}`;
+      $<HTMLButtonElement>('[data-cal-prev]').disabled = state.view <= todayISO.slice(0, 7) + '-01';
+      const lodging = isLodging();
+      $('[data-cal-title]').textContent = lodging ? (state.date && !state.dateEnd ? '¿Hasta qué día?' : '¿Cuándo llegas?') : state.item?.kind === 'programa' ? '¿Cuándo empiezas?' : state.item?.kind === 'cotizacion' ? '¿Para cuándo? (fecha tentativa)' : '¿Qué día?';
+      $('[data-cal-hint]').textContent = lodging ? 'Elige llegada y salida' : '';
+
+      const first = (new Date(Date.UTC(y, m, 1)).getUTCDay() + 6) % 7; // lunes = 0
+      const days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < first; i++) frag.append(document.createElement('span'));
+      const focusTarget = state.date || (state.focus >= todayISO ? state.focus : todayISO);
+      for (let d = 1; d <= days; d++) {
+        const ds = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const past = ds < todayISO;
+        const busy = isBlocked(ds);
+        const start = ds === state.date;
+        const end = ds === state.dateEnd;
+        const inRange = lodging && state.date && state.dateEnd && ds > state.date && ds < state.dateEnd;
+        const cell = document.createElement('div');
+        cell.className = 'relative flex justify-center';
+        if (inRange) cell.className += ' bg-naranja/15';
+        if (start && state.dateEnd) cell.className += ' bg-gradient-to-r from-transparent from-50% to-naranja/15 to-50%';
+        if (end) cell.className += ' bg-gradient-to-l from-transparent from-50% to-naranja/15 to-50%';
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.dataset.day = ds;
+        b.textContent = String(d);
+        b.tabIndex = ds === focusTarget ? 0 : -1;
+        b.disabled = past || busy;
+        b.setAttribute('aria-label', `${fmtLong(ds)}${busy ? ', ocupado' : ''}`);
+        b.setAttribute('aria-pressed', String(start || end));
+        b.className = [
+          'relative grid h-10 w-10 place-items-center rounded-full text-[0.95rem] font-semibold transition sm:h-11 sm:w-11',
+          start || end ? 'bg-naranja font-extrabold text-marino' : 'hover:bg-niebla',
+          ds === todayISO && !start && !end ? 'ring-1 ring-marino/30' : '',
+          past ? 'cursor-not-allowed text-gris/40' : '',
+          busy ? 'cursor-not-allowed bg-roca text-gris/60 line-through' : '',
+        ].join(' ');
+        frag.append(cell);
+        cell.append(b);
+      }
+      grid.replaceChildren(frag);
+      updateSummary();
+    }
+
+    $('[data-cal-prev]').addEventListener('click', () => {
+      const v = parse(state.view);
+      state.view = iso(new Date(Date.UTC(v.getUTCFullYear(), v.getUTCMonth() - 1, 1)));
+      renderCalendar();
+    });
+    $('[data-cal-next]').addEventListener('click', () => {
+      const v = parse(state.view);
+      state.view = iso(new Date(Date.UTC(v.getUTCFullYear(), v.getUTCMonth() + 1, 1)));
+      renderCalendar();
+    });
+    $('[data-cal-grid]').addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-day]');
+      if (!b || b.disabled) return;
+      const d = b.dataset.day!;
+      showError(1, '');
+      if (!isLodging()) {
+        state.date = d;
+        state.dateEnd = '';
+      } else if (!state.date || state.dateEnd || d <= state.date) {
+        state.date = d;
+        state.dateEnd = '';
+      } else if (rangeHasBlocked(state.date, d)) {
+        // El rango cruza noches ocupadas: empezamos una selección nueva desde el día tocado
+        state.date = d;
+        state.dateEnd = '';
+        showError(1, `Hay noches ocupadas entre esas fechas. Tomamos el ${fmt(d, { day: 'numeric', month: 'long' })} como llegada: ahora elige tu salida.`);
+      } else if (diffDays(state.date, d) > 30) {
+        showError(1, 'Para estadías de más de 30 noches escríbenos por WhatsApp.');
+        return;
+      } else state.dateEnd = d;
+      state.focus = d;
+      renderCalendar();
+      root.querySelector<HTMLButtonElement>(`[data-day="${d}"]`)?.focus();
+    });
+    // Navegación con flechas (tabindex itinerante)
+    $('[data-cal-grid]').addEventListener('keydown', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-day]');
+      if (!b) return;
+      const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+      if (!delta) return;
+      e.preventDefault();
+      const next = addDays(b.dataset.day!, delta);
+      if (next < todayISO) return;
+      state.focus = next;
+      if (next.slice(0, 7) !== state.view.slice(0, 7)) {
+        state.view = next.slice(0, 7) + '-01';
+        renderCalendar();
+      } else {
+        root.querySelectorAll<HTMLButtonElement>('[data-day]').forEach((x) => (x.tabIndex = x.dataset.day === next ? 0 : -1));
+      }
+      root.querySelector<HTMLButtonElement>(`[data-day="${next}"]`)?.focus();
+    });
+
+    // Personas
+    const minus = $<HTMLButtonElement>('[data-people-minus]');
+    const plus = $<HTMLButtonElement>('[data-people-plus]');
+    minus.addEventListener('click', () => ((state.people = Math.max(1, state.people - 1)), updateSummary()));
+    plus.addEventListener('click', () => ((state.people = Math.min(state.item?.maxPeople ?? 60, state.people + 1)), updateSummary()));
+
+    // ── Resumen y total ──
+    function calc() {
+      const it = state.item;
+      if (!it || !it.price) return null;
+      if (it.unit === 'noche') {
+        if (!state.date || !state.dateEnd) return { total: null, line: `${clp(it.price)} por noche` };
+        const n = diffDays(state.date, state.dateEnd);
+        return { total: n * it.price, line: `${n} ${n === 1 ? 'noche' : 'noches'} × ${clp(it.price)}` };
+      }
+      if (it.unit === 'grupo') return { total: it.price, line: `Valor por grupo` };
+      return { total: state.people * it.price, line: `${state.people} × ${clp(it.price)}` };
+    }
+    function dateText() {
+      if (!state.date) return '';
+      if (isLodging()) return state.dateEnd ? `${fmt(state.date)} → ${fmt(state.dateEnd)}` : `Llegada ${fmt(state.date)}`;
+      if (state.item?.days && state.item.days > 1) return `${fmt(state.date)} → ${fmt(addDays(state.date, state.item.days - 1))}`;
+      return fmt(state.date, { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
+    function updateSummary() {
+      const it = state.item;
+      const c = calc();
+      const total = c?.total ? clp(c.total) : it && !it.price ? 'A cotizar' : '—';
+      // Personas
+      $('[data-people-out]').textContent = String(state.people);
+      minus.disabled = state.people <= 1;
+      plus.disabled = state.people >= (it?.maxPeople ?? 60);
+      $('[data-people-hint]').textContent = it?.kind === 'alojamiento' ? `Este alojamiento recibe hasta ${it.maxPeople} personas.` : it?.kind === 'cotizacion' ? 'Aproximado; lo afinamos contigo.' : '';
+      // Info de la experiencia
+      const info = $('[data-info]');
+      info.replaceChildren(...(it?.info ?? []).map((t) => Object.assign(document.createElement('li'), { textContent: t })));
+      // Texto de fecha
+      const dt = dateText();
+      $('[data-date-text]').textContent = dt ? `${isLodging() && state.dateEnd ? `${diffDays(state.date, state.dateEnd)} noches · ` : ''}${dt}` : '';
+      // Resumen lateral
+      $('[data-sum-title]').textContent = it?.title ?? 'Elige una experiencia';
+      $('[data-sum-sub]').textContent = it?.subtitle ?? '';
+      const img = $<HTMLImageElement>('[data-sum-img]');
+      if (it?.img) {
+        if (img.getAttribute('src') !== it.img) {
+          img.style.opacity = '0';
+          img.onload = () => (img.style.opacity = '1');
+          img.src = it.img;
+        }
+        $('[data-sum-placeholder]').hidden = true;
+      } else {
+        img.removeAttribute('src');
+        img.style.opacity = '0';
+        $('[data-sum-placeholder]').hidden = false;
+      }
+      $('[data-sum-date]').textContent = dt || '—';
+      $('[data-sum-people]').textContent = String(state.people);
+      $('[data-sum-calc-row]').hidden = !c?.line;
+      $('[data-sum-calc]').textContent = c?.line ?? '';
+      $('[data-sum-total]').textContent = total;
+      $('[data-sum-total-label]').textContent = it && !it.price ? 'Valor' : 'Total estimado';
+      // Resumen compacto (móvil)
+      const mi = $<HTMLImageElement>('[data-mini-img]');
+      mi.src = it?.img ?? data.mark;
+      $('[data-mini-title]').textContent = it?.title ?? '';
+      $('[data-mini-meta]').textContent = [dt, `${state.people} ${state.people === 1 ? 'persona' : 'personas'}`].filter(Boolean).join(' · ');
+      $('[data-mini-total]').textContent = total === '—' ? '' : total;
+      // Campos del formulario
+      $<HTMLInputElement>('input[name=date]').value = state.date;
+      $<HTMLInputElement>('input[name=dateEnd]').value = state.dateEnd;
+      $<HTMLInputElement>('input[name=people]').value = String(state.people);
+    }
+
+    // ── Paso 3: enviar ──
+    const fields = ['name', 'phone', 'email'] as const;
+    function validateFields() {
+      let ok = true;
+      for (const f of fields) {
+        const input = form.elements.namedItem(f) as HTMLInputElement;
+        const v = input.value.trim();
+        const valid = f === 'email' ? /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) : f === 'phone' ? v.replace(/\D/g, '').length >= 8 : v.length > 1;
+        input.setAttribute('aria-invalid', String(!valid));
+        input.classList.toggle('!border-naranja-700', !valid);
+        $(`[data-field-err="${f}"]`).classList.toggle('hidden', valid);
+        if (!valid && ok) input.focus();
+        ok &&= valid;
+      }
+      const notes = form.elements.namedItem('notes') as HTMLTextAreaElement;
+      if (ok && notes.required && notes.value.trim().length < 5) {
+        showError(2, 'Cuéntanos brevemente tu idea para preparar la propuesta.');
+        notes.focus();
+        return false;
+      }
+      return ok;
+    }
+    fields.forEach((f) =>
+      (form.elements.namedItem(f) as HTMLInputElement).addEventListener('input', (e) => {
+        const input = e.target as HTMLInputElement;
+        if (input.getAttribute('aria-invalid') === 'true') {
+          input.setAttribute('aria-invalid', 'false');
+          input.classList.remove('!border-naranja-700');
+          $(`[data-field-err="${f}"]`).classList.add('hidden');
+        }
+      }),
+    );
+
+    let last: { code: string; whatsapp: string } | null = null;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showError(2, '');
+      if (!validate(0)) return setStep(0);
+      if (!validate(1)) return setStep(1);
+      if (!validateFields()) return;
+      const btn = $<HTMLButtonElement>('[data-submit]');
+      btn.disabled = true;
+      $('[data-spin]').classList.remove('hidden');
+      $('[data-submit-label]').textContent = 'Enviando…';
+      try {
+        const fd = new FormData(form);
+        fd.set('item', state.item!.key);
+        const res = await fetch(form.action, { method: 'POST', body: fd });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(out.error || 'No pudimos enviar la solicitud.');
+        last = out;
+        showDone(out.code, out.whatsapp);
+        (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({ event: 'booking_request', item: state.item!.key, value: calc()?.total ?? 0 });
+      } catch (err) {
+        showError(2, `${err instanceof Error ? err.message : 'No pudimos enviar la solicitud.'} También puedes escribirnos por WhatsApp al +56 9 4998 1427.`);
+      } finally {
+        btn.disabled = false;
+        $('[data-spin]').classList.add('hidden');
+        $('[data-submit-label]').textContent = 'Enviar solicitud';
+      }
+    });
+
+    function showDone(code: string, wa: string) {
+      $('[data-flow]').hidden = true;
+      const done = $('[data-done]');
+      done.hidden = false;
+      $('[data-done-code]').textContent = code;
+      $<HTMLAnchorElement>('[data-done-wa]').href = wa;
+      $('[data-done-title]').textContent = state.item!.title;
+      $('[data-done-date]').textContent = dateText();
+      $('[data-done-people]').textContent = `${state.people} ${state.people === 1 ? 'persona' : 'personas'}`;
+      const c = calc();
+      $('[data-done-total-row]').hidden = !c?.total;
+      $('[data-done-total]').textContent = c?.total ? clp(c.total) : '';
+      root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('[data-done-heading]').focus({ preventScroll: true });
+    }
+
+    // Archivo .ics para el calendario del cliente
+    $('[data-done-ics]').addEventListener('click', () => {
+      if (!last || !state.item) return;
+      const d = (s: string) => s.replace(/-/g, '');
+      const end = isLodging() ? state.dateEnd : addDays(state.date, state.item.days ?? 1);
+      const esc = (s: string) => s.replace(/[,;\\]/g, (m) => '\\' + m).replace(/\n/g, '\\n');
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Turismo Avatar//Reservas//ES',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        `UID:${last.code}@turismoavatar.cl`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '')}`,
+        `DTSTART;VALUE=DATE:${d(state.date)}`,
+        `DTEND;VALUE=DATE:${d(end)}`,
+        `SUMMARY:${esc(`${state.item.title} · Turismo Avatar`)}`,
+        `DESCRIPTION:${esc(`Solicitud ${last.code} (pendiente de confirmación). ${state.people} personas. WhatsApp +56 9 4998 1427`)}`,
+        'LOCATION:Región del Biobío\\, Chile',
+        'END:VEVENT',
+        'END:VCALENDAR',
+      ].join('\r\n');
+      const a = Object.assign(document.createElement('a'), {
+        href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })),
+        download: `turismo-avatar-${last.code}.ics`,
+      });
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    $('[data-restart]').addEventListener('click', () => {
+      $('[data-done]').hidden = true;
+      $('[data-flow]').hidden = false;
+      form.reset();
+      Object.assign(state, { item: null, date: '', dateEnd: '', people: 2 });
+      updateSummary();
+      setStep(0);
+    });
+
+    // ── Inicio: preselección por atributo o URL (?item=…&fecha=…&personas=…) ──
+    const params = new URLSearchParams(location.search);
+    const pre = params.get('item') || root.dataset.preselect;
+    let startStep = 0;
+    if (pre && byKey.has(pre)) {
+      const radio = root.querySelector<HTMLInputElement>(`input[name=item][value="${CSS.escape(pre)}"]`);
+      if (radio) radio.checked = true;
+      selectItem(pre);
+      showTab(byKey.get(pre)!.kind);
+      startStep = 1;
+      const f = params.get('fecha');
+      if (f && /^\d{4}-\d{2}-\d{2}$/.test(f) && f >= todayISO) {
+        state.date = f;
+        state.view = f.slice(0, 7) + '-01';
+      }
+      const p = Number(params.get('personas'));
+      if (p > 0) state.people = Math.min(p, byKey.get(pre)!.maxPeople);
+    } else {
+      showTab(tabs.find((t) => t.getAttribute('aria-selected') === 'true')?.dataset.tab ?? 'experiencia');
+    }
+    updateSummary();
+    setStep(startStep, false);
+  });
+</script>

@@ -22,7 +22,7 @@ Extraída del sitio original (logo y tema Blocksy): naranjo `#f47800`, celeste d
 | Tienda | `/tienda` | Mochilas (precios del WooCommerce original), venta por WhatsApp |
 | Destinos | `/destinos`, `/destinos/[slug]` | 11 comunas, landing SEO "Qué hacer en …" |
 | Galería | `/galeria` | 6 videos del canal (carga a pedido) + fotos con filtros y lightbox (teclado y swipe) |
-| Reservas | `/reservas?item=experiencia:sup-penco&fecha=2026-12-01` | Preselección por URL (útil para links desde Instagram) |
+| Reservas | `/reservas?item=experiencia:sup-dichato&fecha=2026-12-01&personas=2` | Flujo en 3 pasos (elige → fecha y personas → datos): tarjetas con foto y precio, calendario con rangos y fechas ocupadas, total en vivo, confirmación con WhatsApp y archivo .ics. Preselección por URL (útil para links desde Instagram) |
 | Empresas | `/empresas` | Cotización de grupos, colegios y team building |
 | Proveedores | `/publica-tu-experiencia` | Postulación de emprendedores turísticos |
 | Chatbot "Cami" | widget en todas las páginas | Workers AI con el catálogo (tours, alojamientos, tercera edad, rally, tienda); respuestas por reglas si la IA no está disponible |

@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Gallery from '@/components/Gallery.astro';
-import BookingForm from '@/components/BookingForm.astro';
+import BookingWizard from '@/components/BookingWizard.astro';
 import ExperienceCard from '@/components/ExperienceCard.astro';
 import { getCollection, render } from 'astro:content';
 import { categorias } from '@/content.config';
@@ -116,11 +116,6 @@ const facts = [
         </section>
       )}
 
-      <section id="reservar" class="mt-16 scroll-mt-28 rounded-2xl bg-white p-6 sm:p-10">
-        <h2 class="text-h3 sm:text-4xl">Reserva {d.title}</h2>
-        <p class="mt-2 mb-8 text-gris">Envía tu solicitud y te confirmamos disponibilidad y forma de pago.</p>
-        <BookingForm preselect={`experiencia:${exp.id}`} />
-      </section>
     </div>
 
     <aside class="lg:sticky lg:top-28 lg:self-start">
@@ -145,6 +140,10 @@ const facts = [
       ))}
     </aside>
   </div>
+
+  <section id="reservar" class="wrap scroll-mt-24 pb-20">
+    <BookingWizard preselect={`experiencia:${exp.id}`} heading={`Reserva ${d.title}`} />
+  </section>
 
   {related.length > 0 && (
     <section class="bg-white py-20">

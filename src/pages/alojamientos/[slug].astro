@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Gallery from '@/components/Gallery.astro';
-import BookingForm from '@/components/BookingForm.astro';
+import BookingWizard from '@/components/BookingWizard.astro';
 import ExperienceCard from '@/components/ExperienceCard.astro';
 import { getCollection, render } from 'astro:content';
 import { clp, site, whatsappLink } from '@/data/site';
@@ -53,11 +53,6 @@ const ld = {
       )}
       {[d.image, ...d.gallery].length > 1 && <div class="mt-12"><Gallery items={[d.image, ...d.gallery].map((src) => ({ src, alt: d.title }))} layout="strip" /></div>}
 
-      <section id="reservar" class="mt-16 scroll-mt-28 rounded-2xl bg-white p-6 sm:p-10">
-        <h2 class="text-h3 sm:text-4xl">Reserva tu estadía</h2>
-        <p class="mb-8 mt-2 text-gris">Elige tus fechas y te confirmamos disponibilidad. Verás el total estimado antes de enviar.</p>
-        <BookingForm preselect={`alojamiento:${item.id}`} />
-      </section>
     </div>
     <aside class="lg:sticky lg:top-28 lg:self-start">
       <div class="rounded-2xl bg-marino p-6 text-white">
@@ -75,6 +70,10 @@ const ld = {
       </div>
     </aside>
   </div>
+
+  <section id="reservar" class="wrap scroll-mt-24 pb-20">
+    <BookingWizard preselect={`alojamiento:${item.id}`} heading="Reserva tu estadía" />
+  </section>
 
   {nearby.length > 0 && (
     <section class="bg-white py-20">

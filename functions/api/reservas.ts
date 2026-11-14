@@ -15,9 +15,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const date = clean(body.date, 10);
   const dateEnd = clean(body.dateEnd, 10);
   const people = Math.max(1, Math.min(60, parseInt(body.people, 10) || 1));
-  const notes = cleanMultiline(body.notes, 1500);
+  const contactPref = ['WhatsApp', 'Llamada', 'Correo'].includes(body.contactPref) ? body.contactPref : '';
+  const notesRaw = cleanMultiline(body.notes, 1500);
+  const notes = [notesRaw, contactPref && `Prefiere contacto por: ${contactPref}`].filter(Boolean).join('\n');
 
   if (!kind || !slug) return bad('Elige qué quieres reservar.');
+  if (kind === 'cotizacion' && notesRaw.length < 5) return bad('Cuéntanos brevemente tu idea para preparar la propuesta.');
   if (!name) return bad('Escribe tu nombre.');
   if (!isEmail(email)) return bad('Revisa tu correo electrónico.');
   if (phone.replace(/\D/g, '').length < 8) return bad('Revisa tu número de teléfono.');
