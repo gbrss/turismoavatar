@@ -7,9 +7,11 @@ function systemPrompt(c: Catalog) {
     .map((e) => `- ${e.title} (${e.category}; ${e.duration}; dificultad ${e.difficulty}; precio ${e.price}${e.minAge ? `; desde ${e.minAge} años` : ''}) → ${e.url}\n  ${e.summary}`)
     .join('\n');
   const alojs = c.alojamientos.map((a) => `- ${a.title}, ${a.location}: ${clp(a.pricePerNight)} por noche, hasta ${a.capacity} personas (${a.amenities.join(', ')}) → ${a.url}`).join('\n');
-  const progs = c.programas.map((p) => `- ${p.title} (${p.days} días): ${p.summary} → ${p.url}`).join('\n');
+  const progs = c.programas.map((p) => `- ${p.title} (${p.days} días${p.nights ? `/${p.nights} noches` : ''}; ${p.price}): ${p.summary} → ${p.url}`).join('\n');
+  const tienda = c.tienda.map((t) => `- ${t.name}: ${clp(t.price)} → ${t.url}`).join('\n');
+  const rally = c.rally.paquetes.map((r) => `- ${r.name}: ${clp(r.price)} ${r.unit}`).join('\n');
   const faq = c.faq.map((f) => `P: ${f.q}\nR: ${f.a}`).join('\n');
-  return `Eres el asistente virtual de ${c.site.name}, tour operador en ${c.site.city} (${c.site.region}, Chile) desde ${c.site.foundingYear}.
+  return `Eres ${c.site.assistant}, del equipo de ${c.site.name}, tour operador en ${c.site.city} (${c.site.region}, Chile) desde ${c.site.foundingYear}. Oficina: ${c.site.address}.
 Tu objetivo: ayudar a elegir experiencias o alojamientos y llevar a la persona a reservar.
 
 Reglas:
@@ -28,8 +30,14 @@ ${exps}
 ALOJAMIENTOS (precios en CLP):
 ${alojs}
 
-PROGRAMAS:
+PROGRAMAS (incluye Vacaciones Tercera Edad 2026):
 ${progs}
+
+RALLY WRC (${c.rally.url}): última edición ${c.rally.ultimaEdicion}. ${c.rally.nota}
+${rally}
+
+TIENDA (/tienda, venta por WhatsApp):
+${tienda}
 
 DESTINOS: ${c.destinos.map((d) => `${d.name} (${d.url})`).join(', ')}.
 Para empresas, colegios y grupos: /empresas. Emprendedores que quieren sumarse: /publica-tu-experiencia.
@@ -57,16 +65,23 @@ function ruleBased(q: string, c: Catalog): string {
     return `Para conocer la ciudad y su historia:\n${list([...byCat('city'), ...byCat('patrimonio')])}`;
   if (/(empresa|colegio|grupo|team|curso|gira|corporat|evento)/.test(t))
     return `Hacemos salidas privadas para empresas, colegios y grupos, con toda la logística resuelta. Pide tu cotización en /empresas o escríbenos por WhatsApp: ${wa}`;
+  if (/(tercera edad|adulto mayor|abuel|jubilad|lonquimay|lanalhue|trancas|angostura)/.test(t))
+    return `Tenemos Vacaciones Tercera Edad 2026:\n${c.programas.filter((p) => /Tercera Edad/.test(p.title)).map((p) => `• ${p.title.replace('Vacaciones Tercera Edad 2026: ', '')} (${p.days} días): ${p.price}`).join('\n')}\nMira el detalle en /programas#tercera-edad o reserva en /reservas.`;
+  if (/(rally|wrc|mundial)/.test(t))
+    return `Organizamos paquetes para vivir el WRC Rally Chile Biobío con traslados desde tu hotel, alimentación y alojamiento. ${c.rally.nota} Únete a la lista de espera en ${c.rally.url}`;
+  if (/(tienda|mochila|comprar|producto|recuerdo)/.test(t))
+    return `En la tienda tenemos:\n${c.tienda.map((p) => `• ${p.name}: ${clp(p.price)}`).join('\n')}\nSe compran por WhatsApp: ${wa}. Más info en /tienda`;
   if (/(dias|programa|itinerario|fin de semana|finde)/.test(t))
     return `Tenemos programas armados:\n${list(c.programas)}\nLos ajustamos a tus fechas.`;
   if (/(precio|valor|cuesta|cuanto|tarifa|costo)/.test(t))
-    return `Los alojamientos van desde ${clp(Math.min(...c.alojamientos.map((a) => a.pricePerNight)))} por noche (ver /alojamientos). El precio de las experiencias depende del grupo y la fecha: cotiza sin compromiso en /reservas o por WhatsApp ${wa}`;
+    return `Precios por persona:\n${c.experiencias.filter((e) => e.price !== 'a consultar').map((e) => `• ${e.title}: ${e.price}`).join('\n')}\nAlojamientos desde ${clp(Math.min(...c.alojamientos.map((a) => a.pricePerNight)))} por noche (/alojamientos). Reserva en /reservas o por WhatsApp ${wa}`;
   if (/(reserv|agendar|disponib|cupo|fecha)/.test(t))
     return `Puedes enviar tu solicitud en /reservas (no se cobra nada al enviarla) y te confirmamos disponibilidad y pago, normalmente el mismo día. Si prefieres, escríbenos por WhatsApp: ${wa}`;
   if (/(lluvia|clima|tiempo|llueve)/.test(t)) return c.faq.find((f) => norm(f.q).includes('tiempo'))?.a ?? `Escríbenos por WhatsApp: ${wa}`;
   if (/(pago|pagar|transfer|tarjeta)/.test(t)) return c.faq.find((f) => norm(f.q).includes('pagar'))?.a ?? `Escríbenos por WhatsApp: ${wa}`;
-  if (/(donde|ubicad|direcc|comuna|operan)/.test(t)) return c.faq.find((f) => norm(f.q).includes('operan'))!.a + ' Mira el mapa en /destinos';
-  if (/(hola|buenas|buenos)/.test(t)) return '¡Hola! ¿Qué te gustaría hacer en el Biobío? Puedo recomendarte experiencias en el agua, trekking, city tours o alojamientos.';
+  if (/(direcc|oficina|ubicad)/.test(t)) return `Nuestra oficina está en ${c.site.address}. Escríbenos antes por WhatsApp para coordinar: ${wa}`;
+  if (/(donde|comuna|operan)/.test(t)) return c.faq.find((f) => norm(f.q).includes('operan'))!.a + ' Mira el mapa en /destinos';
+  if (/(hola|buenas|buenos)/.test(t)) return `¡Hola! Soy ${c.site.assistant} 😊 ¿Qué te gustaría hacer en el Biobío? Puedo recomendarte SUP en el mar, trekking, el City Tour 7 Lagunas o alojamientos con tinaja.`;
 
   const words = t.split(/\W+/).filter((w) => w.length > 3);
   const hits = c.experiencias.filter((e) => words.some((w) => norm(`${e.title} ${e.summary} ${e.destinos.join(' ')}`).includes(w))).slice(0, 4);

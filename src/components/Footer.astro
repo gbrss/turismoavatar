@@ -6,10 +6,10 @@ import { destinos } from '@/data/destinos';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-rio-900 text-white/85">
-  <div class="wrap grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
+<footer class="bg-marino-900 text-white/85">
+  <div class="wrap grid grid-cols-1 gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr_1.3fr]">
     <div>
-      <Logo light />
+      <Logo variant="vertical" eager={false} />
       <p class="mt-5 max-w-xs text-white/70">Tour operador en Concepción desde {site.foundingYear}. Conectamos a quienes nos visitan con lo mejor del Biobío.</p>
       <ul class="mt-6 flex gap-2" aria-label="Redes sociales">
         {
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
       <ul class="mt-4 grid gap-2">
         <li><a class="hover:text-white hover:underline" href={whatsappLink()} target="_blank" rel="noopener">WhatsApp {site.phoneDisplay}</a></li>
         <li><a class="hover:text-white hover:underline" href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li>{site.city}, {site.region}</li>
+        <li><a class="hover:text-white hover:underline" href={site.mapsUrl} target="_blank" rel="noopener">{site.address}, {site.city}</a></li>
         <li class="text-white/60">{site.hours}</li>
       </ul>
       <div class="mt-8"><Newsletter dark /></div>

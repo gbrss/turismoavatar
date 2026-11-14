@@ -1,11 +1,19 @@
 ---
 import { getImage } from 'astro:assets';
 import Media from './Media.astro';
-import { getMedia } from '@/lib/media';
+import { getMedia, hasMedia } from '@/lib/media';
 
 interface Item { src: string; alt: string; tag?: string }
 interface Props { items: Item[]; filters?: Record<string, string>; layout?: 'masonry' | 'strip' }
-const { items, filters, layout = 'masonry' } = Astro.props;
+const { items: all, filters, layout = 'masonry' } = Astro.props;
+// Solo fotos que existen, sin repetir la misma imagen en distintas variantes
+const seen = new Set<string>();
+const items = all.filter((it) => {
+  const m = getMedia(it.src);
+  if (!m || !hasMedia(it.src) || seen.has(m.src)) return false;
+  seen.add(m.src);
+  return true;
+});
 
 const prepared = await Promise.all(
   items.map(async (it) => {
@@ -20,9 +28,9 @@ const prepared = await Promise.all(
   {
     filters && (
       <div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar fotos">
-        <button type="button" data-filter="" aria-pressed="true" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">Todas</button>
+        <button type="button" data-filter="" aria-pressed="true" class="rounded-full border border-marino/25 px-4 py-2 font-medium aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-white">Todas</button>
         {Object.entries(filters).map(([k, label]) => (
-          <button type="button" data-filter={k} aria-pressed="false" class="rounded-full border border-rio/25 px-4 py-2 font-medium aria-pressed:border-rio aria-pressed:bg-rio aria-pressed:text-white">{label}</button>
+          <button type="button" data-filter={k} aria-pressed="false" class="rounded-full border border-marino/25 px-4 py-2 font-medium aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-white">{label}</button>
         ))}
       </div>
     )
@@ -38,7 +46,7 @@ const prepared = await Promise.all(
             data-full={it.full}
             data-alt={it.alt}
             disabled={!it.full}
-            class="group relative block w-full overflow-hidden rounded-xl bg-rio text-left disabled:cursor-default"
+            class="group relative block w-full overflow-hidden rounded-xl bg-marino text-left disabled:cursor-default"
             style={layout === 'strip' ? 'aspect-ratio: 4/3' : `aspect-ratio: ${it.full ? it.ratio : 0.8}`}
           >
             <span class="sr-only">Ampliar: {it.alt}</span>
@@ -49,7 +57,7 @@ const prepared = await Promise.all(
     }
   </ul>
 
-  <dialog data-lightbox class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-rio-900/92" aria-label="Foto ampliada">
+  <dialog data-lightbox class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-marino-900/92" aria-label="Foto ampliada">
     <figure class="grid h-dvh w-screen grid-rows-[1fr_auto] place-items-center gap-3 p-4 sm:p-10">
       <img data-lb-img alt="" class="max-h-full max-w-full rounded-lg object-contain" />
       <figcaption data-lb-cap class="text-center text-white/85"></figcaption>

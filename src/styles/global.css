@@ -1,36 +1,39 @@
 @import 'tailwindcss';
-@import '@fontsource/barlow/400.css';
-@import '@fontsource/barlow/500.css';
-@import '@fontsource/barlow/600.css';
-@import '@fontsource/barlow-condensed/600.css';
-@import '@fontsource/barlow-condensed/800.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/800.css';
+@import '@fontsource/nunito-sans/400.css';
+@import '@fontsource/nunito-sans/600.css';
+@import '@fontsource/nunito-sans/700.css';
 
-/* Paleta "Biobío": río, laguna, niebla costera, copihue y atardecer */
+/* Paleta de marca Turismo Avatar (extraída del logo y del tema original) */
 @theme {
-  --color-rio: #0e3b43;
-  --color-rio-900: #082a30;
-  --color-laguna: #2e8c87;
-  --color-laguna-200: #b9dcd8;
-  --color-niebla: #eef2ef;
-  --color-roca: #d9e0db;
-  --color-copihue: #c2264b;
-  --color-copihue-700: #9d1b3b;
-  --color-atardecer: #f2b544;
-  --color-tinta: #13201f;
-  --color-gris: #55625f;
+  --color-naranja: #f47800;
+  --color-naranja-300: #ffa64d;
+  --color-naranja-700: #b35000;
+  --color-cielo: #00a8e8;
+  --color-cielo-200: #bfe9fa;
+  --color-cielo-700: #0a72a8;
+  --color-marino: #192a3d;
+  --color-marino-900: #0f1b29;
+  --color-niebla: #f2f5f7;
+  --color-roca: #e1e8ed;
+  --color-bronce: #b6783a;
+  --color-tinta: #14212f;
+  --color-gris: #3a4f66;
 
-  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, sans-serif;
+  --font-sans: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Montserrat', 'Nunito Sans', ui-sans-serif, sans-serif;
 
   /* Escala tipográfica modular (≈1.25) */
-  --text-display: clamp(3rem, 2rem + 5vw, 6.5rem);
-  --text-display--line-height: 0.92;
-  --text-h1: clamp(2.5rem, 1.8rem + 3vw, 4.25rem);
-  --text-h1--line-height: 0.98;
-  --text-h2: clamp(2rem, 1.5rem + 2vw, 3.25rem);
-  --text-h2--line-height: 1.02;
-  --text-h3: 1.6rem;
-  --text-h3--line-height: 1.1;
+  --text-display: clamp(2.5rem, 1.6rem + 4vw, 5.25rem);
+  --text-display--line-height: 1;
+  --text-h1: clamp(2.1rem, 1.5rem + 2.6vw, 3.6rem);
+  --text-h1--line-height: 1.05;
+  --text-h2: clamp(1.75rem, 1.35rem + 1.6vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h3: 1.4rem;
+  --text-h3--line-height: 1.2;
 }
 
 @layer base {
@@ -43,7 +46,7 @@
     color: var(--color-tinta);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
-    line-height: 1.6;
+    line-height: 1.65;
     text-rendering: optimizeLegibility;
   }
   h1,
@@ -51,14 +54,14 @@
   h3 {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
   :focus-visible {
-    outline: 3px solid var(--color-atardecer);
+    outline: 3px solid var(--color-cielo);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -94,9 +97,9 @@
     min-height: 3rem;
     padding: 0.75rem 1.4rem;
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.2rem;
-    letter-spacing: 0.01em;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0;
     border-radius: 999px;
     transition: background-color 0.15s, color 0.15s, transform 0.15s;
   }
@@ -104,11 +107,11 @@
     transform: translateY(1px);
   }
   .btn-primary {
-    background: var(--color-copihue);
-    color: white;
+    background: var(--color-naranja);
+    color: var(--color-marino);
   }
   .btn-primary:hover {
-    background: var(--color-copihue-700);
+    background: var(--color-naranja-300);
   }
   .btn-ghost {
     border: 2px solid currentColor;
@@ -145,11 +148,16 @@
   .field input:focus,
   .field select:focus,
   .field textarea:focus {
-    border-color: var(--color-laguna);
-    outline: 2px solid color-mix(in srgb, var(--color-laguna) 35%, transparent);
+    border-color: var(--color-cielo);
+    outline: 2px solid color-mix(in srgb, var(--color-cielo) 35%, transparent);
     outline-offset: 0;
   }
-  /* Línea de ruta: el motivo gráfico del sitio (trazo de sendero discontinuo) */
+  /* Trazo a mano alzada del logo, usado como subrayado de marca */
+  .brush {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C40 2 80 11 120 6 S180 3 198 7' fill='none' stroke='%23f47800' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% 0.35em;
+    padding-bottom: 0.18em;
+  }
+  /* Línea de ruta (trazo de sendero discontinuo) */
   .trail {
     background-image: linear-gradient(90deg, currentColor 55%, transparent 0);
     background-size: 14px 2px;

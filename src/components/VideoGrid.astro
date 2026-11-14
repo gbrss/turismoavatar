@@ -1,0 +1,28 @@
+---
+import Media from './Media.astro';
+interface Props { videos: readonly { id: string; title: string }[]; dark?: boolean; cols?: 1 | 2 | 3 }
+const { videos, dark = false, cols = 3 } = Astro.props;
+const grid = { 1: 'grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' }[cols];
+---
+
+<ul class:list={['grid gap-5', grid]}>
+  {
+    videos.map((v, i) => (
+      <li>
+        <button type="button" data-video-open={v.id} data-video-title={v.title} class="group block w-full text-left">
+          <span class="relative block aspect-video overflow-hidden rounded-2xl bg-marino-900">
+            <Media src={`youtube/${v.id}.jpg`} alt="" widths={[480, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw" class="opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100" />
+            <span class="absolute inset-0 grid place-items-center">
+              <span class="grid h-16 w-16 place-items-center rounded-full bg-naranja text-marino shadow-xl transition group-hover:scale-110">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </span>
+          </span>
+          <span class:list={['mt-3 block font-display font-bold leading-snug', dark ? 'text-white' : 'text-tinta']}>
+            <span class="sr-only">Reproducir video: </span>{v.title}
+          </span>
+        </button>
+      </li>
+    ))
+  }
+</ul>

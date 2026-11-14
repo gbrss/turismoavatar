@@ -9,7 +9,7 @@ schedule: Con reserva previa
 includes: [Guía local, Relato histórico]
 bring: [Zapatillas cómodas, Linterna o frontal, Agua]
 image: 2024/10/tunel-penco.jpg
-gallery: []
+gallery: [2025/08/tunel-penco-300x300-1.webp, 2025/08/Penco-600x398-1.webp]
 order: 9
 ---
 

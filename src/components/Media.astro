@@ -24,9 +24,9 @@ const img = getMedia(src);
 // Variación de color estable por imagen para los marcadores de posición
 const hue = [...(src ?? alt)].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
 const tones = [
-  ['#0e3b43', '#2e8c87'],
-  ['#082a30', '#3f7d6f'],
-  ['#14505a', '#c2264b'],
+  ['#192a3d', '#0a72a8'],
+  ['#0f1b29', '#3a4f66'],
+  ['#192a3d', '#b35000'],
 ][hue];
 ---
 
@@ -38,6 +38,7 @@ const tones = [
       widths={widths.filter((w) => w <= img.width).length ? widths.filter((w) => w <= img.width) : [img.width]}
       sizes={sizes}
       formats={['avif', 'webp']}
+      fallbackFormat="jpg"
       loading={loading}
       fetchpriority={fetchpriority}
       class:list={['h-full w-full object-cover', className]}
@@ -50,8 +51,8 @@ const tones = [
       style={`background: radial-gradient(120% 90% at 20% 10%, ${tones[1]} 0%, ${tones[0]} 60%);`}
     >
       <svg class="absolute inset-x-0 bottom-0 w-full opacity-30" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 80 C60 40 110 100 170 70 S290 30 400 60 L400 120 L0 120Z" fill="#eef2ef" />
-        <path d="M0 100 C80 80 140 115 220 95 S330 80 400 92 L400 120 L0 120Z" fill="#eef2ef" opacity=".6" />
+        <path d="M0 80 C60 40 110 100 170 70 S290 30 400 60 L400 120 L0 120Z" fill="#f2f5f7" />
+        <path d="M0 100 C80 80 140 115 220 95 S330 80 400 92 L400 120 L0 120Z" fill="#f2f5f7" opacity=".6" />
       </svg>
     </div>
   )

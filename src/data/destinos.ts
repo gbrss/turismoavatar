@@ -8,6 +8,8 @@ export interface Destino {
   summary: string;
   highlights: string[];
   image?: string;
+  /** false = fuera del área del mapa ilustrado */
+  onMap?: boolean;
 }
 
 export const destinos: Destino[] = [
@@ -19,7 +21,7 @@ export const destinos: Destino[] = [
     summary:
       'La capital del Biobío y Ciudad del Rock: lagunas en medio de la ciudad, el Cerro Caracol, el campus de la UdeC y su vida cultural.',
     highlights: ['Parque Ecuador y Cerro Caracol', 'Torre Bismarck', 'Laguna Lo Galindo y Lo Méndez', 'Campus Universidad de Concepción', 'Teatro Biobío'],
-    image: '2024/11/CCP-teatro-1.jpg',
+    image: '2025/08/CCP-teatro-1-600x601-1.webp',
   },
   {
     slug: 'tome',
@@ -27,9 +29,9 @@ export const destinos: Destino[] = [
     lat: -36.617,
     lng: -72.957,
     summary:
-      'Costa de playas y caletas: Dichato, Coliumo y el río Menque. Nuestra base para SUP, cabañas con tinaja y desconexión frente al mar.',
-    highlights: ['Dichato', 'Coliumo', 'Río Menque', 'Playa Bellavista', 'Casa Poli'],
-    image: '2024/10/supdichato-scaled-e1732736023522.jpg',
+      'Costa de playas y caletas: Dichato, Coliumo y el río Menque. Nuestra base para SUP, trekking costero, cabañas con tinaja y atardeceres frente al mar.',
+    highlights: ['Dichato', 'Coliumo y caleta Los Morros', 'Playa Montecristo', 'Río Menque', 'Casa Poli y Casa Piedra'],
+    image: '2025/08/casa-poli-768x432-1.webp',
   },
   {
     slug: 'penco',
@@ -39,7 +41,7 @@ export const destinos: Destino[] = [
     summary:
       'Bahía de aguas tranquilas y cristalinas, ideal para SUP. Historia ferroviaria con su antiguo túnel y la playa de Penco.',
     highlights: ['SUP en aguas cristalinas', 'Túnel ferroviario', 'Fuerte La Planchada', 'Playa de Penco'],
-    image: '2024/11/Sup-agua-Cristalina-Penco.jpg',
+    image: '2025/08/Penco-600x398-1.webp',
   },
   {
     slug: 'talcahuano',
@@ -55,9 +57,9 @@ export const destinos: Destino[] = [
     lat: -36.79,
     lng: -73.13,
     summary:
-      'Santuario de la naturaleza: desembocadura del Biobío, Caleta Lenga, playa Ramuntcho, cabalgatas y canopy entre bosque nativo.',
+      'Santuario de la naturaleza: desembocadura del Biobío, Caleta Lenga, playa Ramuntcho y cabalgatas entre bosque nativo.',
     highlights: ['Desembocadura del Biobío', 'Caleta Lenga', 'Playa Ramuntcho', 'Cabalgatas', 'Parque Museo Pedro del Río Zañartu'],
-    image: '2024/10/CabalgataHualpen-scaled.jpg',
+    image: '2025/08/CabalgataHualpen-600x338-1.webp',
   },
   {
     slug: 'san-pedro-de-la-paz',
@@ -66,6 +68,7 @@ export const destinos: Destino[] = [
     lng: -73.105,
     summary: 'Lagunas Grande y Chica para remar en aguas calmas, atardeceres y humedales a minutos de Concepción.',
     highlights: ['Laguna Grande', 'Laguna Chica', 'Humedal Los Batros'],
+    image: 'youtube/Bk-u5Fe__eI.jpg',
   },
   {
     slug: 'chiguayante',
@@ -107,6 +110,16 @@ export const destinos: Destino[] = [
     lng: -72.94,
     summary: 'Interior rural junto al Biobío: fuerte colonial, cerros y vida de campo.',
     highlights: ['Fuerte de Santa Juana', 'Río Biobío', 'Turismo rural'],
+  },
+  {
+    slug: 'santa-barbara',
+    name: 'Santa Bárbara',
+    lat: -37.67,
+    lng: -72.02,
+    onMap: false,
+    summary: 'Precordillera del Biobío: Rucalhue, la Angostura del Biobío y la puerta al Alto Biobío, entre ríos, bosques y vida rural.',
+    highlights: ['Rucalhue', 'Angostura del Biobío', 'Río Biobío', 'Alto Biobío'],
+    image: '2024/11/GOPR1130.jpg',
   },
 ];
 

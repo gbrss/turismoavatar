@@ -10,9 +10,9 @@ groupSize: Grupos y salidas privadas
 schedule: Todo el año con reserva previa
 includes: [Kayak y remo, Chaleco salvavidas, Guía]
 bring: [Ropa cómoda que se pueda mojar, Agua, Bloqueador]
-image: 2024/10/IMG-20231118-WA0235.jpg
-gallery: [2024/10/IMG-20231118-WA0230.jpg]
-order: 6
+image: externas/img.youtube.com/maxresdefault.jpg
+gallery: [2024/10/IMG-20231118-WA0235.jpg, 2024/10/IMG-20231118-WA0230.jpg]
+order: 7
 ---
 
 Las lagunas del Gran Concepción son un tesoro natural en plena ciudad. Una salida en kayak tranquila, perfecta para familias, parejas y quienes quieren desconectarse sin alejarse mucho.

@@ -14,14 +14,14 @@ const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order 
   <section class="wrap grid gap-x-8 gap-y-16 pb-24 md:grid-cols-2">
     {alojs.map((a, i) => (
       <article class="group relative">
-        <div class="aspect-[4/3] overflow-hidden rounded-xl bg-rio">
+        <div class="aspect-[4/3] overflow-hidden rounded-xl bg-marino">
           <Media src={a.data.image} alt={a.data.title} sizes="(min-width: 768px) 50vw, 100vw" loading={i < 2 ? 'eager' : 'lazy'} class="transition duration-500 group-hover:scale-[1.03]" />
         </div>
         <div class="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-          <p class="font-semibold text-laguna">{a.data.location}</p>
-          <p class="font-display text-2xl font-extrabold">{clp(a.data.pricePerNight)}<span class="font-sans text-base font-normal text-gris"> por noche</span></p>
+          <p class="font-semibold text-cielo-700">{a.data.location}</p>
+          <p class="font-display text-xl font-extrabold">{clp(a.data.pricePerNight)}<span class="font-sans text-base font-normal text-gris"> por noche</span></p>
         </div>
-        <h2 class="mt-1 font-display text-[2rem] font-extrabold leading-tight"><a class="after:absolute after:inset-0 hover:text-rio" href={`/alojamientos/${a.id}`}>{a.data.title}</a></h2>
+        <h2 class="mt-1 font-display text-[1.5rem] font-extrabold leading-tight"><a class="after:absolute after:inset-0 hover:text-marino" href={`/alojamientos/${a.id}`}>{a.data.title}</a></h2>
         <p class="mt-2 text-gris">{a.data.summary}</p>
         <p class="mt-3 text-sm font-medium">Hasta {a.data.capacity} personas · {a.data.beds} camas{a.data.shared ? ' · espacios compartidos' : ''}</p>
       </article>

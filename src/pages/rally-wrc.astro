@@ -1,0 +1,56 @@
+---
+import Base from '@/layouts/Base.astro';
+import Media from '@/components/Media.astro';
+import LeadForm from '@/components/LeadForm.astro';
+import VideoGrid from '@/components/VideoGrid.astro';
+import { rally } from '@/data/rally';
+import { site, whatsappLink, clp } from '@/data/site';
+---
+
+<Base title="Paquetes WRC Rally Chile Biobío" description="Vive el Mundial de Rally en el Biobío con traslados desde tu hotel, alimentación y alojamiento. Únete a la lista de espera para la próxima edición." image="youtube/aUodZdx7wPw.jpg">
+  <section class="relative isolate overflow-hidden bg-marino-900 text-white">
+    <div class="absolute inset-0 -z-10">
+      <Media src="youtube/aUodZdx7wPw.jpg" alt="" sizes="100vw" loading="eager" fetchpriority="high" class="opacity-40" />
+      <div class="absolute inset-0 bg-gradient-to-r from-marino-900 via-marino-900/80 to-marino-900/30"></div>
+    </div>
+    <div class="wrap py-20 sm:py-28">
+      <nav aria-label="Ruta de navegación" class="mb-4 text-sm text-white/70"><a href="/" class="hover:underline">Inicio</a> / Rally WRC</nav>
+      <p class="font-display font-bold text-naranja">WRC Rally Chile Biobío</p>
+      <h1 class="mt-2 max-w-3xl text-display">Vive el Mundial de Rally con Turismo Avatar</h1>
+      <p class="mt-6 max-w-2xl text-lg text-white/85">{rally.pitch}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#lista-espera" class="btn btn-primary">Unirme a la lista de espera</a>
+        <button type="button" class="btn btn-ghost" data-video-open="aUodZdx7wPw" data-video-title="Rally Chile Biobío con Turismo Avatar">Ver video</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-20">
+    <h2 class="text-h2">Elige cómo vivirlo</h2>
+    <p class="mt-3 max-w-2xl text-lg text-gris">Valores de referencia de la edición 2026 ({rally.edicion2026}). Confirmamos precios y cupos de la próxima edición a quienes estén en la lista de espera.</p>
+    <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {rally.paquetes.map((p, i) => (
+        <li class:list={['flex flex-col rounded-3xl p-6', i === 3 ? 'bg-marino text-white' : 'bg-white ring-1 ring-roca']}>
+          <h3 class="font-display text-xl font-extrabold leading-tight">{p.name}</h3>
+          <p class="mt-4 font-display text-3xl font-extrabold">{clp(p.price)}</p>
+          <p class:list={['text-sm', i === 3 ? 'text-white/70' : 'text-gris']}>{p.unit} · referencia 2026</p>
+          <ul class="mt-5 grid flex-1 content-start gap-2">{p.includes.map((x) => <li class="flex gap-2.5"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-naranja" />{x}</li>)}</ul>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section id="lista-espera" class="scroll-mt-24 bg-white py-20">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_1.2fr]">
+      <div>
+        <h2 class="text-h2">Lista de espera para la próxima edición</h2>
+        <p class="mt-4 text-lg text-gris">Déjanos tus datos y te avisamos primero cuando abramos la venta, con precios preferentes para quienes reserven antes.</p>
+        <a href={whatsappLink(`${site.whatsappGreeting} los paquetes del Rally WRC.`)} target="_blank" rel="noopener" class="btn btn-wa mt-8">Consultar por WhatsApp</a>
+        <div class="mt-10"><VideoGrid cols={1} videos={[{ id: 'aUodZdx7wPw', title: 'Rally Chile Biobío con Turismo Avatar' }]} /></div>
+      </div>
+      <div class="rounded-3xl bg-niebla p-6 sm:p-10">
+        <LeadForm kind="rally" submitLabel="Unirme a la lista de espera" />
+      </div>
+    </div>
+  </section>
+</Base>

@@ -6,23 +6,25 @@ import { site, whatsappLink } from '@/data/site';
 ---
 
 <Base title="Contacto" description={`Escríbenos por WhatsApp al ${site.phoneDisplay} o a ${site.email}. Atención las 24 horas.`}>
-  <PageHero title="Hablemos de tu próxima aventura" lead="La forma más rápida es WhatsApp: respondemos todos los días. También puedes dejarnos un mensaje." crumbs={[{ href: '/contacto', label: 'Contacto' }]} />
+  <PageHero title="Contáctanos y planifica tu próxima aventura" lead="Estamos aquí para ayudarte a crear una experiencia inolvidable. Escríbenos por WhatsApp o déjanos tu consulta sobre tours, disponibilidad o lo que necesites." crumbs={[{ href: '/contacto', label: 'Contacto' }]} />
   <section class="wrap grid gap-14 pb-24 lg:grid-cols-[1fr_1.4fr]">
     <div class="grid content-start gap-6">
       <a href={whatsappLink()} target="_blank" rel="noopener" class="rounded-2xl bg-[#1f9d55] p-6 text-white hover:bg-[#187d44]">
         <span class="text-white/80">WhatsApp</span>
-        <span class="block font-display text-4xl font-extrabold">{site.phoneDisplay}</span>
+        <span class="block font-display text-3xl font-extrabold">{site.phoneDisplay}</span>
         <span class="mt-1 block text-white/80">{site.hours}</span>
       </a>
-      <a href={`mailto:${site.email}`} class="rounded-2xl bg-white p-6 hover:ring-2 hover:ring-laguna">
-        <span class="text-gris">Correo</span>
-        <span class="block font-display text-3xl font-extrabold break-all">{site.email}</span>
-      </a>
       <div class="rounded-2xl bg-white p-6">
-        <span class="text-gris">Dónde estamos</span>
-        <span class="block font-display text-3xl font-extrabold">{site.city}, {site.region}</span>
-        <span class="mt-1 block text-gris">Operamos en todo el Gran Concepción y la costa del Biobío.</span>
+        <span class="text-gris">Correo</span>
+        <a href={`mailto:${site.email}`} class="block break-all font-display text-xl font-extrabold hover:text-naranja-700">{site.email}</a>
+        <a href={`mailto:${site.email2}`} class="mt-1 block break-all font-semibold text-gris hover:text-naranja-700">{site.email2}</a>
       </div>
+      <a href={site.mapsUrl} target="_blank" rel="noopener" class="rounded-2xl bg-white p-6 hover:ring-2 hover:ring-cielo">
+        <span class="text-gris">Encuéntranos en</span>
+        <span class="block font-display text-xl font-extrabold">{site.address}</span>
+        <span class="block font-semibold">{site.city}, {site.region}</span>
+        <span class="mt-2 block text-sm font-bold text-naranja-700 underline">Cómo llegar</span>
+      </a>
     </div>
     <div class="rounded-2xl bg-white p-6 sm:p-10">
       <h2 class="text-h3 sm:text-4xl">Envíanos un mensaje</h2>

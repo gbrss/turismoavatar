@@ -1,0 +1,57 @@
+---
+import Base from '@/layouts/Base.astro';
+import Media from '@/components/Media.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { productos } from '@/data/tienda';
+import { site, whatsappLink, clp } from '@/data/site';
+
+const ld = productos.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name,
+  description: p.summary,
+  brand: { '@type': 'Brand', name: site.name },
+  offers: { '@type': 'Offer', price: p.price, priceCurrency: 'CLP', availability: 'https://schema.org/InStock', url: `${site.url}/tienda#${p.slug}` },
+}));
+---
+
+<Base title="Tienda: equipo para tus aventuras" description="Mochilas para trekking y viaje, y recuerdos del Biobío. Compra por WhatsApp y retira en Concepción." jsonLd={ld}>
+  <section class="bg-marino text-white">
+    <div class="wrap grid items-center gap-10 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-20">
+      <div>
+        <nav aria-label="Ruta de navegación" class="mb-4 text-sm text-white/70"><a href="/" class="hover:underline">Inicio</a> / Tienda</nav>
+        <h1 class="text-h1">Lleva contigo lo mejor de nuestra tierra</h1>
+        <p class="mt-4 max-w-xl text-lg text-white/80">Equipo para tus salidas y recuerdos del Biobío. Pide por WhatsApp y coordinamos el retiro en Concepción o el envío.</p>
+        <a href={whatsappLink(`${site.whatsappGreeting} los productos de la tienda.`)} target="_blank" rel="noopener" class="btn btn-primary mt-8">Comprar por WhatsApp</a>
+      </div>
+      <div class="aspect-square overflow-hidden rounded-3xl bg-marino-900 lg:aspect-[4/3]">
+        <Media src="2026/05/tienda.png" alt="Recuerdos del Biobío: bolsas, tazas, artesanía y gorros" sizes="(min-width: 1024px) 45vw, 100vw" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-20">
+    <h2 class="text-h2">Equipo para tus aventuras</h2>
+    <div class="mt-10 grid gap-8 md:grid-cols-2">
+      {productos.map((p, i) => (
+        <article id={p.slug} class="flex scroll-mt-28 flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-roca">
+          <div class="aspect-[16/10] overflow-hidden bg-marino">
+            <Media src={p.image} alt={p.name} sizes="(min-width: 768px) 45vw, 100vw" class:list={[i % 2 ? 'object-[center_70%] scale-x-[-1]' : 'object-[center_45%]']} />
+          </div>
+          <div class="flex flex-1 flex-col p-6 sm:p-8">
+            <h3 class="font-display text-2xl font-extrabold">{p.name}</h3>
+            <p class="mt-3 flex flex-wrap items-baseline gap-3">
+              <span class="font-display text-3xl font-extrabold">{clp(p.price)}</span>
+              {p.compareAt && <s class="text-gris">{clp(p.compareAt)}</s>}
+              {p.compareAt && <span class="rounded-full bg-naranja/15 px-3 py-1 text-sm font-bold text-naranja-700">Oferta</span>}
+            </p>
+            <p class="mt-3 text-gris">{p.summary}</p>
+            <ul class="mt-5 grid flex-1 content-start gap-2">{p.specs.map((s) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-naranja" />{s}</li>)}</ul>
+            <a href={whatsappLink(`${site.whatsappGreeting} comprar "${p.name}" (${clp(p.price)}).`)} target="_blank" rel="noopener" class="btn btn-primary mt-8 self-start">Pedir por WhatsApp</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <CtaBand title="¿Buscas algo más para tu aventura?" text="Pregúntanos por equipos, arriendo de tablas de SUP o recuerdos del Biobío." message="Hola Turismo Avatar 👋 Busco un producto para mi aventura." />
+</Base>

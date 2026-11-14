@@ -1,6 +1,6 @@
 import { type Env, json, bad, readBody, clean, cleanMultiline, isEmail, sendEmail, emailLayout, rateLimited } from '../../server/lib';
 
-const labels: Record<string, string> = { contacto: 'Contacto', empresa: 'Cotización empresa / grupo', proveedor: 'Postulación de proveedor' };
+const labels: Record<string, string> = { contacto: 'Contacto', empresa: 'Cotización empresa / grupo', proveedor: 'Postulación de proveedor', rally: 'Lista de espera Rally WRC' };
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (await rateLimited(request, 'contacto', 6, 600)) return bad('Demasiados mensajes seguidos. Intenta en unos minutos.', 429);

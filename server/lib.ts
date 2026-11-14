@@ -14,10 +14,12 @@ export interface Env {
 }
 
 export interface Catalog {
-  site: { name: string; phone: string; whatsapp: string; email: string; city: string; region: string; hours: string; foundingYear: number };
+  site: { name: string; assistant: string; phone: string; whatsapp: string; email: string; address: string; city: string; region: string; hours: string; foundingYear: number };
   experiencias: { slug: string; url: string; title: string; category: string; destinos: string[]; summary: string; duration: string; difficulty: string; price: string; minAge?: number; meetingPoint?: string; includes: string[] }[];
   alojamientos: { slug: string; url: string; title: string; location: string; pricePerNight: number; capacity: number; amenities: string[] }[];
-  programas: { slug: string; url: string; title: string; days: number; summary: string }[];
+  programas: { slug: string; url: string; title: string; days: number; nights?: number; price: string; summary: string }[];
+  tienda: { name: string; price: number; url: string }[];
+  rally: { url: string; ultimaEdicion: string; paquetes: { name: string; price: number; unit: string }[]; nota: string };
   destinos: { slug: string; name: string; url: string; summary: string }[];
   faq: { q: string; a: string }[];
 }

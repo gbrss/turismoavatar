@@ -4,7 +4,7 @@ const { dark = false } = Astro.props;
 const id = `nl-${Math.random().toString(36).slice(2, 7)}`;
 ---
 
-<form data-newsletter class="grid gap-2" action="/api/newsletter" method="post">
+<form data-newsletter class="grid grid-cols-1 gap-2" action="/api/newsletter" method="post">
   <label for={id} class:list={['font-display text-xl font-semibold', dark ? 'text-white' : 'text-tinta']}>Panoramas y descuentos en tu correo</label>
   <div class="flex gap-2">
     <input
@@ -15,7 +15,7 @@ const id = `nl-${Math.random().toString(36).slice(2, 7)}`;
       autocomplete="email"
       placeholder="tu@correo.cl"
       class:list={[
-        'min-h-12 min-w-0 flex-1 rounded-full px-4',
+        'min-h-12 w-0 min-w-0 flex-1 rounded-full px-4',
         dark ? 'bg-white/10 text-white placeholder:text-white/50' : 'border border-roca bg-white',
       ]}
     />

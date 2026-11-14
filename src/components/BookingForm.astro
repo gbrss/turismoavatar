@@ -21,7 +21,7 @@ const uid = Math.random().toString(36).slice(2, 7);
         {exps.map((e) => <option value={`experiencia:${e.id}`} data-kind="experiencia" selected={preselect === `experiencia:${e.id}`}>{e.data.title}</option>)}
       </optgroup>
       <optgroup label="Programas">
-        {progs.map((p) => <option value={`programa:${p.id}`} data-kind="programa" selected={preselect === `programa:${p.id}`}>{p.data.title}</option>)}
+        {progs.map((p) => <option value={`programa:${p.id}`} data-kind="programa" selected={preselect === `programa:${p.id}`}>{p.data.group === 'tercera-edad' ? `Tercera Edad 2026: ${p.data.title}` : p.data.title}</option>)}
       </optgroup>
       <optgroup label="Alojamientos">
         {
@@ -51,7 +51,7 @@ const uid = Math.random().toString(36).slice(2, 7);
     </div>
   </div>
 
-  <p data-estimate class="hidden rounded-lg bg-laguna/10 px-4 py-3 text-rio" aria-live="polite"></p>
+  <p data-estimate class="hidden rounded-lg bg-cielo/10 px-4 py-3 text-marino" aria-live="polite"></p>
 
   <div class:list={['grid gap-5', compact ? '' : 'sm:grid-cols-2']}>
     <div class="field">
@@ -78,12 +78,12 @@ const uid = Math.random().toString(36).slice(2, 7);
     <button class="btn btn-primary">Enviar solicitud de reserva</button>
     <p class="text-sm text-gris">Te confirmamos disponibilidad y pago por WhatsApp o correo. No se cobra nada ahora.</p>
   </div>
-  <p data-error role="alert" class="hidden rounded-lg bg-copihue/10 px-4 py-3 font-medium text-copihue-700"></p>
+  <p data-error role="alert" class="hidden rounded-lg bg-naranja/10 px-4 py-3 font-medium text-naranja-700"></p>
 </form>
 
-<div data-booking-ok hidden class="rounded-2xl bg-rio p-6 text-white sm:p-8" tabindex="-1">
+<div data-booking-ok hidden class="rounded-2xl bg-marino p-6 text-white sm:p-8" tabindex="-1">
   <h2 class="font-display text-h3">Recibimos tu solicitud</h2>
-  <p class="mt-2 text-white/85">Tu código es <strong data-code class="text-atardecer"></strong>. Te escribiremos pronto para confirmar. Si quieres acelerar la confirmación, envíanos el código por WhatsApp.</p>
+  <p class="mt-2 text-white/85">Tu código es <strong data-code class="text-naranja"></strong>. Te escribiremos pronto para confirmar. Si quieres acelerar la confirmación, envíanos el código por WhatsApp.</p>
   <a data-wa href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" class="btn btn-wa mt-5">Confirmar por WhatsApp</a>
 </div>
 

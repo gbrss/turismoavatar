@@ -2,21 +2,25 @@
 import { whatsappLink } from '@/data/site';
 interface Props { title?: string; text?: string; message?: string }
 const {
-  title = '¿Armamos tu próxima salida?',
+  title = '¿Armamos tu próxima aventura?',
   text = 'Cuéntanos fecha, cuántas personas y qué te gustaría vivir. Te respondemos por WhatsApp, normalmente el mismo día.',
   message,
 } = Astro.props;
 ---
 
-<section class="bg-copihue text-white">
-  <div class="wrap grid gap-6 py-14 md:grid-cols-[1fr_auto] md:items-center">
+<section class="relative overflow-hidden bg-marino text-white">
+  <svg class="pointer-events-none absolute -right-24 -top-24 h-[28rem] w-[28rem] text-naranja opacity-[0.12]" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="3" />
+    <path d="M50 12 L61 44 L94 44 L67 63 L77 94 L50 75 L23 94 L33 63 L6 44 L39 44 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+  </svg>
+  <div class="wrap relative grid gap-6 py-16 md:grid-cols-[1fr_auto] md:items-center">
     <div>
       <h2 class="text-h2">{title}</h2>
-      <p class="mt-3 max-w-2xl text-lg text-white/90">{text}</p>
+      <p class="mt-3 max-w-2xl text-lg text-white/80">{text}</p>
     </div>
     <div class="flex flex-wrap gap-3">
-      <a href="/reservas" class="btn bg-white text-copihue-700 hover:bg-niebla">Solicitar reserva</a>
-      <a href={whatsappLink(message)} target="_blank" rel="noopener" class="btn btn-ghost">WhatsApp</a>
+      <a href="/reservas" class="btn btn-primary">Solicitar reserva</a>
+      <a href={whatsappLink(message)} target="_blank" rel="noopener" class="btn btn-wa">WhatsApp</a>
     </div>
   </div>
 </section>

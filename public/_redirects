@@ -9,6 +9,44 @@
 /habitaciones_pro/* /alojamientos 301
 /habitaciones_pro /alojamientos 301
 
+# Productos WooCommerce → fichas nuevas
+/product/senderismo-historico-cerro-caracol/* /experiencias/senderismo-cerro-caracol 301
+/product/city-tour-lagunas-de-concepcion/* /experiencias/city-tour-7-lagunas 301
+/product/sup-experiencia-en-mar/* /experiencias/sup-dichato 301
+/product/trekking-tour-tome/* /experiencias/trekking-tome 301
+/product/mochila-pro/* /tienda#mochila-camping-90l 301
+/product/mochila/* /tienda#mochila 301
+/product/reserva/* /reservas 301
+/product/* /experiencias 301
+/product-category/accesorios/* /tienda 301
+/product-category/reserva/* /reservas 301
+/product-category/actividades/playa/* /experiencias?categoria=nautico 301
+/product-category/actividades/bosque/* /experiencias?categoria=trekking 301
+/product-category/actividades/lagunas/* /experiencias/city-tour-7-lagunas 301
+/product-category/actividades/patrimonio-cultura/* /experiencias?categoria=patrimonio 301
+/product-category/* /experiencias 301
+
+# Taxonomías del sitio anterior
+/actividad/sup/* /experiencias?categoria=nautico 301
+/actividad/senderismo/* /experiencias?categoria=trekking 301
+/actividad/citytour/* /experiencias?categoria=city-tour 301
+/actividad/bird-watching/* /experiencias/city-tour-7-lagunas 301
+/actividad/* /experiencias 301
+/actividades_pro/* /programas 301
+/actividades-cpt/* /experiencias 301
+/ciudades/:comuna/* /destinos/:comuna 301
+/regiones/* /destinos 301
+/resultados/* /experiencias 301
+/habitaciones/* /alojamientos 301
+/wishlist/* /experiencias 301
+/wpbc-booking-received/* /reservas 301
+/wpbc-booking/* /reservas 301
+/author/* / 301
+
+# Experiencias renombradas en el sitio nuevo
+/experiencias/city-tour-concepcion/* /experiencias/city-tour-7-lagunas 301
+/experiencias/sup-penco/* /experiencias/sup-dichato 301
+
 # WooCommerce (tienda, carrito, checkout)
 /carrito/* /reservas 301
 /carrito /reservas 301
@@ -16,12 +54,8 @@
 /checkout/* /reservas 301
 /cart/* /reservas 301
 /mi-cuenta/* / 301
-/tienda/* /experiencias 301
-/tienda /experiencias 301
-/shop/* /experiencias 301
-/product-category/* /experiencias 301
+/shop/* /tienda 301
 /categoria-producto/* /experiencias 301
-/product/* /experiencias 301
 /producto/* /experiencias 301
 
 # Páginas con otro nombre en el sitio nuevo
@@ -40,7 +74,6 @@
 /comments/feed/* / 301
 /category/* / 301
 /tag/* / 301
-/author/* / 301
 /xmlrpc.php / 301
 /wp-sitemap.xml /sitemap-index.xml 301
 /sitemap_index.xml /sitemap-index.xml 301

@@ -1,17 +1,19 @@
 ---
 // Formulario genérico de contacto / cotización / postulación de proveedores → /api/contacto (se guarda en D1 y notifica por email)
-interface Props { kind: 'contacto' | 'empresa' | 'proveedor'; submitLabel?: string }
+interface Props { kind: 'contacto' | 'empresa' | 'proveedor' | 'rally'; submitLabel?: string }
 const { kind, submitLabel = 'Enviar mensaje' } = Astro.props;
 const uid = Math.random().toString(36).slice(2, 7);
 const extra = {
   contacto: null,
   empresa: { label: 'Empresa, colegio u organización', placeholder: 'Nombre de la organización' },
   proveedor: { label: 'Tu emprendimiento', placeholder: 'Nombre y tipo (cabañas, tours, gastronomía…)' },
+  rally: { label: '¿Cuántas personas y qué paquete te interesa?', placeholder: 'Ej: 2 personas, Day Pass + Alojamiento' },
 }[kind];
 const msgPlaceholder = {
   contacto: '¿En qué te podemos ayudar?',
   empresa: 'Cantidad de personas, fechas tentativas, tipo de actividad y presupuesto aproximado',
   proveedor: 'Cuéntanos qué ofreces, dónde y cómo te gustaría trabajar con nosotros',
+  rally: 'Días que te interesan, si necesitas alojamiento, desde dónde viajas…',
 }[kind];
 ---
 
@@ -42,11 +44,11 @@ const msgPlaceholder = {
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || 'No pudimos enviar tu mensaje.');
-        status.className = 'rounded-lg bg-laguna/15 px-4 py-3 font-medium text-rio';
+        status.className = 'rounded-lg bg-cielo/15 px-4 py-3 font-medium text-marino';
         status.textContent = 'Mensaje enviado. Te responderemos dentro de 24 horas.';
         form.reset();
       } catch (err) {
-        status.className = 'rounded-lg bg-copihue/10 px-4 py-3 font-medium text-copihue-700';
+        status.className = 'rounded-lg bg-naranja/10 px-4 py-3 font-medium text-naranja-700';
         status.textContent = `${err instanceof Error ? err.message : 'No pudimos enviar tu mensaje.'} Escríbenos por WhatsApp al +56 9 4998 1427.`;
       } finally {
         btn.disabled = false;

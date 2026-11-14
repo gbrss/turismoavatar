@@ -1,0 +1,41 @@
+---
+// Reproductor de YouTube a pedido (no carga nada de YouTube hasta que se presiona play).
+---
+
+<dialog id="video-modal" class="m-auto w-[min(64rem,calc(100vw-2rem))] max-w-none overflow-visible bg-transparent p-0 backdrop:bg-marino-900/90" aria-label="Video">
+  <div class="relative aspect-video w-full overflow-hidden rounded-2xl bg-black" data-video-slot></div>
+  <p class="mt-3 text-center font-display font-bold text-white" data-video-caption></p>
+  <button type="button" class="absolute -top-14 right-0 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" data-video-close>
+    <span class="sr-only">Cerrar video</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+</dialog>
+
+<script>
+  const modal = document.getElementById('video-modal') as HTMLDialogElement;
+  const slot = modal.querySelector<HTMLElement>('[data-video-slot]')!;
+  const caption = modal.querySelector<HTMLElement>('[data-video-caption]')!;
+  let opener: HTMLElement | null = null;
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-video-open]');
+    if (!btn) return;
+    e.preventDefault();
+    opener = btn;
+    const f = document.createElement('iframe');
+    f.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.videoOpen}?autoplay=1&rel=0`;
+    f.title = btn.dataset.videoTitle ?? 'Video de Turismo Avatar';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    f.className = 'absolute inset-0 h-full w-full';
+    slot.replaceChildren(f);
+    caption.textContent = btn.dataset.videoTitle ?? '';
+    modal.showModal();
+  });
+  const close = () => modal.close();
+  modal.querySelector('[data-video-close]')!.addEventListener('click', close);
+  modal.addEventListener('click', (e) => e.target === modal && close());
+  modal.addEventListener('close', () => {
+    slot.replaceChildren();
+    opener?.focus();
+  });
+</script>

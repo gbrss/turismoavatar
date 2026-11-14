@@ -2,43 +2,66 @@
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Media from '@/components/Media.astro';
-import YouTube from '@/components/YouTube.astro';
+import VideoGrid from '@/components/VideoGrid.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import { site } from '@/data/site';
+const unicos = [
+  ['Guías expertos locales', 'Nuestro equipo está compuesto por guías locales, expertos en turismo y amantes de la naturaleza y la aventura.'],
+  ['Cuidamos el medio ambiente', 'Promovemos un turismo sostenible que enriquece la experiencia y apoya a la comunidad local y su entorno.'],
+  ['Experiencias personalizadas', 'Cada detalle está pensado para hacerte sentir bien, porque sabemos que te mereces lo mejor.'],
+  ['Actividades bien planificadas', 'Desde trekking y navegación en SUP hasta tours astronómicos y las competencias de Rally.'],
+];
 ---
 
-<Base title="Quiénes somos" description={`Turismo Avatar es tour operador en Concepción desde ${site.foundingYear}. Conectamos a visitantes con los atractivos y emprendedores de la Región del Biobío.`}>
-  <PageHero title="Somos el puente entre el Biobío y quienes lo visitan" crumbs={[{ href: '/quienes-somos', label: 'Quiénes somos' }]} />
-  <section class="wrap grid gap-14 pb-20 lg:grid-cols-[1.1fr_1fr]">
+<Base title="Quiénes somos" description={`Turismo Avatar, tour operador desde ${site.foundingYear} en Concepción. Exploramos contigo: experiencias locales con sello de calidad en la Región del Biobío.`} image="2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp">
+  <PageHero title="Exploramos contigo: experiencias locales con sello de calidad" lead={`Tour operador desde ${site.foundingYear} en Concepción. Nacimos para conectar a visitantes y turistas con los atractivos de la Región del Biobío en toda su grandeza.`} image="2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp" crumbs={[{ href: '/quienes-somos', label: 'Quiénes somos' }]} />
+
+  <section class="wrap grid gap-14 py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center">
     <div class="prose-ta text-lg">
-      <p>
-        Turismo Avatar nació en {site.foundingYear} en Concepción, en respuesta a una necesidad concreta: muchos de los turistas que llegan a la región no logran conocer todos los atractivos que tiene el Biobío. Quisimos resolver esa brecha entre la demanda turística y la oferta local.
-      </p>
-      <p>
-        Hoy diseñamos city tours, trekking, actividades náuticas como SUP y kayak, cabalgatas y programas de varios días, y administramos alojamientos en la costa de Tomé, Penco y Santa Bárbara.
-      </p>
-      <p>
-        Queremos ser el puente entre cientos de emprendedores turísticos de la región y quienes nos visitan, con un turismo de economía circular y triple impacto: que genere valor para los viajeros, para las comunidades locales y para el entorno natural.
-      </p>
-      <div class="mt-10 grid gap-8 sm:grid-cols-2">
-        <section><h2 class="font-display text-2xl font-extrabold">Misión</h2><p class="mt-2 text-base text-gris">{site.mission}</p></section>
-        <section><h2 class="font-display text-2xl font-extrabold">Visión</h2><p class="mt-2 text-base text-gris">{site.vision}</p></section>
-      </div>
+      <h2 class="mb-4 text-h2">Nacimos para compartir la belleza del Biobío</h2>
+      <p>Desde nuestros inicios hemos tenido una misión clara: acercar a las personas a la naturaleza, la cultura y la tradición propias de esta región.</p>
+      <p>Inspirados por la belleza del Biobío y el deseo de compartirla, creamos un espacio donde cada prestador de servicios puede ser parte de esta vitrina, para vivir juntos experiencias únicas donde el turista es el protagonista de la historia.</p>
     </div>
-    <div class="grid gap-6">
-      <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-rio"><Media src="2024/10/IMG_20230826_153908-scaled.jpg" alt="Grupo de Turismo Avatar en una salida" sizes="(min-width: 1024px) 40vw, 100vw" /></div>
+    <div class="aspect-[4/5] overflow-hidden rounded-3xl bg-marino sm:aspect-[4/3] lg:aspect-[4/5]">
+      <Media src="2025/07/GOPR3576_1737327895652-scaled.jpg" alt="Equipo y viajeros de Turismo Avatar en un sendero de Tomé" sizes="(min-width: 1024px) 40vw, 100vw" class="object-[center_30%]" />
     </div>
   </section>
 
+  <section class="bg-marino py-20 text-white">
+    <div class="wrap grid gap-10 md:grid-cols-2">
+      <div class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10">
+        <h2 class="font-display text-2xl font-extrabold text-naranja">Misión</h2>
+        <p class="mt-3 text-lg text-white/85">{site.mission}</p>
+      </div>
+      <div class="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10">
+        <h2 class="font-display text-2xl font-extrabold text-cielo">Visión</h2>
+        <p class="mt-3 text-lg text-white/85">{site.vision}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-20">
+    <h2 class="max-w-2xl text-h2">Turismo con propósito: creamos recuerdos y alianzas</h2>
+    <p class="mt-4 max-w-2xl text-lg text-gris">Detrás de cada experiencia está nuestro equipo, comprometido en brindarte momentos inolvidables.</p>
+    <dl class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {unicos.map(([t, d]) => (
+        <div class="border-t-[3px] border-naranja pt-5">
+          <dt class="font-display text-lg font-extrabold">{t}</dt>
+          <dd class="mt-2 text-gris">{d}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
   <section class="bg-white py-20">
-    <div class="wrap grid gap-12 lg:grid-cols-2 lg:items-center">
+    <div class="wrap grid gap-12 lg:grid-cols-2 lg:items-start">
       <div>
         <h2 class="text-h2">Somos parte de la red turística local</h2>
-        <ul class="mt-6 grid gap-3 text-lg">{site.memberships.map((m) => <li class="border-l-2 border-laguna pl-4">{m}</li>)}</ul>
-        <h3 class="mt-10 font-display text-2xl font-extrabold">En los medios</h3>
-        <ul class="mt-3 grid gap-3">{site.press.map((p) => <li><a href={p.url} target="_blank" rel="noopener" class="hover:underline"><span class="text-sm text-gris">{p.outlet}</span><span class="block font-medium">{p.title}</span></a></li>)}</ul>
+        <ul class="mt-6 grid gap-3 text-lg">{site.memberships.map((m) => <li class="border-l-[3px] border-cielo pl-4">{m}</li>)}</ul>
+        <h3 class="mt-10 font-display text-xl font-extrabold">En los medios</h3>
+        <ul class="mt-3 grid gap-3">{site.press.map((p) => <li><a href={p.url} target="_blank" rel="noopener" class="group block"><span class="text-sm text-gris">{p.outlet}</span><span class="block font-semibold group-hover:underline">{p.title}</span></a></li>)}</ul>
       </div>
-      <YouTube id={site.featuredVideo} title="Conoce Turismo Avatar" />
+      <VideoGrid cols={1} videos={site.videos.slice(0, 1)} />
     </div>
   </section>
   <CtaBand />

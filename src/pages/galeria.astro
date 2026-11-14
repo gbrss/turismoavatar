@@ -2,15 +2,24 @@
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Gallery from '@/components/Gallery.astro';
+import VideoGrid from '@/components/VideoGrid.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import { galeria, galeriaTags } from '@/data/galeria';
 import { site } from '@/data/site';
 ---
 
-<Base title="Galería de aventuras en el Biobío" description="Fotos de nuestras salidas: SUP en Penco y Dichato, Cerro Caracol, cabalgatas en Hualpén, la costa de Tomé y nuestros alojamientos.">
-  <PageHero title="Nuestra galería de aventuras" lead="Deja que cada foto te inspire a conquistar lo desconocido." crumbs={[{ href: '/galeria', label: 'Galería' }]}>
-    <p class="mt-4"><a href={site.social.instagram} target="_blank" rel="noopener" class="font-semibold text-copihue underline decoration-2 underline-offset-4">Más fotos y videos en Instagram @turismoavatar</a></p>
+<Base title="Galería de aventuras en el Biobío" description="Fotos y videos de nuestras salidas: SUP en Dichato, Cerro Caracol, trekking en Tomé, cabalgatas en Hualpén, atardeceres en Laguna Grande y nuestros alojamientos." image="2024/11/GOPR3756_1737677330009-scaled.jpg">
+  <PageHero title="Nuestra galería de aventuras" lead="Deja que cada foto te inspire a conquistar lo desconocido. Cada imagen cuenta una historia de exploración, desafío y conexión con la naturaleza." crumbs={[{ href: '/galeria', label: 'Galería' }]}>
+    <p class="mt-4"><a href={site.social.instagram} target="_blank" rel="noopener" class="font-bold text-naranja-700 underline decoration-2 underline-offset-4">Más fotos y videos en Instagram @turismoavatar</a></p>
   </PageHero>
-  <section class="wrap pb-24"><Gallery items={galeria} filters={galeriaTags} /></section>
+  <section class="wrap pb-20" aria-labelledby="videos">
+    <h2 id="videos" class="text-h3 sm:text-[2rem]">Videos</h2>
+    <div class="mt-6"><VideoGrid videos={site.videos} /></div>
+    <p class="mt-6"><a href={site.social.youtube} target="_blank" rel="noopener" class="font-bold text-naranja-700 underline decoration-2 underline-offset-4">Ver el canal de YouTube</a></p>
+  </section>
+  <section class="wrap pb-24" aria-labelledby="fotos">
+    <h2 id="fotos" class="mb-6 text-h3 sm:text-[2rem]">Fotos</h2>
+    <Gallery items={galeria} filters={galeriaTags} />
+  </section>
   <CtaBand />
 </Base>

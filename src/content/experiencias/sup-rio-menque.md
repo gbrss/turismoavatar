@@ -5,13 +5,13 @@ category: nautico
 destinos: [tome]
 duration: 2 a 3 horas
 difficulty: Baja
-minAge: 8
+minAge: 12
 groupSize: Grupos privados con reserva
 meetingPoint: Menque, Tomé (punto exacto se confirma al reservar)
 schedule: Con reserva para grupos privados
 includes: [Tabla de SUP y remo, Chaleco salvavidas, Guía e instructor]
 bring: [Traje de baño, Toalla, Ropa de cambio, Bloqueador]
-image: 2024/10/supdichato-scaled-e1732736023522.jpg
+image: youtube/ieE0XLv0mW4.jpg
 gallery: []
 featured: false
 order: 4

@@ -13,11 +13,14 @@ export const site = {
   whatsapp: '56949981427',
   whatsappGreeting: 'Hola Turismo Avatar 👋 Quiero información sobre',
   email: 'contacto@turismoavatar.cl',
+  email2: 'turismoavatar@gmail.com',
+  address: 'Barros Arana 492, oficina 78',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Barros+Arana+492+Concepci%C3%B3n+Chile',
   city: 'Concepción',
   region: 'Región del Biobío',
   country: 'CL',
   // Coordenadas aproximadas de Concepción centro (para schema.org / mapas)
-  geo: { lat: -36.8270, lng: -73.0498 },
+  geo: { lat: -36.8279, lng: -73.0512 },
   hours: 'Atención por WhatsApp las 24 horas',
   social: {
     instagram: 'https://www.instagram.com/turismoavatar',
@@ -26,7 +29,18 @@ export const site = {
     tiktok: 'https://www.tiktok.com/@turismoavatar',
     threads: 'https://www.threads.com/@turismoavatar',
   },
-  featuredVideo: 'aUodZdx7wPw',
+  featuredVideo: 'B__VK6fS8u8',
+  assistantName: 'Cami',
+  // Videos del canal de YouTube @turismoavatar (miniaturas descargadas en src/assets/media/youtube)
+  videos: [
+    { id: 'B__VK6fS8u8', title: 'Turismo Avatar en Chile' },
+    { id: 'ieE0XLv0mW4', title: 'Increíble descubrimiento en SUP en el Biobío' },
+    { id: 'bzR2UUQxBPk', title: 'Biobío me inspira' },
+    { id: 'Bk-u5Fe__eI', title: 'Atardecer en Laguna Grande, San Pedro de la Paz' },
+    { id: 'WzfrMOR4XJk', title: 'Remando en SUP por el Biobío' },
+    { id: 'aUodZdx7wPw', title: 'Rally Chile Biobío con Turismo Avatar' },
+  ],
+  shorts: ['3Ntig1N9F1k', 'RyMleOQLDmc', 'ytzjz8hy4bs'],
   mission:
     'Crear experiencias turísticas transformadoras en el Biobío que despierten el alma de quienes nos visitan, fortaleciendo el desarrollo local mediante alianzas sostenibles y generando valor para nuestros clientes, comunidades y nuestro equipo.',
   vision:
@@ -57,6 +71,7 @@ export const nav = [
   { href: '/alojamientos', label: 'Alojamientos' },
   { href: '/programas', label: 'Programas' },
   { href: '/destinos', label: 'Destinos' },
+  { href: '/tienda', label: 'Tienda' },
   { href: '/galeria', label: 'Galería' },
   { href: '/quienes-somos', label: 'Nosotros' },
   { href: '/contacto', label: 'Contacto' },

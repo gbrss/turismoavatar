@@ -10,9 +10,9 @@ schedule: Con reserva previa
 includes: [Caballo y monturas, Guía baqueano, Casco]
 bring: [Pantalón largo, Zapatos cerrados, Bloqueador]
 image: 2024/10/CabalgataHualpen-scaled.jpg
-gallery: [2024/11/Ramuntcho.jpg]
-featured: true
-order: 8
+gallery: [2025/08/CabalgataHualpen-600x338-1.webp]
+featured: false
+order: 6
 ---
 
 Una forma tranquila y auténtica de recorrer el santuario de la naturaleza de Hualpén. No se necesita experiencia previa: los caballos son mansos y el guía acompaña todo el recorrido.

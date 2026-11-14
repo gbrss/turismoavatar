@@ -5,8 +5,8 @@ export const faq = [
     a: 'Elige la experiencia o alojamiento, presiona "Reservar" y completa fecha, número de personas y tus datos. Te confirmamos disponibilidad y forma de pago por WhatsApp o correo, normalmente el mismo día. También puedes escribirnos directo al WhatsApp +56 9 4998 1427.',
   },
   {
-    q: '¿Necesito experiencia previa para hacer SUP o kayak?',
-    a: 'No. Todas nuestras actividades náuticas incluyen instrucción básica, chaleco salvavidas y un instructor que te acompaña en el agua. Elegimos lugares de aguas tranquilas como la bahía de Penco.',
+    q: '¿Necesito experiencia previa o saber nadar para hacer SUP?',
+    a: 'No. Te enseñamos desde cero a remar de pie y siempre usarás chaleco salvavidas, con un instructor en el agua. La Experiencia SUP en Dichato es desde los 12 años.',
   },
   {
     q: '¿Qué pasa si hay mal tiempo?',
@@ -18,11 +18,15 @@ export const faq = [
   },
   {
     q: '¿Retiran en el hotel?',
-    a: 'En el city tour de Concepción incluimos retiro en tu hotel dentro de la ciudad. Para otras experiencias podemos coordinar traslado desde Concepción; te lo informamos al cotizar.',
+    a: 'En el City Tour 7 Lagunas te recogemos en el punto que acordemos contigo. Para otras experiencias podemos coordinar traslado desde Concepción; te lo informamos al cotizar.',
+  },
+  {
+    q: '¿Dónde están ubicados?',
+    a: 'Nuestra oficina está en Barros Arana 492, oficina 78, Concepción. Los puntos de encuentro de cada experiencia se indican en su ficha (por ejemplo, la Galería de la Historia de Concepción o nuestro punto en Dichato).',
   },
   {
     q: '¿Dónde operan?',
-    a: 'En todo el Gran Concepción y la Región del Biobío: Concepción, Talcahuano, Hualpén, San Pedro de la Paz, Chiguayante, Penco, Tomé (Dichato y Coliumo), Coronel, Lota, Arauco y Santa Juana.',
+    a: 'En todo el Gran Concepción y la Región del Biobío: Concepción, Talcahuano, Hualpén, San Pedro de la Paz, Chiguayante, Penco, Tomé (Dichato y Coliumo), Coronel, Lota, Arauco, Santa Juana y Santa Bárbara. Además organizamos escapadas a Lonquimay, Lago Lanalhue y Valle Las Trancas.',
   },
   {
     q: '¿Cómo puedo pagar?',

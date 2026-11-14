@@ -1,33 +1,47 @@
 ---
 import Media from './Media.astro';
+import { getMedia } from '@/lib/media';
 interface Props { title: string; lead?: string; image?: string; crumbs?: { href: string; label: string }[] }
 const { title, lead, image, crumbs = [] } = Astro.props;
+const meta = getMedia(image);
+// Fotos grandes → portada a pantalla completa. Fotos chicas → portada dividida (no se pixelan).
+const mode: 'bleed' | 'split' | 'plain' = !meta ? 'plain' : meta.width >= 1400 ? 'bleed' : 'split';
 ---
 
-<section class:list={['relative overflow-hidden', image ? 'bg-rio text-white' : 'bg-niebla']}>
+<section class:list={['relative overflow-hidden', mode === 'bleed' ? 'bg-marino text-white' : 'bg-niebla']}>
   {
-    image && (
+    mode === 'bleed' && (
       <div class="absolute inset-0">
         <Media src={image} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
-        <div class="absolute inset-0 bg-gradient-to-t from-rio-900/90 via-rio-900/50 to-rio-900/20" />
+        <div class="absolute inset-0 bg-gradient-to-t from-marino-900/95 via-marino-900/55 to-marino-900/35" />
+        <div class="absolute inset-y-0 left-0 w-3/4 bg-gradient-to-r from-marino-900/60 to-transparent" />
       </div>
     )
   }
-  <div class:list={['wrap relative', image ? 'pb-14 pt-40 sm:pt-52' : 'pb-10 pt-12']}>
+  <div class:list={['wrap relative', mode === 'bleed' ? 'pb-14 pt-40 sm:pt-56' : 'pb-12 pt-10', mode === 'split' && 'grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]']}>
+    <div>
+      {
+        crumbs.length > 0 && (
+          <nav aria-label="Ruta de navegación" class:list={['mb-4 text-sm', mode === 'bleed' ? 'text-white/75' : 'text-gris']}>
+            <ol class="flex flex-wrap gap-x-2">
+              <li><a href="/" class="hover:underline">Inicio</a></li>
+              {crumbs.map((c) => (
+                <li class="before:mr-2 before:content-['/']"><a href={c.href} class="hover:underline">{c.label}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <h1 class="max-w-4xl text-h1">{title}</h1>
+      {lead && <p class:list={['mt-4 max-w-2xl text-lg', mode === 'bleed' ? 'text-white/85' : 'text-gris']}>{lead}</p>}
+      <slot />
+    </div>
     {
-      crumbs.length > 0 && (
-        <nav aria-label="Ruta de navegación" class:list={['mb-4 text-sm', image ? 'text-white/75' : 'text-gris']}>
-          <ol class="flex flex-wrap gap-x-2">
-            <li><a href="/" class="hover:underline">Inicio</a></li>
-            {crumbs.map((c) => (
-              <li class="before:mr-2 before:content-['/']"><a href={c.href} class="hover:underline">{c.label}</a></li>
-            ))}
-          </ol>
-        </nav>
+      mode === 'split' && (
+        <div class="aspect-[4/3] overflow-hidden rounded-2xl bg-marino">
+          <Media src={image} alt="" widths={[600, 900]} sizes="(min-width: 1024px) 40vw, 100vw" loading="eager" fetchpriority="high" />
+        </div>
       )
     }
-    <h1 class="max-w-4xl text-h1">{title}</h1>
-    {lead && <p class:list={['mt-4 max-w-2xl text-lg', image ? 'text-white/85' : 'text-gris']}>{lead}</p>}
-    <slot />
   </div>
 </section>

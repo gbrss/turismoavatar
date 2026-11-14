@@ -1,10 +1,11 @@
 ---
-title: Escapada Tomé, Dichato y Coliumo, 3 días
-summary: Tres días de mar, río y tinaja en la costa de Tomé, con SUP en el río Menque y cabaña en Coliumo.
+title: Escapada costera Tomé, Dichato y Coliumo
+summary: Tres días de mar y tinaja en la costa de Tomé, con SUP en Dichato, trekking costero y cabaña en Coliumo.
 days: 3
+nights: 2
 idealFor: Escapadas de descanso en pareja o familia
-image: 2024/10/casa-poli-e1732202603523.jpg
-experiencias: [sup-rio-menque, clases-sup]
+image: 2024/11/GOPR1129.jpg
+experiencias: [sup-dichato, trekking-tome]
 plan:
   - day: 1
     title: Llegada a Coliumo
@@ -12,14 +13,14 @@ plan:
       - Check-in en cabaña con tinaja en Coliumo
       - Paseo por la caleta y atardecer
   - day: 2
-    title: Río Menque
+    title: Mar de Dichato
     items:
-      - SUP tour por el río Menque
+      - Experiencia SUP en la bahía de Dichato
       - Tarde libre de tinaja y piscina
   - day: 3
-    title: Dichato
+    title: Costa de Tomé
     items:
-      - Clase de SUP en Dichato
+      - Trekking Tour Tomé hasta los miradores del océano
       - Almuerzo en la caleta y regreso
 includes: [2 noches de alojamiento, Actividades del programa, Coordinación por WhatsApp]
 order: 3
