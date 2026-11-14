@@ -1,67 +1,89 @@
 ---
+import { getImage } from 'astro:assets';
 import { whatsappLink } from '@/data/site';
+import marca from '@/assets/brand/marca.png';
 const wa = whatsappLink();
+const avatar = (await getImage({ src: marca, width: 96, format: 'webp' })).src;
+const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero hacer SUP', 'Viajes tercera edad', 'Rally WRC'];
 ---
 
-<div data-chat class="fixed bottom-4 right-4 z-[60] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
-  <section
-    id="chat-panel"
-    hidden
-    aria-label="Asistente de Turismo Avatar"
-    class="flex h-[min(36rem,calc(100dvh-7rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(25,42,61,.45)] ring-1 ring-marino/10"
-  >
-    <header class="flex items-center justify-between bg-marino px-4 py-3 text-white">
-      <div>
-        <p class="font-display text-lg font-bold leading-tight">Cami · Turismo Avatar</p>
-        <p class="text-sm text-white/70">Responde al instante · reservas por WhatsApp</p>
-      </div>
-      <button type="button" data-chat-close class="grid h-10 w-10 place-items-center rounded-full hover:bg-white/10">
-        <span class="sr-only">Cerrar chat</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-      </button>
-    </header>
-
-    <ol data-chat-log class="flex-1 space-y-3 overflow-y-auto bg-niebla px-4 py-4 text-[0.98rem]" aria-live="polite">
-      <li class="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-3.5 py-2.5 shadow-sm">
-        ¡Hola! 👋 Soy Cami, del equipo de Turismo Avatar 😊 Te ayudo a elegir experiencias, ver alojamientos y precios, o reservar en el Biobío. ¿En qué te puedo ayudar?
-      </li>
-    </ol>
-
-    <div data-chat-quick class="flex flex-wrap gap-2 border-t border-roca bg-white px-3 pt-3">
-      {
-        ['¿Qué tours tienen?', 'Alojamientos y precios', 'Quiero hacer SUP', 'Viajes tercera edad'].map((q) => (
-          <button type="button" data-q={q} class="rounded-full border border-cielo/40 px-3 py-1.5 text-sm text-marino hover:bg-cielo/10">
-            {q}
-          </button>
-        ))
-      }
+<!-- Panel del chat: hoja inferior en móvil, ventana flotante en escritorio -->
+<div data-chat-backdrop hidden class="fixed inset-0 z-[79] bg-marino-900/40 backdrop-blur-[2px] sm:hidden"></div>
+<section
+  id="chat-panel"
+  hidden
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="chat-title"
+  class="fixed inset-x-0 bottom-0 z-[80] flex h-[min(88dvh,40rem)] flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_-10px_50px_-10px_rgba(25,42,61,.35)] sm:inset-x-auto sm:bottom-24 sm:right-6 sm:h-[min(38rem,calc(100dvh-8rem))] sm:w-[23.5rem] sm:rounded-3xl sm:shadow-[0_25px_70px_-20px_rgba(25,42,61,.5)] sm:ring-1 sm:ring-marino/10"
+>
+  <header class="flex shrink-0 items-center gap-3 bg-marino px-4 py-3 text-white">
+    <span class="relative shrink-0">
+      <img src={avatar} alt="" width="40" height="40" class="h-10 w-10 rounded-full bg-white p-1" />
+      <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-[#25d366] ring-2 ring-marino"></span>
+    </span>
+    <div class="min-w-0 flex-1">
+      <p id="chat-title" class="font-display text-[0.95rem] font-bold leading-tight">Cami · Turismo Avatar</p>
+      <p class="truncate text-xs text-white/70">En línea · responde al instante</p>
     </div>
+    <button type="button" data-chat-close class="grid h-10 w-10 shrink-0 place-items-center rounded-full hover:bg-white/10">
+      <span class="sr-only">Cerrar chat</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </header>
 
-    <form data-chat-form class="flex gap-2 bg-white p-3">
-      <label for="chat-input" class="sr-only">Escribe tu mensaje</label>
-      <input
-        id="chat-input"
-        name="message"
-        autocomplete="off"
-        maxlength="500"
-        placeholder="Escribe tu pregunta…"
-        class="min-h-11 min-w-0 flex-1 rounded-full border border-roca px-4 focus:border-cielo focus:outline-none"
-      />
-      <button class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-naranja text-white hover:bg-naranja-700">
-        <span class="sr-only">Enviar</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5l18-8.5L3 3.5v6.6l12 1.9-12 1.9z" /></svg>
+  <ol data-chat-log class="flex-1 space-y-3 overflow-y-auto overscroll-contain bg-niebla px-3.5 py-4 text-[0.9375rem] leading-relaxed sm:px-4" aria-live="polite">
+    <li class="chat-bot">
+      ¡Hola! 👋 Soy Cami, del equipo de Turismo Avatar. Te ayudo a elegir experiencias, ver alojamientos y precios, o reservar en el Biobío. ¿En qué te puedo ayudar?
+    </li>
+  </ol>
+
+  <div data-chat-quick class="flex shrink-0 gap-2 overflow-x-auto border-t border-roca bg-white px-3 pb-1 pt-3 [scrollbar-width:none]">
+    {sugerencias.map((q) => <button type="button" data-q={q} class="shrink-0 rounded-full border border-cielo/40 px-3 py-1.5 text-[0.8125rem] font-semibold text-marino hover:bg-cielo/10">{q}</button>)}
+  </div>
+
+  <form data-chat-form class="flex shrink-0 gap-2 bg-white p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+    <label for="chat-input" class="sr-only">Escribe tu mensaje</label>
+    <input
+      id="chat-input"
+      name="message"
+      autocomplete="off"
+      maxlength="500"
+      enterkeyhint="send"
+      placeholder="Escribe tu pregunta…"
+      class="min-h-11 min-w-0 flex-1 rounded-full border border-roca px-4 text-[0.9375rem] focus:border-cielo focus:outline-none"
+    />
+    <button class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-naranja text-marino hover:bg-naranja-300">
+      <span class="sr-only">Enviar</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5l18-8.5L3 3.5v6.6l12 1.9-12 1.9z" /></svg>
+    </button>
+  </form>
+</section>
+
+<!-- Lanzadores + globo animado -->
+<div data-chat class="fixed bottom-4 right-4 z-[60] sm:bottom-6 sm:right-6">
+  <div data-teaser hidden class="teaser absolute bottom-full right-0 mb-4 w-[min(17.5rem,calc(100vw-2rem))]">
+    <div class="relative rounded-2xl bg-white p-4 pr-9 shadow-[0_18px_45px_-12px_rgba(25,42,61,.45)] ring-1 ring-marino/10">
+      <button type="button" data-teaser-open class="flex w-full gap-3 text-left">
+        <img src={avatar} alt="" width="36" height="36" class="h-9 w-9 shrink-0 rounded-full bg-niebla p-1" />
+        <span class="min-w-0">
+          <span class="block font-display text-[0.9rem] font-bold leading-snug text-tinta">¡Hola! Soy Cami 👋</span>
+          <span data-teaser-dots class="mt-2 flex gap-1" aria-hidden="true"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+          <span data-teaser-text class="mt-1 hidden text-[0.85rem] leading-snug text-gris">¿Tienes dudas? Pregúntame lo que quieras: respondo tus consultas al instante, en todo momento.</span>
+          <span class="sr-only">Abrir chat con Cami</span>
+        </span>
       </button>
-    </form>
-  </section>
+      <button type="button" data-teaser-close class="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full text-gris hover:bg-niebla">
+        <span class="sr-only">Cerrar mensaje</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+      <!-- Cola del globo apuntando al botón de Cami -->
+      <span class="absolute -bottom-1.5 right-6 h-3.5 w-3.5 rotate-45 bg-white ring-1 ring-marino/10 [clip-path:polygon(100%_0,100%_100%,0_100%)]"></span>
+    </div>
+  </div>
 
   <div class="flex items-center gap-3">
-    <a
-      href={wa}
-      target="_blank"
-      rel="noopener"
-      class="grid h-14 w-14 place-items-center rounded-full bg-[#1f9d55] text-white shadow-lg hover:bg-[#187d44]"
-      data-track="whatsapp_float"
-    >
+    <a href={wa} target="_blank" rel="noopener" class="grid h-14 w-14 place-items-center rounded-full bg-[#1f9d55] text-white shadow-lg hover:bg-[#187d44]" data-track="whatsapp_float">
       <span class="sr-only">Escribir por WhatsApp</span>
       <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.4-.3z" /></svg>
     </a>
@@ -70,77 +92,298 @@ const wa = whatsappLink();
       data-chat-open
       aria-controls="chat-panel"
       aria-expanded="false"
-      class="flex h-14 min-w-14 items-center justify-center gap-2 rounded-full bg-marino px-4 sm:pl-4 sm:pr-5 font-display text-base font-bold text-white shadow-lg hover:bg-marino-900"
+      class="relative flex h-14 min-w-14 items-center justify-center gap-2 rounded-full bg-marino px-4 font-display text-[0.95rem] font-bold text-white shadow-lg hover:bg-marino-900 sm:pl-3 sm:pr-5"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>
+      <span data-pulse class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-naranja motion-safe:animate-[pulse-ring_2s_ease-out_infinite]" hidden></span>
+      <span class="relative">
+        <img src={avatar} alt="" width="32" height="32" class="h-8 w-8 rounded-full bg-white p-0.5" />
+        <span class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-[#25d366] ring-2 ring-marino"></span>
+      </span>
       <span class="hidden sm:inline">Habla con Cami</span>
+      <span class="sr-only sm:hidden">Abrir chat con Cami</span>
     </button>
   </div>
 </div>
 
+<style is:global>
+  .chat-bot,
+  .chat-user {
+    max-width: 88%;
+    border-radius: 1.1rem;
+    padding: 0.6rem 0.85rem;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+  }
+  .chat-bot {
+    background: white;
+    border-top-left-radius: 0.3rem;
+    box-shadow: 0 1px 2px rgb(25 42 61 / 0.08);
+  }
+  .chat-user {
+    margin-left: auto;
+    background: var(--color-marino);
+    color: white;
+    border-top-right-radius: 0.3rem;
+  }
+  .teaser .dot,
+  .chat-typing .dot {
+    display: block;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--color-gris);
+    opacity: 0.5;
+    animation: chat-dot 1s infinite ease-in-out;
+  }
+  .teaser .dot:nth-child(2),
+  .chat-typing .dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .teaser .dot:nth-child(3),
+  .chat-typing .dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  @keyframes chat-dot {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
+  }
+  .teaser:not([hidden]) {
+    transform-origin: bottom right;
+    animation: teaser-in 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) both, teaser-float 4s 0.6s ease-in-out infinite;
+  }
+  .teaser.is-leaving {
+    animation: teaser-out 0.25s ease-in forwards;
+  }
+  @keyframes teaser-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.85); }
+  }
+  @keyframes teaser-float {
+    50% { transform: translateY(-4px); }
+  }
+  @keyframes teaser-out {
+    to { opacity: 0; transform: translateY(8px) scale(0.95); }
+  }
+  @keyframes pulse-ring {
+    0% { opacity: 0.9; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.35); }
+  }
+  #chat-panel:not([hidden]) {
+    animation: chat-in 0.25s ease-out;
+  }
+  @keyframes chat-in {
+    from { opacity: 0; transform: translateY(16px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .teaser:not([hidden]),
+    .teaser.is-leaving,
+    #chat-panel:not([hidden]),
+    .teaser .dot,
+    .chat-typing .dot {
+      animation: none !important;
+    }
+  }
+</style>
+
 <script>
   type Msg = { role: 'user' | 'assistant'; content: string };
   const root = document.querySelector<HTMLElement>('[data-chat]')!;
-  const panel = root.querySelector<HTMLElement>('#chat-panel')!;
+  const panel = document.getElementById('chat-panel')!;
+  const backdrop = document.querySelector<HTMLElement>('[data-chat-backdrop]')!;
   const openBtn = root.querySelector<HTMLButtonElement>('[data-chat-open]')!;
-  const closeBtn = root.querySelector<HTMLButtonElement>('[data-chat-close]')!;
-  const log = root.querySelector<HTMLOListElement>('[data-chat-log]')!;
-  const form = root.querySelector<HTMLFormElement>('[data-chat-form]')!;
+  const closeBtn = panel.querySelector<HTMLButtonElement>('[data-chat-close]')!;
+  const log = panel.querySelector<HTMLOListElement>('[data-chat-log]')!;
+  const form = panel.querySelector<HTMLFormElement>('[data-chat-form]')!;
   const input = form.querySelector<HTMLInputElement>('input')!;
-  const quick = root.querySelector<HTMLElement>('[data-chat-quick]')!;
-  const history: Msg[] = [];
+  const quick = panel.querySelector<HTMLElement>('[data-chat-quick]')!;
+  const teaser = root.querySelector<HTMLElement>('[data-teaser]')!;
+  const pulse = root.querySelector<HTMLElement>('[data-pulse]')!;
   const WA = 'https://wa.me/56949981427';
+  const mobile = () => matchMedia('(max-width: 639px)').matches;
 
-  const setOpen = (open: boolean) => {
-    panel.hidden = !open;
-    openBtn.setAttribute('aria-expanded', String(open));
-    if (open) input.focus();
+  // Almacenamiento seguro (puede fallar en modo privado)
+  const store = {
+    get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
+    set: (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch {} },
   };
+  let history: Msg[] = [];
+  try { history = JSON.parse(store.get('cami-history') ?? '[]'); } catch { history = []; }
+
+  // ── Abrir / cerrar ──
+  function setOpen(open: boolean) {
+    panel.hidden = !open;
+    backdrop.hidden = !open || !mobile();
+    openBtn.setAttribute('aria-expanded', String(open));
+    root.hidden = open && mobile(); // en móvil la hoja ocupa la parte inferior
+    document.documentElement.style.overflow = open && mobile() ? 'hidden' : '';
+    if (open) {
+      hideTeaser(true);
+      loadTitles();
+      log.scrollTop = log.scrollHeight;
+      if (!mobile()) input.focus();
+    } else openBtn.focus({ preventScroll: true });
+  }
   openBtn.addEventListener('click', () => setOpen(Boolean(panel.hidden)));
   closeBtn.addEventListener('click', () => setOpen(false));
+  backdrop.addEventListener('click', () => setOpen(false));
   document.addEventListener('keydown', (e) => e.key === 'Escape' && !panel.hidden && setOpen(false));
   document.querySelectorAll('[data-open-chat]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); setOpen(true); }));
 
-  // Texto seguro → nodos con enlaces internos (/ruta) y externos
-  function render(text: string) {
+  // ── Globo animado ──
+  function hideTeaser(remember: boolean) {
+    pulse.hidden = true;
+    if (remember) store.set('cami-teaser', 'visto');
+    if (teaser.hidden) return;
+    teaser.classList.add('is-leaving');
+    setTimeout(() => { teaser.hidden = true; teaser.classList.remove('is-leaving'); }, 250);
+  }
+  if (!store.get('cami-teaser')) {
+    setTimeout(() => {
+      if (!panel.hidden) return;
+      teaser.hidden = false;
+      pulse.hidden = false;
+      // Primero "escribiendo…" y luego el mensaje
+      setTimeout(() => {
+        teaser.querySelector('[data-teaser-dots]')!.classList.add('hidden');
+        teaser.querySelector('[data-teaser-text]')!.classList.replace('hidden', 'block');
+      }, 1300);
+    }, 3500);
+  }
+  teaser.querySelector('[data-teaser-open]')!.addEventListener('click', () => setOpen(true));
+  teaser.querySelector('[data-teaser-close]')!.addEventListener('click', () => hideTeaser(true));
+
+  // ── Títulos legibles para los enlaces (desde el catálogo) ──
+  const titles = new Map<string, string>([
+    ['/reservas', 'Reservar'], ['/experiencias', 'Ver experiencias'], ['/alojamientos', 'Ver alojamientos'], ['/programas', 'Ver programas'],
+    ['/programas#tercera-edad', 'Vacaciones Tercera Edad'], ['/empresas', 'Grupos y empresas'], ['/rally-wrc', 'Rally WRC'], ['/tienda', 'Tienda'],
+    ['/contacto', 'Contacto'], ['/destinos', 'Destinos'], ['/galeria', 'Galería'], ['/publica-tu-experiencia', 'Publica tu experiencia'], ['/preguntas-frecuentes', 'Preguntas frecuentes'],
+  ]);
+  let titlesLoaded = false;
+  async function loadTitles() {
+    if (titlesLoaded) return;
+    titlesLoaded = true;
+    try {
+      const c = await fetch('/catalogo.json').then((r) => r.json());
+      for (const x of [...c.experiencias, ...c.alojamientos, ...c.programas]) if (!titles.has(x.url)) titles.set(x.url, x.title);
+      for (const d of c.destinos) if (!titles.has(d.url)) titles.set(d.url, `Qué hacer en ${d.name}`);
+    } catch {}
+  }
+  const humanize = (path: string) => {
+    const t = titles.get(path) ?? titles.get(path.split('?')[0]);
+    if (t) return t;
+    const slug = path.split(/[/#?]/).filter(Boolean).pop() ?? 'Ver más';
+    return slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
+  };
+
+  // ── Render seguro: texto + enlaces legibles ──
+  const INLINE = new Map([
+    ['/reservas', 'reservas'], ['/experiencias', 'experiencias'], ['/alojamientos', 'alojamientos'], ['/programas', 'programas'],
+    ['/tienda', 'la tienda'], ['/destinos', 'destinos'], ['/empresas', 'grupos y empresas'], ['/contacto', 'contacto'], ['/galeria', 'la galería'],
+    ['/publica-tu-experiencia', 'publica tu experiencia'], ['/preguntas-frecuentes', 'preguntas frecuentes'],
+    ['/programas#tercera-edad', 'Vacaciones Tercera Edad'], ['/rally-wrc', 'Rally WRC'],
+  ]);
+  const INLINE_RE = /(https?:\/\/[^\s]+|(?<![\w/.])\/[a-z0-9][a-z0-9\-/#?=&%]*)/gi;
+  const isWa = (u: string) => /wa\.me|whatsapp/i.test(u);
+
+  function inlineLink(href: string, text: string) {
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = text;
+    a.className = 'font-bold text-naranja-700 underline decoration-2 underline-offset-2';
+    if (href.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
+  }
+  function chip(href: string) {
+    const a = document.createElement('a');
+    const wa = isWa(href);
+    const external = href.startsWith('http');
+    a.href = href;
+    a.textContent = wa ? 'Escribir por WhatsApp' : external ? new URL(href).hostname.replace('www.', '') : humanize(href);
+    a.className = wa
+      ? 'inline-flex items-center rounded-full bg-[#1f9d55] px-3 py-1.5 text-[0.8125rem] font-bold text-white no-underline hover:bg-[#187d44]'
+      : 'inline-flex items-center gap-1 rounded-full bg-naranja/12 px-3 py-1.5 text-[0.8125rem] font-bold text-naranja-700 no-underline hover:bg-naranja/20';
+    if (!wa && !external) a.insertAdjacentHTML('beforeend', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>');
+    if (external) { a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
+  }
+
+  function renderBot(text: string) {
+    const chips: string[] = [];
+    // 1) "(…/ruta)" y "(https://…)" → botones al final
+    let body = text.replace(/\s*\((https?:\/\/[^\s)]+|\/[a-z0-9][^\s)]*)\)/gi, (_, u: string) => (chips.push(u), ''));
+    // 2) Enlaces de WhatsApp → botón verde (se quita también el ":" previo)
+    body = body.replace(/:?\s*https?:\/\/(?:wa\.me|api\.whatsapp\.com)\/[^\s)]+/gi, (m: string) => (chips.push(m.trim().replace(/^:\s*/, '')), ''));
+    body = body.replace(/[ \t]+([.,;])/g, '$1').replace(/[ \t]{2,}/g, ' ').trim();
+
     const frag = document.createDocumentFragment();
-    const re = /(https?:\/\/[^\s)]+|(?<![\w/])\/[a-z0-9\-\/?=&%]+)/gi;
-    let last = 0;
-    for (const m of text.matchAll(re)) {
-      frag.append(text.slice(last, m.index));
-      const a = document.createElement('a');
-      a.href = m[0];
-      a.textContent = m[0].startsWith('http') ? (m[0].includes('wa.me') ? 'WhatsApp' : m[0]) : `turismoavatar.cl${m[0]}`;
-      a.className = 'font-semibold text-naranja-700 underline';
-      if (m[0].startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; }
-      frag.append(a);
-      last = (m.index ?? 0) + m[0].length;
+    body.split('\n').forEach((line, i) => {
+      if (i) frag.append('\n');
+      // 3) "• Título: /ruta" → el título queda enlazado
+      const m = line.match(/^(.*?\S)\s*(?::|→)\s*(\/[a-z0-9][^\s]*?)[.,;]?\s*$/i);
+      if (m && !/(?<![\w/.])\/[a-z0-9]/i.test(m[1])) {
+        const lead = m[1].match(/^([•\-–\s\d.)]*)(.*)$/)!;
+        frag.append(lead[1], inlineLink(m[2], lead[2]));
+        return;
+      }
+      // 4) Rutas dentro de la frase → nombre legible enlazado
+      let last = 0;
+      for (const mm of line.matchAll(INLINE_RE)) {
+        let u = mm[0];
+        const trail = u.match(/[.,;:!?]+$/)?.[0] ?? '';
+        if (trail) u = u.slice(0, -trail.length);
+        frag.append(line.slice(last, mm.index), u.startsWith('http') ? inlineLink(u, new URL(u).hostname.replace('www.', '')) : inlineLink(u, INLINE.get(u) ?? humanize(u)), trail);
+        last = (mm.index ?? 0) + mm[0].length;
+      }
+      frag.append(line.slice(last));
+    });
+
+    const unique = [...new Set(chips)].slice(0, 5);
+    if (unique.length) {
+      const row = document.createElement('span');
+      row.className = 'mt-2.5 flex flex-wrap gap-1.5 whitespace-normal';
+      unique.forEach((u) => row.append(chip(u)));
+      frag.append(row);
     }
-    frag.append(text.slice(last));
     return frag;
   }
 
-  function add(role: Msg['role'], content: string) {
+  function add(role: Msg['role'], content: string, save = true) {
     const li = document.createElement('li');
-    li.className =
-      role === 'user'
-        ? 'ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-marino px-3.5 py-2.5 text-white'
-        : 'max-w-[85%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-white px-3.5 py-2.5 shadow-sm';
-    li.append(render(content));
+    li.className = role === 'user' ? 'chat-user' : 'chat-bot';
+    if (role === 'user') li.textContent = content;
+    else li.append(renderBot(content));
+    log.append(li);
+    log.scrollTop = log.scrollHeight;
+    if (save) {
+      history.push({ role, content });
+      store.set('cami-history', JSON.stringify(history.slice(-20)));
+    }
+    return li;
+  }
+  function typing() {
+    const li = document.createElement('li');
+    li.className = 'chat-bot chat-typing flex w-16 justify-center gap-1 py-3.5';
+    li.setAttribute('aria-label', 'Cami está escribiendo');
+    li.innerHTML = '<i class="dot"></i><i class="dot"></i><i class="dot"></i>';
     log.append(li);
     log.scrollTop = log.scrollHeight;
     return li;
+  }
+
+  // Restaurar la conversación al cambiar de página
+  if (history.length) {
+    loadTitles().then(() => {
+      history.forEach((m) => add(m.role, m.content, false));
+      quick.hidden = true;
+    });
   }
 
   async function send(text: string) {
     const msg = text.trim();
     if (!msg) return;
     add('user', msg);
-    history.push({ role: 'user', content: msg });
     input.value = '';
     quick.hidden = true;
-    const typing = add('assistant', 'Escribiendo…');
-    typing.classList.add('text-gris');
+    const t = typing();
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
@@ -149,11 +392,11 @@ const wa = whatsappLink();
       });
       if (!res.ok) throw new Error();
       const data: { reply: string } = await res.json();
-      typing.remove();
+      await loadTitles();
+      t.remove();
       add('assistant', data.reply);
-      history.push({ role: 'assistant', content: data.reply });
     } catch {
-      typing.remove();
+      t.remove();
       add('assistant', `No pude responder ahora. Escríbenos por WhatsApp y te ayudamos al tiro: ${WA}`);
     }
   }

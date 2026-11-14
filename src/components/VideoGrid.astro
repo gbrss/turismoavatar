@@ -7,7 +7,7 @@ const grid = { 1: 'grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid
 
 <ul class:list={['grid gap-5', grid]}>
   {
-    videos.map((v, i) => (
+    videos.map((v) => (
       <li>
         <button type="button" data-video-open={v.id} data-video-title={v.title} class="group block w-full text-left">
           <span class="relative block aspect-video overflow-hidden rounded-2xl bg-marino-900">
