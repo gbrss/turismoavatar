@@ -1,0 +1,16 @@
+cobalt lista: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)>
+piped lista: <urlopen error [Errno 101] Network is unreachable>
+WzfrMOR4XJk: piped https://pipedapi.kavin.rocks → HTTP Error 403: Forbidden
+✗ WzfrMOR4XJk no descargado
+cobalt lista: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)>
+piped lista: <urlopen error [Errno 101] Network is unreachable>
+ieE0XLv0mW4: piped https://pipedapi.kavin.rocks → HTTP Error 403: Forbidden
+✗ ieE0XLv0mW4 no descargado
+cobalt lista: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)>
+piped lista: <urlopen error [Errno 101] Network is unreachable>
+Bk-u5Fe__eI: piped https://pipedapi.kavin.rocks → HTTP Error 403: Forbidden
+✗ Bk-u5Fe__eI no descargado
+cobalt lista: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)>
+piped lista: <urlopen error [Errno 101] Network is unreachable>
+B__VK6fS8u8: piped https://pipedapi.kavin.rocks → HTTP Error 403: Forbidden
+✗ B__VK6fS8u8 no descargado
