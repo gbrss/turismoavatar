@@ -78,6 +78,12 @@
   }
 }
 
+/* Zoom lento sobre la foto de portada (se desactiva con "reducir movimiento") */
+@keyframes kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
+}
+
 @layer components {
   .wrap {
     width: min(100% - 2.5rem, 78rem);

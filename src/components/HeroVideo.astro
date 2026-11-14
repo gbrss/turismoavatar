@@ -2,18 +2,44 @@
 // Video de fondo del hero: YouTube silenciado, sin controles ni pausa, con loop por fundido a oscuro.
 // El reproductor se dibuja a 1920×1080 y se escala con CSS para cubrir: así YouTube entrega HD también en móviles.
 // No se carga con "reducir movimiento" ni con ahorro de datos: en esos casos queda la foto.
+import { existsSync } from 'node:fs';
 import { site } from '@/data/site';
 const { id, start, end } = site.heroVideo;
+// Si existe public/media/video/hero.mp4 se usa video propio (recomendado); si no, YouTube solo en escritorio.
+const local = existsSync('public/media/video/hero.mp4');
+const localWebm = existsSync('public/media/video/hero.webm');
 ---
 
+{
+  local && (
+    <video
+      class="pointer-events-none absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+      autoplay
+      muted
+      loop
+      playsinline
+      disablepictureinpicture
+      disableremoteplayback
+      preload="auto"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      {localWebm && <source src="/media/video/hero.webm" type="video/webm" />}
+      <source src="/media/video/hero.mp4" type="video/mp4" />
+    </video>
+  )
+}
+
+{!local && <Fragment>
 <link rel="preconnect" href="https://www.youtube-nocookie.com" />
 <link rel="preconnect" href="https://www.youtube.com" />
 <link rel="preconnect" href="https://i.ytimg.com" />
 <link rel="preconnect" href="https://www.google.com" />
 
-<div data-hero-video data-id={id} data-start={start} data-end={end} class="pointer-events-none absolute inset-0 overflow-hidden bg-marino-900 opacity-0 transition-opacity duration-700" aria-hidden="true">
+</Fragment>}
+{!local && <div data-hero-video data-id={id} data-start={start} data-end={end} class="pointer-events-none absolute inset-0 overflow-hidden bg-marino-900 opacity-0 transition-opacity duration-700" aria-hidden="true">
   <div data-yt-slot class="absolute left-1/2 top-1/2 h-[1080px] w-[1920px] origin-center transition-opacity duration-700" style="transform: translate(-50%, -50%) scale(1)"></div>
-</div>
+</div>}
 
 <script>
   type YTPlayer = { mute(): void; playVideo(): void; seekTo(s: number, allow: boolean): void; getCurrentTime(): number };
@@ -21,7 +47,7 @@ const { id, start, end } = site.heroVideo;
 
   const box = document.querySelector<HTMLElement>('[data-hero-video]');
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-  const skip = !box || matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData || /(^|-)2g/.test(conn?.effectiveType ?? '');
+  const skip = !box || !matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData || /(^|-)2g/.test(conn?.effectiveType ?? '');
 
   if (!skip && box) {
     const id = box.dataset.id!;
