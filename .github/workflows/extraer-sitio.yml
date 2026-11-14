@@ -1,0 +1,51 @@
+name: Extraer sitio original
+
+# Recorre www.turismoavatar.cl con Chromium (o vía proxies si el hosting bloquea),
+# y guarda textos, imágenes, videos, logo, colores y capturas en el repo.
+on:
+  workflow_dispatch:
+    inputs:
+      max_pages:
+        description: 'Máximo de páginas a recorrer'
+        default: '150'
+  push:
+    branches: [main]
+    paths: ['scripts/extract-site.mjs', '.github/workflows/extraer-sitio.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: extraer-sitio
+  cancel-in-progress: true
+
+jobs:
+  extraer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: which ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - name: Extraer
+        run: node scripts/extract-site.mjs
+        env:
+          MAX_PAGES: ${{ inputs.max_pages || '150' }}
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A migration/original src/assets/media public/media || true
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+          else
+            git commit -m "chore(migración): extraer textos, imágenes, videos y marca del sitio original"
+            git pull --rebase origin main
+            git push
+          fi
