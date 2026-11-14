@@ -14,6 +14,8 @@ function systemPrompt(c: Catalog) {
   return `Eres ${c.site.assistant}, del equipo de ${c.site.name}, tour operador en ${c.site.city} (${c.site.region}, Chile) desde ${c.site.foundingYear}. Oficina: ${c.site.address}.
 Tu objetivo: ayudar a elegir experiencias o alojamientos y llevar a la persona a reservar.
 
+Sobre ti: te llamas ${c.site.assistant}, tienes 27 años, eres penquista y te encanta el SUP y el trekking. Eres la asistente virtual del equipo: si alguien pregunta en serio si eres una persona o un bot, responde con honestidad que eres una asistente virtual y ofrece hablar con una persona del equipo por WhatsApp.
+
 Reglas:
 - Responde en español de Chile, cercano y breve (máximo 5 líneas). Si te escriben en otro idioma, responde en ese idioma.
 - Usa SOLO la información del catálogo. Nunca inventes precios, horarios, disponibilidad ni servicios. Si no sabes algo, dilo y ofrece WhatsApp.
@@ -21,6 +23,7 @@ Reglas:
 - Para reservar, indica la ruta /reservas o el WhatsApp https://wa.me/${c.site.whatsapp}. La disponibilidad se confirma por el equipo.
 - Si piden precio de una experiencia "a consultar", explica que depende del grupo y fecha, y ofrece cotizar por WhatsApp o /reservas.
 - No uses markdown (ni asteriscos ni encabezados). Texto plano con saltos de línea.
+- Si piden hablar con una persona, humano, ejecutivo o asesor, responde breve y amable que los derivas con el equipo por WhatsApp (se mostrará un botón).
 
 Contacto: WhatsApp ${c.site.phone} (${c.site.hours}), correo ${c.site.email}.
 
@@ -81,12 +84,22 @@ function ruleBased(q: string, c: Catalog): string {
   if (/(pago|pagar|transfer|tarjeta)/.test(t)) return c.faq.find((f) => norm(f.q).includes('pagar'))?.a ?? `Escríbenos por WhatsApp: ${wa}`;
   if (/(direcc|oficina|ubicad)/.test(t)) return `Nuestra oficina está en ${c.site.address}. Escríbenos antes por WhatsApp para coordinar: ${wa}`;
   if (/(donde|comuna|operan)/.test(t)) return c.faq.find((f) => norm(f.q).includes('operan'))!.a + ' Mira el mapa en /destinos';
+  if (/(edad|anos tienes|cuantos anos)/.test(t)) return `Tengo 27 años 😊 Soy ${c.site.assistant}, la asistente virtual de Turismo Avatar. ¿Te ayudo a encontrar una experiencia en el Biobío?`;
+  if (/(eres (un )?(bot|robot|humano|persona|ia)|eres real)/.test(t)) return `Soy ${c.site.assistant}, la asistente virtual de Turismo Avatar 🤖 Si prefieres, te dejo con una persona del equipo por WhatsApp: ${wa}`;
   if (/(hola|buenas|buenos)/.test(t)) return `¡Hola! Soy ${c.site.assistant} 😊 ¿Qué te gustaría hacer en el Biobío? Puedo recomendarte SUP en el mar, trekking, el City Tour 7 Lagunas o alojamientos con tinaja.`;
 
   const words = t.split(/\W+/).filter((w) => w.length > 3);
   const hits = c.experiencias.filter((e) => words.some((w) => norm(`${e.title} ${e.summary} ${e.destinos.join(' ')}`).includes(w))).slice(0, 4);
   if (hits.length) return `Esto puede servirte:\n${list(hits)}`;
   return `Puedo ayudarte con experiencias (/experiencias), alojamientos (/alojamientos) y reservas (/reservas). Si prefieres hablar con una persona, escríbenos por WhatsApp: ${wa}`;
+}
+
+const HUMANO = /(human|persona real|(hablar|conversar|comunicarme|contactarme) con (una |alg[uú]n[a]? )?(persona|alguien)|alguien real|ejecutiv|asesor|operador|agente|encargad|due[nñ]o|atenci[oó]n personal|llamar|ll[aá]mame|derivar|der[ií]vame|contactar con|whats ?app|wsp|wasap)/i;
+
+function waHandoff(c: Catalog, messages: Msg[]) {
+  const preguntas = messages.filter((m) => m.role === 'user').slice(-3).map((m) => `• ${m.content}`).join('\n');
+  const text = `Hola Turismo Avatar 👋 Vengo del chat de la web y quiero hablar con una persona.\n${preguntas}`;
+  return `https://wa.me/${c.site.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUntil }) => {
@@ -107,6 +120,21 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
   const catalog = await getCatalog(env, request);
   let reply = '';
   let engine = 'reglas';
+
+  // Derivación a una persona: respuesta fija + botón de WhatsApp con la consulta ya escrita
+  if (HUMANO.test(last.content)) {
+    const handoff = { label: 'Hablar por WhatsApp', href: waHandoff(catalog, messages) };
+    reply = '¡Claro! Te dejo con una persona de nuestro equipo por WhatsApp. Ya va tu consulta escrita, solo presiona el botón y envía el mensaje 😊';
+    if (env.DB) {
+      waitUntil(
+        env.DB.prepare('INSERT INTO chat_logs (page, question, answer, engine) VALUES (?1, ?2, ?3, ?4)')
+          .bind(clean(payload.page, 200), last.content, reply, 'humano')
+          .run()
+          .catch(() => {}),
+      );
+    }
+    return json({ reply, handoff });
+  }
 
   if (env.AI) {
     try {

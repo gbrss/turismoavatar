@@ -4,7 +4,7 @@ import { whatsappLink } from '@/data/site';
 import marca from '@/assets/brand/marca.png';
 const wa = whatsappLink();
 const avatar = (await getImage({ src: marca, width: 96, format: 'webp' })).src;
-const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero hacer SUP', 'Viajes tercera edad', 'Rally WRC'];
+const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero hacer SUP', 'Hablar con una persona', 'Viajes tercera edad'];
 ---
 
 <!-- Panel del chat: hoja inferior en móvil, ventana flotante en escritorio -->
@@ -359,6 +359,19 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     }
     return li;
   }
+  // Botón grande para derivar a una persona por WhatsApp
+  function handoffButton(h: { label: string; href: string }) {
+    const a = document.createElement('a');
+    a.href = h.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.dataset.track = 'chat_handoff_whatsapp';
+    a.className = 'mt-3 flex items-center justify-center gap-2 rounded-full bg-[#1f9d55] px-4 py-3 text-[0.9375rem] font-bold text-white no-underline shadow-sm hover:bg-[#187d44]';
+    a.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.4-.3z"/></svg>';
+    a.append(h.label);
+    return a;
+  }
+
   function typing() {
     const li = document.createElement('li');
     li.className = 'chat-bot chat-typing flex w-16 justify-center gap-1 py-3.5';
@@ -391,10 +404,11 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
         body: JSON.stringify({ messages: history.slice(-10), page: location.pathname }),
       });
       if (!res.ok) throw new Error();
-      const data: { reply: string } = await res.json();
+      const data: { reply: string; handoff?: { label: string; href: string } } = await res.json();
       await loadTitles();
       t.remove();
-      add('assistant', data.reply);
+      const li = add('assistant', data.reply);
+      if (data.handoff) li.append(handoffButton(data.handoff));
     } catch {
       t.remove();
       add('assistant', `No pude responder ahora. Escríbenos por WhatsApp y te ayudamos al tiro: ${WA}`);
