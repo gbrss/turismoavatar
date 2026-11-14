@@ -38,3 +38,7 @@ export function getMedia(src?: string): ImageMetadata | undefined {
 }
 
 export const hasMedia = (src?: string) => Boolean(getMedia(src));
+
+/** La portada va a pantalla completa (y el menú transparente encima) solo si la foto es grande. */
+export const BLEED_MIN_WIDTH = 1400;
+export const isBleed = (src?: string) => (getMedia(src)?.width ?? 0) >= BLEED_MIN_WIDTH;

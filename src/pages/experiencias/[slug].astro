@@ -1,4 +1,5 @@
 ---
+import { isBleed } from '@/lib/media';
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Gallery from '@/components/Gallery.astro';
@@ -57,7 +58,7 @@ const facts = [
 ].filter(Boolean) as [string, string][];
 ---
 
-<Base title={d.title} description={d.summary} image={d.image} jsonLd={ld} transparentHeader>
+<Base title={d.title} description={d.summary} image={d.image} jsonLd={ld} transparentHeader={isBleed(d.image)}>
   <PageHero title={d.title} lead={d.summary} image={d.image} crumbs={[{ href: '/experiencias', label: 'Experiencias' }, { href: `/experiencias?categoria=${d.category}`, label: categorias[d.category] }]}>
     <div class="mt-6 flex flex-wrap gap-3">
       <a href="#reservar" class="btn btn-primary">Reservar</a>

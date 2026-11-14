@@ -1,11 +1,11 @@
 ---
 import Media from './Media.astro';
-import { getMedia } from '@/lib/media';
+import { getMedia, BLEED_MIN_WIDTH } from '@/lib/media';
 interface Props { title: string; lead?: string; image?: string; crumbs?: { href: string; label: string }[] }
 const { title, lead, image, crumbs = [] } = Astro.props;
 const meta = getMedia(image);
 // Fotos grandes → portada a pantalla completa. Fotos chicas → portada dividida (no se pixelan).
-const mode: 'bleed' | 'split' | 'plain' = !meta ? 'plain' : meta.width >= 1400 ? 'bleed' : 'split';
+const mode: 'bleed' | 'split' | 'plain' = !meta ? 'plain' : meta.width >= BLEED_MIN_WIDTH ? 'bleed' : 'split';
 ---
 
 <section class:list={['relative overflow-hidden', mode === 'bleed' ? 'bg-marino text-white' : 'bg-niebla']}>
