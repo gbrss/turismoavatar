@@ -1,0 +1,30 @@
+name: Video del hero
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/hero-video.json', 'scripts/hero-video.sh']
+
+permissions:
+  contents: write
+
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg jq bc
+      - run: pip install -q -U yt-dlp
+      - run: bash scripts/hero-video.sh
+      - name: Guardar en el repo
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A migration/hero-video public/media/video src/assets/media/video || true
+          if git diff --cached --quiet; then echo "Sin cambios"; else
+            git commit -m "chore(hero): video de fondo ($(jq -r .mode scripts/hero-video.json))"
+            git pull --rebase origin main && git push
+          fi
