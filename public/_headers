@@ -14,3 +14,12 @@
 /admin/*
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store
+
+/media/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/og-turismo-avatar.jpg
+  Cache-Control: public, max-age=86400
+
+/*.png
+  Cache-Control: public, max-age=604800

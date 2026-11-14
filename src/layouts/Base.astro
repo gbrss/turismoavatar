@@ -5,8 +5,9 @@ import Footer from '@/components/Footer.astro';
 import ChatWidget from '@/components/ChatWidget.astro';
 import VideoModal from '@/components/VideoModal.astro';
 import { site } from '@/data/site';
-import { getMedia } from '@/lib/media';
-import { getImage } from 'astro:assets';
+import fontDisplay from '@/assets/fonts/montserrat-latin-800-normal.woff2?url';
+import fontUi from '@/assets/fonts/montserrat-latin-700-normal.woff2?url';
+import fontBody from '@/assets/fonts/nunito-sans-latin-400-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -16,13 +17,12 @@ interface Props {
   noindex?: boolean;
   transparentHeader?: boolean;
 }
-const { title, description = site.description, image, jsonLd, noindex = false, transparentHeader = false } = Astro.props;
+const { title, description = site.description, jsonLd, noindex = false, transparentHeader = false } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — Tours y experiencias en Concepción y el Biobío`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 
-const ogSource = getMedia(image) ?? getMedia('2024/11/Sup-agua-Cristalina-Penco.jpg');
-const og = ogSource ? await getImage({ src: ogSource, width: 1200, height: 630, format: 'jpg', fit: 'cover' }) : undefined;
-const ogUrl = og ? new URL(og.src, site.url).href : undefined;
+// Imagen para compartir (WhatsApp, Facebook, etc.): siempre el emblema de la marca.
+const ogUrl = new URL('/og-turismo-avatar.jpg', site.url).href;
 
 const org = {
   '@context': 'https://schema.org',
@@ -39,7 +39,8 @@ const org = {
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
   areaServed: 'Región del Biobío, Chile',
   sameAs: Object.values(site.social),
-  ...(ogUrl ? { image: ogUrl } : {}),
+  image: ogUrl,
+  logo: new URL('/icon-512.png', site.url).href,
 };
 const schemas = [org, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
 ---
@@ -53,6 +54,9 @@ const schemas = [org, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontUi} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#192a3d" />
     <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -65,10 +69,16 @@ const schemas = [org, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {ogUrl && <meta property="og:image" content={ogUrl} />}
-    {ogUrl && <meta property="og:image:width" content="1200" />}
-    {ogUrl && <meta property="og:image:height" content="630" />}
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:secure_url" content={ogUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`Logo de ${site.name}`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
 
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>

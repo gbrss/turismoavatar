@@ -119,7 +119,7 @@ const unitLabel = { persona: 'por persona', grupo: 'por grupo', noche: 'por noch
                     <span class="group-data-[state=done]:hidden">{i + 1}</span>
                     <svg class="hidden h-3.5 w-3.5 group-data-[state=done]:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
                   </span>
-                  <span class="hidden sm:inline">{label}</span>
+                  <span class="sr-only sm:not-sr-only">{label}</span>
                 </span>
               </button>
             </li>
@@ -208,7 +208,7 @@ const unitLabel = { persona: 'por persona', grupo: 'por grupo', noche: 'por noch
               <div class="mt-3 grid grid-cols-7 text-center text-xs font-bold uppercase text-gris" aria-hidden="true">
                 {['lu', 'ma', 'mi', 'ju', 'vi', 'sá', 'do'].map((d) => <span class="py-1">{d}</span>)}
               </div>
-              <div class="mt-1 grid grid-cols-7 gap-y-1" role="grid" data-cal-grid></div>
+              <div class="mt-1 grid grid-cols-7 gap-y-1" role="group" aria-label="Días del mes" data-cal-grid></div>
               <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gris">
                 <span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-full bg-naranja"></span>Elegido</span>
                 <span class="inline-flex items-center gap-1.5" data-legend-busy hidden><span class="h-3 w-3 rounded-full bg-roca"></span>Ocupado</span>
@@ -396,11 +396,18 @@ const unitLabel = { persona: 'por persona', grupo: 'por grupo', noche: 'por noch
   const iso = (d: Date) => d.toISOString().slice(0, 10);
   const addDays = (s: string, n: number) => iso(new Date(parse(s).getTime() + n * 86400000));
   const diffDays = (a: string, b: string) => Math.round((parse(b).getTime() - parse(a).getTime()) / 86400000);
-  const fmt = (s: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' }) =>
-    new Intl.DateTimeFormat('es-CL', { timeZone: 'UTC', ...opts }).format(parse(s));
+  // Los formateadores Intl son caros de crear: se reutilizan.
+  const fmtCache = new Map<string, Intl.DateTimeFormat>();
+  const fmt = (s: string, opts: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' }) => {
+    const k = JSON.stringify(opts);
+    let f = fmtCache.get(k);
+    if (!f) fmtCache.set(k, (f = new Intl.DateTimeFormat('es-CL', { timeZone: 'UTC', ...opts })));
+    return f.format(parse(s));
+  };
   const fmtLong = (s: string) => fmt(s, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-  document.querySelectorAll<HTMLElement>('[data-booking-wizard]').forEach((root) => {
+  // El asistente se inicializa cuando se acerca a la pantalla (o al tener el hilo libre): no bloquea la carga.
+  const setup = (root: HTMLElement) => {
     const data = JSON.parse(root.querySelector('[data-items]')!.textContent!) as { items: Item[]; wa: string; mark: string };
     const byKey = new Map(data.items.map((i) => [i.key, i]));
     const form = root.querySelector<HTMLFormElement>('[data-form]')!;
@@ -821,5 +828,23 @@ const unitLabel = { persona: 'por persona', grupo: 'por grupo', noche: 'por noch
     }
     updateSummary();
     setStep(startStep, false);
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-booking-wizard]').forEach((root) => {
+    let done = false;
+    let io: IntersectionObserver | null = null;
+    const run = () => {
+      if (done) return;
+      done = true;
+      io?.disconnect();
+      setup(root);
+    };
+    // Si se llega con #reservar o desde un enlace interno, iniciar ya.
+    if (location.hash === '#reservar' || root.getBoundingClientRect().top < innerHeight * 1.5) return run();
+    io = 'IntersectionObserver' in window ? new IntersectionObserver((e) => e.some((x) => x.isIntersecting) && run(), { rootMargin: '800px 0px' }) : null;
+    io ? io.observe(root) : run();
+    root.addEventListener('pointerenter', run, { once: true });
+    root.addEventListener('focusin', run, { once: true });
+    addEventListener('hashchange', () => location.hash === '#reservar' && run());
   });
 </script>

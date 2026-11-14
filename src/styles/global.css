@@ -1,10 +1,68 @@
 @import 'tailwindcss';
-@import '@fontsource/montserrat/600.css';
-@import '@fontsource/montserrat/700.css';
-@import '@fontsource/montserrat/800.css';
-@import '@fontsource/nunito-sans/400.css';
-@import '@fontsource/nunito-sans/600.css';
-@import '@fontsource/nunito-sans/700.css';
+
+/* Fuentes autoalojadas, solo subconjunto latino (cubre español): menos CSS y menos archivos */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../assets/fonts/montserrat-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../assets/fonts/montserrat-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url('../assets/fonts/montserrat-latin-800-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../assets/fonts/nunito-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../assets/fonts/nunito-sans-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../assets/fonts/nunito-sans-latin-700-normal.woff2') format('woff2');
+}
+
+
+/* Respaldos con métricas ajustadas: el texto no salta cuando cargan las fuentes (CLS) */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Roboto Bold'), local('Arial');
+  font-weight: 600 800;
+  size-adjust: 112%;
+  ascent-override: 86.4%;
+  descent-override: 22.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Nunito Sans Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Roboto');
+  size-adjust: 101.43%;
+  ascent-override: 99.68%;
+  descent-override: 34.8%;
+  line-gap-override: 0%;
+}
 
 /* Paleta de marca Turismo Avatar (extraída del logo y del tema original) */
 @theme {
@@ -22,8 +80,8 @@
   --color-tinta: #14212f;
   --color-gris: #3a4f66;
 
-  --font-sans: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Montserrat', 'Nunito Sans', ui-sans-serif, sans-serif;
+  --font-sans: 'Nunito Sans', 'Nunito Sans Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Montserrat', 'Montserrat Fallback', ui-sans-serif, sans-serif;
 
   /* Escala tipográfica modular (≈1.25) */
   --text-display: clamp(2.5rem, 1.6rem + 4vw, 5.25rem);
@@ -126,11 +184,11 @@
     background: color-mix(in srgb, currentColor 12%, transparent);
   }
   .btn-wa {
-    background: #1f9d55;
+    background: #157a3e;
     color: white;
   }
   .btn-wa:hover {
-    background: #187d44;
+    background: #0f6331;
   }
   .field {
     display: grid;

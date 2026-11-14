@@ -83,7 +83,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
   </div>
 
   <div class="flex items-center gap-3">
-    <a href={wa} target="_blank" rel="noopener" class="grid h-14 w-14 place-items-center rounded-full bg-[#1f9d55] text-white shadow-lg hover:bg-[#187d44]" data-track="whatsapp_float">
+    <a href={wa} target="_blank" rel="noopener" class="grid h-14 w-14 place-items-center rounded-full bg-[#157a3e] text-white shadow-lg hover:bg-[#0f6331]" data-track="whatsapp_float">
       <span class="sr-only">Escribir por WhatsApp</span>
       <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.4-.3z" /></svg>
     </a>
@@ -299,7 +299,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     a.href = href;
     a.textContent = wa ? 'Escribir por WhatsApp' : external ? new URL(href).hostname.replace('www.', '') : humanize(href);
     a.className = wa
-      ? 'inline-flex items-center rounded-full bg-[#1f9d55] px-3 py-1.5 text-[0.8125rem] font-bold text-white no-underline hover:bg-[#187d44]'
+      ? 'inline-flex items-center rounded-full bg-[#157a3e] px-3 py-1.5 text-[0.8125rem] font-bold text-white no-underline hover:bg-[#0f6331]'
       : 'inline-flex items-center gap-1 rounded-full bg-naranja/12 px-3 py-1.5 text-[0.8125rem] font-bold text-naranja-700 no-underline hover:bg-naranja/20';
     if (!wa && !external) a.insertAdjacentHTML('beforeend', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>');
     if (external) { a.target = '_blank'; a.rel = 'noopener'; }
@@ -366,7 +366,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     a.target = '_blank';
     a.rel = 'noopener';
     a.dataset.track = 'chat_handoff_whatsapp';
-    a.className = 'mt-3 flex items-center justify-center gap-2 rounded-full bg-[#1f9d55] px-4 py-3 text-[0.9375rem] font-bold text-white no-underline shadow-sm hover:bg-[#187d44]';
+    a.className = 'mt-3 flex items-center justify-center gap-2 rounded-full bg-[#157a3e] px-4 py-3 text-[0.9375rem] font-bold text-white no-underline shadow-sm hover:bg-[#0f6331]';
     a.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1c-.2.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.4-.3z"/></svg>';
     a.append(h.label);
     return a;

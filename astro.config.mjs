@@ -7,7 +7,7 @@ export default defineConfig({
   site: 'https://www.turismoavatar.cl',
   output: 'static',
   trailingSlash: 'ignore',
-  build: { format: 'directory', inlineStylesheets: 'auto' },
+  build: { format: 'directory', inlineStylesheets: 'always' },
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },
   image: {
     // Imágenes locales optimizadas en build (AVIF/WebP + srcset)

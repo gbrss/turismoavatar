@@ -1,124 +1,18 @@
 ---
-// Video de fondo del hero: public/media/video/hero.mp4 (generado con Google Flow, sin audio, loop con fundido).
-// El reproductor se dibuja a 1920×1080 y se escala con CSS para cubrir: así YouTube entrega HD también en móviles.
-// No se carga con "reducir movimiento" ni con ahorro de datos: en esos casos queda la foto.
-import { existsSync } from 'node:fs';
-import { site } from '@/data/site';
-const { id, start, end } = site.heroVideo;
-// Si existe public/media/video/hero.mp4 se usa video propio (recomendado); si no, YouTube solo en escritorio.
-const local = existsSync('public/media/video/hero.mp4');
-const localWebm = existsSync('public/media/video/hero.webm');
+// Video de fondo del hero: public/media/video/hero.mp4 (Google Flow, sin audio, loop con fundido).
+// Se oculta con "reducir movimiento": en ese caso queda la foto.
 ---
 
-{
-  local && (
-    <video
-      class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[62%_45%] opacity-0 transition-opacity duration-500 motion-reduce:hidden"
-      onplaying="this.style.opacity=1"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      aria-hidden="true"
-      tabindex="-1"
-    >
-      {localWebm && <source src="/media/video/hero.webm" type="video/webm" />}
-      <source src="/media/video/hero.mp4" type="video/mp4" />
-    </video>
-  )
-}
-
-{!local && <Fragment>
-<link rel="preconnect" href="https://www.youtube-nocookie.com" />
-<link rel="preconnect" href="https://www.youtube.com" />
-<link rel="preconnect" href="https://i.ytimg.com" />
-<link rel="preconnect" href="https://www.google.com" />
-
-</Fragment>}
-{!local && <div data-hero-video data-id={id} data-start={start} data-end={end} class="pointer-events-none absolute inset-0 overflow-hidden bg-marino-900 opacity-0 transition-opacity duration-700" aria-hidden="true">
-  <div data-yt-slot class="absolute left-1/2 top-1/2 h-[1080px] w-[1920px] origin-center transition-opacity duration-700" style="transform: translate(-50%, -50%) scale(1)"></div>
-</div>}
-
-<script>
-  type YTPlayer = { mute(): void; playVideo(): void; seekTo(s: number, allow: boolean): void; getCurrentTime(): number };
-  declare global { interface Window { YT?: any; onYouTubeIframeAPIReady?: () => void } }
-
-  const box = document.querySelector<HTMLElement>('[data-hero-video]');
-  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-  const skip = !box || !matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData || /(^|-)2g/.test(conn?.effectiveType ?? '');
-
-  if (!skip && box) {
-    const id = box.dataset.id!;
-    const start = Number(box.dataset.start);
-    const end = Number(box.dataset.end);
-    const FADE = 700;
-    const CROP = 1.22; // recorte extra para esconder bordes y la marca de YouTube
-    const slot = box.querySelector<HTMLElement>('[data-yt-slot]')!;
-
-    // Escala "cover" del reproductor de 1920×1080 sobre el tamaño real del hero
-    const fit = () => {
-      const s = Math.max(box.clientWidth / 1920, box.clientHeight / 1080) * CROP;
-      slot.style.transform = `translate(-50%, -50%) scale(${s})`;
-    };
-    fit();
-    new ResizeObserver(fit).observe(box);
-
-    window.onYouTubeIframeAPIReady = () => {
-      let shown = false;
-      let looping = false;
-      let waitingResume = false;
-      const player: YTPlayer = new window.YT.Player(slot.appendChild(document.createElement('div')), {
-        host: 'https://www.youtube-nocookie.com',
-        videoId: id,
-        width: 1920,
-        height: 1080,
-        playerVars: { autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3, modestbranding: 1, start, end, vq: 'hd1080' },
-        events: {
-          onReady: (e: { target: YTPlayer }) => {
-            e.target.mute();
-          },
-          onStateChange: (e: { data: number }) => {
-            if (e.data === 1 && !shown) {
-              shown = true;
-              setTimeout(() => (box.style.opacity = '1'), 300);
-            }
-            if (e.data === 1 && looping && waitingResume) {
-              waitingResume = false;
-              setTimeout(() => {
-                slot.style.opacity = '1';
-                setTimeout(() => (looping = false), FADE);
-              }, 150);
-            }
-            if (e.data === 0) player.seekTo(start, true);
-          },
-        },
-      });
-      // Loop poco notorio: fundido a oscuro, salto al inicio del tramo y vuelta a aparecer
-      setInterval(() => {
-        if (!shown || looping) return;
-        if ((player.getCurrentTime?.() ?? 0) >= end - 1.1) {
-          looping = true;
-          slot.style.opacity = '0';
-          setTimeout(() => {
-            waitingResume = true;
-            player.seekTo(start, true);
-            // Respaldo por si YouTube no emite el evento de reproducción tras el salto
-            setTimeout(() => {
-              if (!waitingResume) return;
-              waitingResume = false;
-              slot.style.opacity = '1';
-              setTimeout(() => (looping = false), FADE);
-            }, 1500);
-          }, FADE);
-        }
-      }, 200);
-    };
-
-    // Cargar la API de inmediato (el script del módulo ya corre tras el HTML)
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    tag.async = true;
-    document.head.append(tag);
-  }
-</script>
+<video
+  class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[62%_45%] opacity-0 transition-opacity duration-500 motion-reduce:hidden"
+  onplaying="this.style.opacity=1"
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="auto"
+  aria-hidden="true"
+  tabindex="-1"
+>
+  <source src="/media/video/hero.mp4" type="video/mp4" />
+</video>
