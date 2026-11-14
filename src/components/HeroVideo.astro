@@ -1,0 +1,84 @@
+---
+// Video de fondo del hero: YouTube silenciado, sin controles ni pausa, con loop por fundido a oscuro.
+// No se carga con "reducir movimiento" ni con ahorro de datos: en esos casos queda la foto.
+import { site } from '@/data/site';
+const { id, start, end } = site.heroVideo;
+---
+
+<div data-hero-video data-id={id} data-start={start} data-end={end} class="pointer-events-none absolute inset-0 overflow-hidden bg-marino-900 opacity-0 transition-opacity duration-[1200ms]" aria-hidden="true">
+  <div data-yt-slot class="transition-opacity duration-700 absolute left-1/2 top-1/2 aspect-video w-[max(100%,177.78svh)] -translate-x-1/2 -translate-y-1/2 scale-[1.18]"></div>
+</div>
+
+<script>
+  type YTPlayer = {
+    mute(): void; playVideo(): void; seekTo(s: number, allow: boolean): void; getCurrentTime(): number; setPlaybackQuality?(q: string): void;
+  };
+  declare global { interface Window { YT?: any; onYouTubeIframeAPIReady?: () => void } }
+
+  const box = document.querySelector<HTMLElement>('[data-hero-video]');
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const skip = !box || matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData || /(^|-)2g/.test(conn?.effectiveType ?? '');
+
+  if (!skip && box) {
+    const id = box.dataset.id!;
+    const start = Number(box.dataset.start);
+    const end = Number(box.dataset.end);
+    const FADE = 700; // ms de fundido a oscuro en cada vuelta
+    const slot = box.querySelector<HTMLElement>('[data-yt-slot]')!;
+
+    const boot = () => {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.append(tag);
+      window.onYouTubeIframeAPIReady = () => {
+        let shown = false;
+        let looping = false;
+        const player: YTPlayer = new window.YT.Player(slot.appendChild(document.createElement('div')), {
+          host: 'https://www.youtube-nocookie.com',
+          videoId: id,
+          width: '100%',
+          height: '100%',
+          playerVars: { autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3, modestbranding: 1, start, end, loop: 0 },
+          events: {
+            onReady: (e: { target: YTPlayer }) => {
+              e.target.mute();
+              e.target.setPlaybackQuality?.('hd1080');
+              e.target.playVideo();
+            },
+            onStateChange: (e: { data: number }) => {
+              // 1 = reproduciendo: mostramos el video recién cuando YouTube ya ocultó su barra de título
+              if (e.data === 1 && !shown) {
+                shown = true;
+                setTimeout(() => (box.style.opacity = '1'), 2500);
+              }
+              // 0 = terminó (por si el tramo se pasó): volvemos al inicio
+              if (e.data === 0) {
+                player.seekTo(start, true);
+                player.playVideo();
+              }
+            },
+          },
+        });
+        // Loop poco notorio: antes del final, fundido a oscuro, salto al inicio y vuelta a aparecer
+        setInterval(() => {
+          if (!shown || looping) return;
+          const t = player.getCurrentTime?.() ?? 0;
+          if (t >= end - 1.1) {
+            looping = true;
+            slot.style.opacity = '0'; // fundido al fondo oscuro (no a la foto)
+            setTimeout(() => {
+              player.seekTo(start, true);
+              setTimeout(() => {
+                slot.style.opacity = '1';
+                setTimeout(() => (looping = false), FADE);
+              }, 350);
+            }, FADE);
+          }
+        }, 200);
+      };
+    };
+    // Cargamos YouTube después de que la página esté lista para no afectar la carga inicial
+    if (document.readyState === 'complete') setTimeout(boot, 600);
+    else addEventListener('load', () => setTimeout(boot, 600), { once: true });
+  }
+</script>

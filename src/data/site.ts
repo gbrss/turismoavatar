@@ -30,6 +30,8 @@ export const site = {
     threads: 'https://www.threads.com/@turismoavatar',
   },
   featuredVideo: 'B__VK6fS8u8',
+  // Video de fondo del hero (YouTube, sin audio ni controles). Tramo en segundos.
+  heroVideo: { id: 'WzfrMOR4XJk', start: 95, end: 125 },
   assistantName: 'Cami',
   // Videos del canal de YouTube @turismoavatar (miniaturas descargadas en src/assets/media/youtube)
   videos: [

@@ -7,6 +7,7 @@ import DestinosMap from '@/components/DestinosMap.astro';
 import Gallery from '@/components/Gallery.astro';
 import VideoGrid from '@/components/VideoGrid.astro';
 import CtaBand from '@/components/CtaBand.astro';
+import HeroVideo from '@/components/HeroVideo.astro';
 import { getCollection } from 'astro:content';
 import { categorias } from '@/content.config';
 import { site, whatsappLink, clp } from '@/data/site';
@@ -50,6 +51,7 @@ const faqLd = {
         fetchpriority="high"
         class="object-[center_62%]"
       />
+      <HeroVideo />
       <div class="absolute inset-0 bg-gradient-to-t from-marino-900 via-marino-900/40 to-marino-900/10"></div>
       <div class="absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-marino-900/60 to-transparent"></div>
     </div>
