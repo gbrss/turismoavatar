@@ -1,0 +1,85 @@
+[
+  {
+    "youtube": "aUodZdx7wPw",
+    "url": "https://www.youtube.com/watch?v=aUodZdx7wPw",
+    "pages": [
+      "inicio",
+      "quienes-somos"
+    ],
+    "thumbnail": "src/assets/media/youtube/aUodZdx7wPw.jpg",
+    "title": "promo rallychile biobio"
+  },
+  {
+    "youtube": "B__VK6fS8u8",
+    "url": "https://www.youtube.com/watch?v=B__VK6fS8u8",
+    "pages": [
+      "experiencias",
+      "experiencias__"
+    ],
+    "thumbnail": "src/assets/media/youtube/B__VK6fS8u8.jpg",
+    "title": "TURISMO AVATAR EN CHILE"
+  },
+  {
+    "youtube": "ieE0XLv0mW4",
+    "url": "https://www.youtube.com/watch?v=ieE0XLv0mW4",
+    "pages": [
+      "galeria"
+    ],
+    "thumbnail": "src/assets/media/youtube/ieE0XLv0mW4.jpg",
+    "title": "Increible descubrimiento en Sup en el Biobio"
+  },
+  {
+    "youtube": "bzR2UUQxBPk",
+    "url": "https://www.youtube.com/watch?v=bzR2UUQxBPk",
+    "pages": [
+      "galeria"
+    ],
+    "thumbnail": "src/assets/media/youtube/bzR2UUQxBPk.jpg",
+    "title": "BioBio me inspira"
+  },
+  {
+    "youtube": "Bk-u5Fe__eI",
+    "url": "https://www.youtube.com/watch?v=Bk-u5Fe__eI",
+    "pages": [
+      "galeria"
+    ],
+    "thumbnail": "src/assets/media/youtube/Bk-u5Fe__eI.jpg",
+    "title": "atardecer sunset laguna grande, San Pedro de la paz"
+  },
+  {
+    "youtube": "WzfrMOR4XJk",
+    "url": "https://www.youtube.com/watch?v=WzfrMOR4XJk",
+    "pages": [
+      "galeria"
+    ],
+    "thumbnail": "src/assets/media/youtube/WzfrMOR4XJk.jpg",
+    "title": "GX010354"
+  },
+  {
+    "url": "https://maps.google.com/maps?q=%20345%20Senda%20Janequeo%20Habitaci%C3%B3n%20Primer%20Piso%2C%204150556%20Penco%2C%20Chile&t=m&z=14&output=embed&iwloc=near",
+    "pages": [
+      "habitaciones_pro__hostal-ashpai"
+    ]
+  },
+  {
+    "youtube": "3Ntig1N9F1k",
+    "url": "https://www.youtube.com/watch?v=3Ntig1N9F1k",
+    "title": "(short)",
+    "source": "canal",
+    "thumbnail": "src/assets/media/youtube/3Ntig1N9F1k.jpg"
+  },
+  {
+    "youtube": "RyMleOQLDmc",
+    "url": "https://www.youtube.com/watch?v=RyMleOQLDmc",
+    "title": "(short)",
+    "source": "canal",
+    "thumbnail": "src/assets/media/youtube/RyMleOQLDmc.jpg"
+  },
+  {
+    "youtube": "ytzjz8hy4bs",
+    "url": "https://www.youtube.com/watch?v=ytzjz8hy4bs",
+    "title": "(short)",
+    "source": "canal",
+    "thumbnail": "src/assets/media/youtube/ytzjz8hy4bs.jpg"
+  }
+]

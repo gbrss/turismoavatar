@@ -1,0 +1,229 @@
+# Extracción de https://www.turismoavatar.cl
+
+Fecha: 2026-11-14T10:23:02.808Z · Modo: **browser** · Páginas: 50 · Imágenes: 61/83 · Videos: 10
+
+## Colores de texto
+- `#ffffff` (825)
+- `#3a4f66` (751)
+- `#192a3d` (659)
+- `#000000` (121)
+- `#f47800` (35)
+- `#cc0000` (15)
+- `#fda256` (15)
+- `#b6783a` (10)
+- `#242424` (4)
+- `#151515` (3)
+- `#8c8c8c` (3)
+- `#556068` (1)
+
+## Colores de fondo
+- `#ffffff` (36058)
+- `#f2f5f7` (4680)
+- `#000000` (971)
+- `#14a6ef` (793)
+- `#17233e` (580)
+- `#f47800` (446)
+- `#080808` (328)
+- `#f47801` (180)
+- `#ec1483` (125)
+- `#3b5998` (125)
+- `#cd201f` (125)
+- `#25d366` (104)
+
+## Variables CSS de color del tema
+- `--theme-icon-color`: `var(--theme-link-initial-color)`
+- `--theme-link-hover-color`: `var(--theme-button-text-hover-color)`
+- `--theme-font-weight`: `normal`
+- `--theme-text-transform`: `uppercase`
+- `--theme-font-size`: `15px`
+- `--theme-text-color`: `#ffffff`
+- `--theme-link-initial-color`: `var(--theme-text-color)`
+- `--theme-font-family`: `monospace`
+- `--theme-form-text-initial-color`: `#ffffff`
+- `--theme-form-text-focus-color`: `#ffffff`
+- `--theme-form-field-border-initial-color`: `var(--quantity-initial-color, var(--theme-button-background-initial-color))`
+- `--theme-button-text-initial-color`: `var(--theme-text-color)`
+- `--theme-button-text-hover-color`: `var(--theme-text-color)`
+- `--theme-button-background-initial-color`: `rgba(224,229,235,0.6)`
+- `--theme-button-background-hover-color`: `rgba(224,229,235,1)`
+- `--theme-text-decoration`: `underline`
+- `--theme-button-font-weight`: `600`
+- `--theme-button-font-size`: `11px`
+- `--theme-form-field-border-focus-color`: `var(--theme-palette-color-1)`
+- `--theme-form-selection-field-initial-color`: `var(--theme-border-color)`
+- `--theme-form-selection-field-active-color`: `var(--theme-palette-color-1)`
+- `--e-global-color-blocksy_palette_1`: `var(--theme-palette-color-1)`
+- `--e-global-color-blocksy_palette_2`: `var(--theme-palette-color-2)`
+- `--e-global-color-blocksy_palette_3`: `var(--theme-palette-color-3)`
+- `--e-global-color-blocksy_palette_4`: `var(--theme-palette-color-4)`
+- `--e-global-color-blocksy_palette_5`: `var(--theme-palette-color-5)`
+- `--e-global-color-blocksy_palette_6`: `var(--theme-palette-color-6)`
+- `--e-global-color-blocksy_palette_7`: `var(--theme-palette-color-7)`
+- `--e-global-color-blocksy_palette_8`: `var(--theme-palette-color-8)`
+- `--theme-palette-color-1`: `#f47800`
+- `--theme-palette-color-2`: `#b6783a`
+- `--theme-palette-color-3`: `#3A4F66`
+- `--theme-palette-color-4`: `#192a3d`
+- `--theme-palette-color-5`: `#e1e8ed`
+- `--theme-palette-color-6`: `#f2f5f7`
+- `--theme-palette-color-7`: `#FAFBFC`
+- `--theme-palette-color-8`: `#ffffff`
+- `--theme-selection-text-color`: `#ffffff`
+- `--theme-selection-background-color`: `var(--theme-palette-color-1)`
+- `--theme-border-color`: `var(--theme-palette-color-1)`
+
+## Tipografías
+- -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" (1688)
+- Poppins, sans-serif (316)
+- Montserrat, sans-serif (291)
+- Manrope, sans-serif (68)
+- Georgia, serif (30)
+- Lato, sans-serif (22)
+- Nunito, sans-serif (18)
+- helvetica, arial, sans-serif (4)
+- Inter, sans-serif (2)
+- "trebuchet ms", geneva, sans-serif (1)
+
+## Títulos
+- -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" | 700 | none (131)
+- Montserrat, sans-serif | 700 | none (91)
+- Montserrat, sans-serif | 800 | none (53)
+- Manrope, sans-serif | 700 | uppercase (24)
+- Lato, sans-serif | 800 | none (10)
+- Poppins, sans-serif | 700 | none (9)
+- Montserrat, sans-serif | 800 | uppercase (6)
+- Poppins, sans-serif | 500 | none (6)
+- Lato, sans-serif | 800 | uppercase (4)
+- Lato, sans-serif | 700 | none (4)
+
+## Logo
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/LOGO.png (0×0) TURISMO AVATAR
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR.webp (512×512) TURISMO AVATAR
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/IMG_20231204_121219-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR1056-1024x1024.webp (1024×1024) ALOJAMIENTOS
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/tour-300x300-1.webp (300×300) tour-300x300
+- https://www.turismoavatar.cl/wp-content/uploads/2026/05/tienda-1024x1024.png (1024×1024) TIENDA
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/tunel-penco-300x300-1.webp (300×300) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp (300×300) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/CCP-teatro-1-600x601-1.webp (600×601) CCP-teatro-1-600x601
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red11.jpg (1600×1100) hover-red11.jpg
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-768x921-1.webp (768×921) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/IMG_20231204_121219.jpg (768×759) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-300x300-1.webp (300×300) contact_bg_7-300x300
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/casa-poli-768x432-1.webp (768×432) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-768x238-1.webp (768×238) contact_bg_7-768x238
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/arauco-1.jpg (0×0) arauco-1
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR0913-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1146-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/08/6.webp (410×410) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1647_1720721831625-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1130-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1129-1024x1024.jpg (1024×1024) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_1.svg (0×0) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_5.svg (0×0) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG_20231204_121219.jpg (0×0) Bio Bio me inspira
+- https://img.youtube.com/vi/Bk-u5Fe__eI/maxresdefault.jpg (1280×720) Atardecer sunset laguna grande, San Pedro de la paz
+- https://img.youtube.com/vi/WzfrMOR4XJk/maxresdefault.jpg (1280×720) GX010354
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/CabalgataHualpen-600x338-1.webp (600×338) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-854x1024-1.webp (768×921) 
+- https://www.turismoavatar.cl/wp-content/uploads/2025/08/Penco-600x398-1.webp (600×398) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga.svg (85×78) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-1.svg (69×68) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-2.svg (74×62) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-3.svg (62×62) 
+- https://www.turismoavatar.cl/wp-content/uploads/woocommerce-placeholder.webp (1200×1200) Esperando la imagen de producto
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-scaled.webp (1920×1372) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-300x300.webp (288×288) Mochila
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/shape6.png (1439×90) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/WhatsApp.svg.png (768×770) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/section-bg1.png (0×0) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/08/rear-view-man-kayaking-scaled-1024x1024.jpg (0×0) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red10.jpg (1600×1100) hover-red10.jpg
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red5.jpg (1600×1100) hover-red5.jpg
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red2a-1.jpg (1600×1100) hover-red2a-1.jpg
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red12.jpg (1600×1100) hover-red12.jpg
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-1.png (1280×720) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-2.png (1280×720) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-3.png (1280×720) 
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR0913-scaled-roc8zzwrb8bfhxvzwywqea8zh404avukhp6jukc3v4.jpg (1024×680) DCIM100GOPROGOPR0913.JPG
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1146-scaled-roc95rn39m7srri97ypa7btur9k8jzr8y9cuwps3o0.jpg (1024×680) DCIM100GOPROGOPR1146.JPG
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/6-roc9nmkp4anxd1kcxom3ktl52tjasynnenkz5zatg0.webp (1024×680) 6
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1647_1720721831625-scaled-roc95xa4emfipfa2b151maembksfu6dmz19rsdjqmo.jpg (1024×680) DCIM100GOPROGOPR1647.JPG
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1130-scaled-roc961zbcslybh38jl66gr7xai59wnwanoj76rcrrk.jpg (1024×680) DCIM100GOPROGOPR1130.JPG
+- https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1129-scaled-roc95mxwbg1d5pp2zeo5cv0jsc7ehi8l9m3fibz2j4.jpg (1024×680) DCIM100GOPROGOPR1129.JPG
+- https://www.turismoavatar.cl/wp-content/uploads/2024/10/casa-poli-e1732202603523.jpg (0×0) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/hover-red2a-1-1024x704-1-300x300.jpg (300×300) City Tour 7 lagunas
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR3756_1737677330009-1024x1024.jpg (300×300) Experiencia Sup
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/Bismarck-1024x1024.jpg (300×300) Senderismo historico Cerro Caracol
+- https://www.turismoavatar.cl/wp-content/uploads/2025/07/GOPR3576_1737327895652-1024x1024.jpg (300×300) Trekking Tour Tomé
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1647_1720721831625-2048x1536.jpg (410×307) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1129-2048x1536.jpg (410×307) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR0913-2048x1536.jpg (410×307) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1146-2048x1536.jpg (410×307) 
+- https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1130-2048x1536.jpg (410×307) 
+- https://secure.gravatar.com/avatar/850dd368e4533db6cb365c3c2803281077c297d4740db73560529cc63ee584b0?s=120&d=mm&r=g (120×120) Admin_user_avatar
+- https://secure.gravatar.com/avatar/2a171a0836b59710dc17993248bc8bd7d46919f09905fdb7e23a5d9917cdaccb?s=120&d=mm&r=g (120×120) Desarrollo
+
+## Videos
+- promo rallychile biobio https://www.youtube.com/watch?v=aUodZdx7wPw → src/assets/media/youtube/aUodZdx7wPw.jpg
+- TURISMO AVATAR EN CHILE https://www.youtube.com/watch?v=B__VK6fS8u8 → src/assets/media/youtube/B__VK6fS8u8.jpg
+- Increible descubrimiento en Sup en el Biobio https://www.youtube.com/watch?v=ieE0XLv0mW4 → src/assets/media/youtube/ieE0XLv0mW4.jpg
+- BioBio me inspira https://www.youtube.com/watch?v=bzR2UUQxBPk → src/assets/media/youtube/bzR2UUQxBPk.jpg
+- atardecer sunset laguna grande, San Pedro de la paz https://www.youtube.com/watch?v=Bk-u5Fe__eI → src/assets/media/youtube/Bk-u5Fe__eI.jpg
+- GX010354 https://www.youtube.com/watch?v=WzfrMOR4XJk → src/assets/media/youtube/WzfrMOR4XJk.jpg
+-  https://maps.google.com/maps?q=%20345%20Senda%20Janequeo%20Habitaci%C3%B3n%20Primer%20Piso%2C%204150556%20Penco%2C%20Chile&t=m&z=14&output=embed&iwloc=near → 
+- (short) https://www.youtube.com/watch?v=3Ntig1N9F1k → src/assets/media/youtube/3Ntig1N9F1k.jpg
+- (short) https://www.youtube.com/watch?v=RyMleOQLDmc → src/assets/media/youtube/RyMleOQLDmc.jpg
+- (short) https://www.youtube.com/watch?v=ytzjz8hy4bs → src/assets/media/youtube/ytzjz8hy4bs.jpg
+
+## Páginas
+- [TURISMO AVATAR](https://www.turismoavatar.cl/) — h1: — · 38 bloques · 47 imágenes
+- [Wishlist – TURISMO AVATAR](https://www.turismoavatar.cl/wishlist/) — h1: Wishlist · 1 bloques · 4 imágenes
+- [Actividades-cpt – TURISMO AVATAR](https://www.turismoavatar.cl/actividades-cpt/) — h1: Actividades-cpt · 9 bloques · 9 imágenes
+- [Habitaciones – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones/) — h1: Habitaciones · 0 bloques · 4 imágenes
+- [Formulario de reserva – TURISMO AVATAR](https://www.turismoavatar.cl/wpbc-booking/) — h1: Formulario de reserva · 1 bloques · 4 imágenes
+- [Booking Received – TURISMO AVATAR](https://www.turismoavatar.cl/wpbc-booking-received/) — h1: Booking Received · 1 bloques · 4 imágenes
+- [Experiencias – TURISMO AVATAR](https://www.turismoavatar.cl/experiencias/) — h1: — · 8 bloques · 9 imágenes
+- [Tienda – TURISMO AVATAR](https://www.turismoavatar.cl/tienda/) — h1: — · 0 bloques · 4 imágenes
+- [Contacto – TURISMO AVATAR](https://www.turismoavatar.cl/contacto/) — h1: — · 9 bloques · 5 imágenes
+- [Resultados – TURISMO AVATAR](https://www.turismoavatar.cl/resultados/) — h1: — · 7 bloques · 9 imágenes
+- [Galeria – TURISMO AVATAR](https://www.turismoavatar.cl/galeria/) — h1: — · 7 bloques · 17 imágenes
+- [Quienes somos – TURISMO AVATAR](https://www.turismoavatar.cl/quienes-somos/) — h1: Quienes somos · 19 bloques · 11 imágenes
+- [Itinerario – TURISMO AVATAR](https://www.turismoavatar.cl/programas/) — h1: Generador de Programas Turísticos · 4 bloques · 4 imágenes
+- [Reserva – TURISMO AVATAR](https://www.turismoavatar.cl/product/reserva/) — h1: Reserva · 12 bloques · 5 imágenes
+- [Mochila – TURISMO AVATAR](https://www.turismoavatar.cl/product/mochila/) — h1: Mochila · 16 bloques · 7 imágenes
+- [Mochila De Camping 90L – TURISMO AVATAR](https://www.turismoavatar.cl/product/mochila-pro/) — h1: Mochila De Camping 90L · 19 bloques · 7 imágenes
+- [Senderismo historico Cerro Caracol – TURISMO AVATAR](https://www.turismoavatar.cl/product/senderismo-historico-cerro-caracol/) — h1: Senderismo historico Cerro Caracol · 7 bloques · 9 imágenes
+- [City Tour 7 lagunas – TURISMO AVATAR](https://www.turismoavatar.cl/product/city-tour-lagunas-de-concepcion/) — h1: City Tour 7 lagunas · 7 bloques · 9 imágenes
+- [Experiencia Sup – TURISMO AVATAR](https://www.turismoavatar.cl/product/sup-experiencia-en-mar/) — h1: Experiencia Sup · 7 bloques · 9 imágenes
+- [Trekking Tour Tomé – TURISMO AVATAR](https://www.turismoavatar.cl/product/trekking-tour-tome/) — h1: Trekking Tour Tomé · 7 bloques · 9 imágenes
+- [Tour 4 Personas (Wet Way) 2 Noches/3 Días – TURISMO AVATAR](https://www.turismoavatar.cl/actividades_pro/caminata/) — h1: — · 9 bloques · 11 imágenes
+- [Habitación Hostal NDC Penco – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/hostal-ashpai/) — h1: — · 44 bloques · 19 imágenes
+- [Cabaña en Los Quiyalles – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/hostal-casas/) — h1: — · 43 bloques · 11 imágenes
+- [Habitacion de Hotel en Dichato – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/habitacion-de-hotel-bahia-azul-dichato/) — h1: — · 43 bloques · 11 imágenes
+- [Cabaña con Tinaja y desconexion en Coliumo – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/cabana-con-tinaja-y-piscina-coliumo/) — h1: — · 42 bloques · 12 imágenes
+- [Cabaña en Santa Barbara – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/cabana-en-santa-barbara/) — h1: — · 43 bloques · 11 imágenes
+- [diversion y relax en Coliumo piscina y tinaja – TURISMO AVATAR](https://www.turismoavatar.cl/habitaciones_pro/cabana-y-relax-en-coliumo/) — h1: — · 42 bloques · 12 imágenes
+- [Actividades – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/actividades/) — h1: Actividades · 11 bloques · 11 imágenes
+- [Reserva – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/reserva/) — h1: Reserva · 0 bloques · 4 imágenes
+- [Accesorios – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/accesorios/) — h1: — · 0 bloques · 4 imágenes
+- [Playa – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/actividades/playa/) — h1: — · 0 bloques · 4 imágenes
+- [Bosque – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/actividades/bosque/) — h1: — · 0 bloques · 4 imágenes
+- [Patrimonio y Cultura – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/actividades/patrimonio-cultura/) — h1: — · 0 bloques · 4 imágenes
+- [Lagunas – TURISMO AVATAR](https://www.turismoavatar.cl/product-category/actividades/lagunas/) — h1: — · 0 bloques · 4 imágenes
+- [Senderismo – TURISMO AVATAR](https://www.turismoavatar.cl/actividad/senderismo/) — h1: — · 0 bloques · 4 imágenes
+- [Sup – TURISMO AVATAR](https://www.turismoavatar.cl/actividad/sup/) — h1: — · 0 bloques · 4 imágenes
+- [City Tour – TURISMO AVATAR](https://www.turismoavatar.cl/actividad/citytour/) — h1: — · 0 bloques · 4 imágenes
+- [Geoturismo – TURISMO AVATAR](https://www.turismoavatar.cl/actividad/geo-turismo/) — h1: — · 0 bloques · 4 imágenes
+- [Avistamiento de Aves – TURISMO AVATAR](https://www.turismoavatar.cl/actividad/bird-watching/) — h1: — · 0 bloques · 4 imágenes
+- [Concepción – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/concepcion/) — h1: Ciudades Concepción · 0 bloques · 4 imágenes
+- [San Pedro de la paz – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/san-pedro-de-la-paz/) — h1: Ciudades San Pedro de la paz · 0 bloques · 4 imágenes
+- [Hualpén – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/hualpen/) — h1: Ciudades Hualpén · 0 bloques · 4 imágenes
+- [Tome – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/tome/) — h1: Ciudades Tome · 9 bloques · 16 imágenes
+- [Penco – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/penco/) — h1: Ciudades Penco · 4 bloques · 6 imágenes
+- [Chiguayante – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/chiguayante/) — h1: Ciudades Chiguayante · 0 bloques · 4 imágenes
+- [Santa Barbara – TURISMO AVATAR](https://www.turismoavatar.cl/ciudades/santa-barbara/) — h1: Ciudades Santa Barbara · 4 bloques · 7 imágenes
+- [Bio Bio – TURISMO AVATAR](https://www.turismoavatar.cl/regiones/bio-bio/) — h1: — · 0 bloques · 4 imágenes
+- [Admin_user_avatar – TURISMO AVATAR](https://www.turismoavatar.cl/author/admin_user_avatar/) — h1: Admin_user_avatar · 0 bloques · 5 imágenes
+- [Desarrollo – TURISMO AVATAR](https://www.turismoavatar.cl/author/admin/) — h1: Desarrollo · 0 bloques · 5 imágenes
+- [Experiencias – TURISMO AVATAR](https://www.turismoavatar.cl/experiencias//) — h1: — · 8 bloques · 9 imágenes

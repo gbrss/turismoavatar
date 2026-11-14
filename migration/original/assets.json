@@ -1,0 +1,1601 @@
+[
+ {
+  "key": "2024/08/6.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/08/6.webp",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__hostal-ashpai",
+   "ciudades__penco"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/08/6.webp",
+  "width": 1000,
+  "height": 1000,
+  "bytes": 150148
+ },
+ {
+  "key": "2024/08/rear-view-man-kayaking-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/08/rear-view-man-kayaking-scaled-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "actividades_pro__caminata"
+  ],
+  "kinds": [
+   "img",
+   "background"
+  ],
+  "displayW": 625,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/09/bg1.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/bg1.png",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2024/09/bg1.png",
+  "width": 1919,
+  "height": 1097,
+  "bytes": 87831
+ },
+ {
+  "key": "2024/09/cropped-LOGO-TURISMO-AVATAR.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR.webp",
+  "alts": [
+   "TURISMO AVATAR",
+   "icono"
+  ],
+  "pages": [
+   "inicio",
+   "wishlist",
+   "actividades-cpt",
+   "habitaciones",
+   "wpbc-booking",
+   "wpbc-booking-received",
+   "experiencias",
+   "tienda",
+   "contacto",
+   "resultados",
+   "galeria",
+   "quienes-somos",
+   "programas",
+   "product__reserva",
+   "product__mochila",
+   "product__mochila-pro",
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome",
+   "actividades_pro__caminata",
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo",
+   "product-category__actividades",
+   "product-category__reserva",
+   "product-category__accesorios",
+   "product-category__actividades__playa",
+   "product-category__actividades__bosque",
+   "product-category__actividades__patrimonio-cultura",
+   "product-category__actividades__lagunas",
+   "actividad__senderismo",
+   "actividad__sup",
+   "actividad__citytour",
+   "actividad__geo-turismo",
+   "actividad__bird-watching",
+   "ciudades__concepcion",
+   "ciudades__san-pedro-de-la-paz",
+   "ciudades__hualpen",
+   "ciudades__tome",
+   "ciudades__penco",
+   "ciudades__chiguayante",
+   "ciudades__santa-barbara",
+   "regiones__bio-bio",
+   "author__admin_user_avatar",
+   "author__admin",
+   "experiencias__",
+   "icono"
+  ],
+  "kinds": [
+   "img",
+   "icon"
+  ],
+  "displayW": 100,
+  "file": "src/assets/media/2024/09/cropped-LOGO-TURISMO-AVATAR.webp",
+  "width": 512,
+  "height": 512,
+  "bytes": 36086
+ },
+ {
+  "key": "2024/09/descarga-1.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-1.svg",
+  "alts": [],
+  "pages": [
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 69,
+  "file": "src/assets/media/2024/09/descarga-1.svg",
+  "bytes": 1634
+ },
+ {
+  "key": "2024/09/descarga-2.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-2.svg",
+  "alts": [],
+  "pages": [
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 74,
+  "file": "src/assets/media/2024/09/descarga-2.svg",
+  "bytes": 24155
+ },
+ {
+  "key": "2024/09/descarga-3.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-3.svg",
+  "alts": [],
+  "pages": [
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 62,
+  "file": "src/assets/media/2024/09/descarga-3.svg",
+  "bytes": 2304
+ },
+ {
+  "key": "2024/09/descarga.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga.svg",
+  "alts": [],
+  "pages": [
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 85,
+  "file": "src/assets/media/2024/09/descarga.svg",
+  "bytes": 3554
+ },
+ {
+  "key": "2024/09/hover-red10.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red10.jpg",
+  "alts": [
+   "hover-red10.jpg"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 315,
+  "file": "src/assets/media/2024/09/hover-red10.jpg",
+  "width": 1600,
+  "height": 1100,
+  "bytes": 115900
+ },
+ {
+  "key": "2024/09/hover-red11.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red11.jpg",
+  "alts": [
+   "hover-red11",
+   "hover-red11.jpg"
+  ],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 315,
+  "file": "src/assets/media/2024/09/hover-red11.jpg",
+  "width": 1600,
+  "height": 1100,
+  "bytes": 65461
+ },
+ {
+  "key": "2024/09/hover-red12.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red12.jpg",
+  "alts": [
+   "hover-red12.jpg"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 315,
+  "file": "src/assets/media/2024/09/hover-red12.jpg",
+  "width": 1600,
+  "height": 1100,
+  "bytes": 343636
+ },
+ {
+  "key": "2024/09/hover-red2a-1.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red2a-1.jpg",
+  "alts": [
+   "hover-red2a-1.jpg"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 315,
+  "file": "src/assets/media/2024/09/hover-red2a-1.jpg",
+  "width": 1600,
+  "height": 1100,
+  "bytes": 179150
+ },
+ {
+  "key": "2024/09/hover-red5.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red5.jpg",
+  "alts": [
+   "hover-red5.jpg"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 315,
+  "file": "src/assets/media/2024/09/hover-red5.jpg",
+  "width": 1600,
+  "height": 1100,
+  "bytes": 651770
+ },
+ {
+  "key": "2024/09/medium-shot-woman-sitting-log-scaled.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-scaled.webp",
+  "alts": [
+   "Mochila",
+   "Mochila De Camping 90L"
+  ],
+  "pages": [
+   "actividades-cpt",
+   "product__mochila",
+   "product__mochila-pro",
+   "actividades_pro__caminata"
+  ],
+  "kinds": [
+   "background",
+   "img"
+  ],
+  "displayW": 605,
+  "file": "src/assets/media/2024/09/medium-shot-woman-sitting-log-scaled.webp",
+  "width": 1920,
+  "height": 1372,
+  "bytes": 162664
+ },
+ {
+  "key": "2024/09/medium-shot-woman-sitting-log.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-600x429.webp",
+  "alts": [
+   "Mochila",
+   "Mochila De Camping 90L"
+  ],
+  "pages": [
+   "product__mochila",
+   "product__mochila-pro"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 605,
+  "file": "src/assets/media/2024/09/medium-shot-woman-sitting-log.webp",
+  "width": 600,
+  "height": 429,
+  "bytes": 29540
+ },
+ {
+  "key": "2024/09/Portada-1.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-1.png",
+  "alts": [],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 323,
+  "file": "src/assets/media/2024/09/Portada-1.png",
+  "width": 1280,
+  "height": 720,
+  "bytes": 494835
+ },
+ {
+  "key": "2024/09/Portada-2.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-2.png",
+  "alts": [],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 323,
+  "file": "src/assets/media/2024/09/Portada-2.png",
+  "width": 1280,
+  "height": 720,
+  "bytes": 482790
+ },
+ {
+  "key": "2024/09/Portada-3.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-3.png",
+  "alts": [],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 323,
+  "file": "src/assets/media/2024/09/Portada-3.png",
+  "width": 1280,
+  "height": 720,
+  "bytes": 487057
+ },
+ {
+  "key": "2024/09/section-bg1.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/section-bg1.png",
+  "alts": [],
+  "pages": [
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 0,
+  "file": "src/assets/media/2024/09/section-bg1.png",
+  "width": 1920,
+  "height": 649,
+  "bytes": 809958
+ },
+ {
+  "key": "2024/09/shape6.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/shape6.png",
+  "alts": [],
+  "pages": [
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2024/09/shape6.png",
+  "width": 1920,
+  "height": 121,
+  "bytes": 40871
+ },
+ {
+  "key": "2024/09/WhatsApp.svg.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/WhatsApp.svg.png",
+  "alts": [],
+  "pages": [
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 137,
+  "file": "src/assets/media/2024/09/WhatsApp.svg.png",
+  "width": 768,
+  "height": 770,
+  "bytes": 113384
+ },
+ {
+  "key": "2024/10/arauco-1.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/arauco-1.jpg",
+  "alts": [
+   "arauco-1"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 191,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/brand_1_1.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_1.svg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 0,
+  "file": "src/assets/media/2024/10/brand_1_1.svg",
+  "bytes": 121834
+ },
+ {
+  "key": "2024/10/brand_1_5.svg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_5.svg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/CabalgataHualpen-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/CabalgataHualpen-scaled.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/casa-poli-e1732202603523.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/casa-poli-e1732202603523.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "link",
+   "img"
+  ],
+  "displayW": 323,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/contact_bg_7.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/contact_bg_7.jpg",
+  "alts": [],
+  "pages": [
+   "contacto"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/IMG_20230826_153908-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG_20230826_153908-scaled.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/IMG_20231204_121219.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG_20231204_121219.jpg",
+  "alts": [
+   "Bio Bio me inspira"
+  ],
+  "pages": [
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 75,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/IMG-20231118-WA0230.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG-20231118-WA0230.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/IMG-20231118-WA0235.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG-20231118-WA0235.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 68 on line 1 column 2 of data: StartTag: invalid element name"
+ },
+ {
+  "key": "2024/10/LOGO.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/LOGO.png",
+  "alts": [
+   "TURISMO AVATAR"
+  ],
+  "pages": [
+   "inicio",
+   "wishlist",
+   "actividades-cpt",
+   "habitaciones",
+   "wpbc-booking",
+   "wpbc-booking-received",
+   "experiencias",
+   "tienda",
+   "contacto",
+   "resultados",
+   "galeria",
+   "quienes-somos",
+   "programas",
+   "product__reserva",
+   "product__mochila",
+   "product__mochila-pro",
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome",
+   "actividades_pro__caminata",
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo",
+   "product-category__actividades",
+   "product-category__reserva",
+   "product-category__accesorios",
+   "product-category__actividades__playa",
+   "product-category__actividades__bosque",
+   "product-category__actividades__patrimonio-cultura",
+   "product-category__actividades__lagunas",
+   "actividad__senderismo",
+   "actividad__sup",
+   "actividad__citytour",
+   "actividad__geo-turismo",
+   "actividad__bird-watching",
+   "ciudades__concepcion",
+   "ciudades__san-pedro-de-la-paz",
+   "ciudades__hualpen",
+   "ciudades__tome",
+   "ciudades__penco",
+   "ciudades__chiguayante",
+   "ciudades__santa-barbara",
+   "regiones__bio-bio",
+   "author__admin_user_avatar",
+   "author__admin",
+   "experiencias__"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 68 on line 1 column 2 of data: StartTag: invalid element name"
+ },
+ {
+  "key": "2024/10/shape_19.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/shape_19.png",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/supdichato-scaled-e1732736023522.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/supdichato-scaled-e1732736023522.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/10/tour_bg_1.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/tour_bg_1.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": null,
+  "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 68 on line 1 column 2 of data: StartTag: invalid element name"
+ },
+ {
+  "key": "2024/10/tunel-penco.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/tunel-penco.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 68 on line 1 column 2 of data: StartTag: invalid element name"
+ },
+ {
+  "key": "2024/11/Bismarck-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Bismarck-scaled.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "actividades-cpt",
+   "experiencias",
+   "resultados",
+   "product__senderismo-historico-cerro-caracol",
+   "actividades_pro__caminata",
+   "experiencias__"
+  ],
+  "kinds": [
+   "link",
+   "background"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2024/11/Bismarck-scaled.jpg",
+  "width": 1920,
+  "height": 2560,
+  "bytes": 1230202
+ },
+ {
+  "key": "2024/11/Bismarck.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Bismarck-1024x1024.jpg",
+  "alts": [
+   "Senderismo historico Cerro Caracol"
+  ],
+  "pages": [
+   "product-category__actividades"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 300,
+  "file": "src/assets/media/2024/11/Bismarck.jpg",
+  "width": 3000,
+  "height": 4000,
+  "bytes": 1814842
+ },
+ {
+  "key": "2024/11/CCP-teatro-1.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/CCP-teatro-1.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/11/GOPR0913.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR0913-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "ciudades__tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/11/GOPR0913.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 532796
+ },
+ {
+  "key": "2024/11/GOPR1129.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1129-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "ciudades__tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/11/GOPR1129.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 668368
+ },
+ {
+  "key": "2024/11/GOPR1130.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1130-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "ciudades__santa-barbara"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/11/GOPR1130.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 452053
+ },
+ {
+  "key": "2024/11/GOPR1146.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1146-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__hostal-casas",
+   "ciudades__tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/11/GOPR1146.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 421907
+ },
+ {
+  "key": "2024/11/GOPR1647_1720721831625.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1647_1720721831625-1024x1024.jpg",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "habitaciones_pro__cabana-y-relax-en-coliumo",
+   "ciudades__tome"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2024/11/GOPR1647_1720721831625.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 563839
+ },
+ {
+  "key": "2024/11/GOPR3756_1737677330009-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR3756_1737677330009-scaled.jpg",
+  "alts": [],
+  "pages": [
+   "actividades-cpt",
+   "experiencias",
+   "resultados",
+   "product__sup-experiencia-en-mar",
+   "actividades_pro__caminata",
+   "experiencias__"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2024/11/GOPR3756_1737677330009-scaled.jpg",
+  "width": 1920,
+  "height": 2560,
+  "bytes": 544945
+ },
+ {
+  "key": "2024/11/GOPR3756_1737677330009.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR3756_1737677330009-1024x1024.jpg",
+  "alts": [
+   "Experiencia Sup"
+  ],
+  "pages": [
+   "product-category__actividades"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 300,
+  "file": "src/assets/media/2024/11/GOPR3756_1737677330009.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 742982
+ },
+ {
+  "key": "2024/11/hover-red2a-1-1024x704-1.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/hover-red2a-1-1024x704-1.jpg",
+  "alts": [
+   "City Tour 7 lagunas"
+  ],
+  "pages": [
+   "actividades-cpt",
+   "experiencias",
+   "resultados",
+   "product__city-tour-lagunas-de-concepcion",
+   "actividades_pro__caminata",
+   "experiencias__",
+   "product-category__actividades"
+  ],
+  "kinds": [
+   "background",
+   "img"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2024/11/hover-red2a-1-1024x704-1.jpg",
+  "width": 1024,
+  "height": 704,
+  "bytes": 126071
+ },
+ {
+  "key": "2024/11/Ramuntcho.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Ramuntcho.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/11/rock.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/rock.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/11/Sup-agua-Cristalina-Penco.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Sup-agua-Cristalina-Penco.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/11/Sup-espalda-penco.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Sup-espalda-penco.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2024/11/Sup-Stand-Penco-copia.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Sup-Stand-Penco-copia.jpg",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "link"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "no descargada"
+ },
+ {
+  "key": "2025/07/GOPR3576_1737327895652-scaled.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/07/GOPR3576_1737327895652-scaled.jpg",
+  "alts": [],
+  "pages": [
+   "actividades-cpt",
+   "experiencias",
+   "resultados",
+   "product__trekking-tour-tome",
+   "actividades_pro__caminata",
+   "experiencias__"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1440,
+  "file": "src/assets/media/2025/07/GOPR3576_1737327895652-scaled.jpg",
+  "width": 1920,
+  "height": 2560,
+  "bytes": 1100447
+ },
+ {
+  "key": "2025/07/GOPR3576_1737327895652.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/07/GOPR3576_1737327895652-1024x1024.jpg",
+  "alts": [
+   "Trekking Tour Tomé"
+  ],
+  "pages": [
+   "product-category__actividades"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 300,
+  "file": "src/assets/media/2025/07/GOPR3576_1737327895652.jpg",
+  "width": 5568,
+  "height": 4176,
+  "bytes": 1539618
+ },
+ {
+  "key": "2025/08/CabalgataHualpen-600x338-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/CabalgataHualpen-600x338-1.webp",
+  "alts": [],
+  "pages": [
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/CabalgataHualpen-600x338-1.webp",
+  "width": 600,
+  "height": 338,
+  "bytes": 50614
+ },
+ {
+  "key": "2025/08/casa-poli-768x432-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/casa-poli-768x432-1.webp",
+  "alts": [
+   "casa-poli-768x432"
+  ],
+  "pages": [
+   "inicio",
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/casa-poli-768x432-1.webp",
+  "width": 768,
+  "height": 432,
+  "bytes": 24098
+ },
+ {
+  "key": "2025/08/CCP-teatro-1-600x601-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/CCP-teatro-1-600x601-1.webp",
+  "alts": [
+   "CCP-teatro-1-600x601"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 191,
+  "file": "src/assets/media/2025/08/CCP-teatro-1-600x601-1.webp",
+  "width": 600,
+  "height": 601,
+  "bytes": 22038
+ },
+ {
+  "key": "2025/08/contact_bg_7-300x300-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-300x300-1.webp",
+  "alts": [
+   "contact_bg_7-300x300"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 350,
+  "file": "src/assets/media/2025/08/contact_bg_7-300x300-1.webp",
+  "width": 300,
+  "height": 300,
+  "bytes": 5742
+ },
+ {
+  "key": "2025/08/contact_bg_7-768x238-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-768x238-1.webp",
+  "alts": [
+   "contact_bg_7-768x238"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 191,
+  "file": "src/assets/media/2025/08/contact_bg_7-768x238-1.webp",
+  "width": 768,
+  "height": 238,
+  "bytes": 12422
+ },
+ {
+  "key": "2025/08/GOPR1056.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR1056-1024x1024.webp",
+  "alts": [
+   "ALOJAMIENTOS"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 265,
+  "file": "src/assets/media/2025/08/GOPR1056.webp",
+  "width": 1024,
+  "height": 1024,
+  "bytes": 97972
+ },
+ {
+  "key": "2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp",
+  "alts": [
+   "DCIM100GOPROGOPR5827"
+  ],
+  "pages": [
+   "inicio",
+   "galeria",
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp",
+  "width": 1024,
+  "height": 1024,
+  "bytes": 41844
+ },
+ {
+  "key": "2025/08/IMG_20231204_121219.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/IMG_20231204_121219-1024x1024.jpg",
+  "alts": [
+   "EXPERIENCIAS",
+   "IMG_20231204_121219"
+  ],
+  "pages": [
+   "inicio",
+   "quienes-somos",
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 625,
+  "file": "src/assets/media/2025/08/IMG_20231204_121219.jpg",
+  "width": 1080,
+  "height": 1068,
+  "bytes": 508489
+ },
+ {
+  "key": "2025/08/LOGO-768x921-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-768x921-1.webp",
+  "alts": [
+   "LOGO-768x921"
+  ],
+  "pages": [
+   "inicio",
+   "wishlist",
+   "actividades-cpt",
+   "habitaciones",
+   "wpbc-booking",
+   "wpbc-booking-received",
+   "experiencias",
+   "tienda",
+   "contacto",
+   "resultados",
+   "galeria",
+   "quienes-somos",
+   "programas",
+   "product__reserva",
+   "product__mochila",
+   "product__mochila-pro",
+   "product__senderismo-historico-cerro-caracol",
+   "product__city-tour-lagunas-de-concepcion",
+   "product__sup-experiencia-en-mar",
+   "product__trekking-tour-tome",
+   "actividades_pro__caminata",
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo",
+   "product-category__actividades",
+   "product-category__reserva",
+   "product-category__accesorios",
+   "product-category__actividades__playa",
+   "product-category__actividades__bosque",
+   "product-category__actividades__patrimonio-cultura",
+   "product-category__actividades__lagunas",
+   "actividad__senderismo",
+   "actividad__sup",
+   "actividad__citytour",
+   "actividad__geo-turismo",
+   "actividad__bird-watching",
+   "ciudades__concepcion",
+   "ciudades__san-pedro-de-la-paz",
+   "ciudades__hualpen",
+   "ciudades__tome",
+   "ciudades__penco",
+   "ciudades__chiguayante",
+   "ciudades__santa-barbara",
+   "regiones__bio-bio",
+   "author__admin_user_avatar",
+   "author__admin",
+   "experiencias__"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 290,
+  "file": "src/assets/media/2025/08/LOGO-768x921-1.webp",
+  "width": 768,
+  "height": 921,
+  "bytes": 58502
+ },
+ {
+  "key": "2025/08/LOGO-854x1024-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-854x1024-1.webp",
+  "alts": [],
+  "pages": [
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/LOGO-854x1024-1.webp",
+  "width": 854,
+  "height": 1024,
+  "bytes": 65126
+ },
+ {
+  "key": "2025/08/Penco-600x398-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/Penco-600x398-1.webp",
+  "alts": [],
+  "pages": [
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/Penco-600x398-1.webp",
+  "width": 600,
+  "height": 398,
+  "bytes": 30252
+ },
+ {
+  "key": "2025/08/tour-300x300-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/tour-300x300-1.webp",
+  "alts": [
+   "TOURS"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 265,
+  "file": "src/assets/media/2025/08/tour-300x300-1.webp",
+  "width": 300,
+  "height": 300,
+  "bytes": 18612
+ },
+ {
+  "key": "2025/08/tunel-penco-300x300-1.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/tunel-penco-300x300-1.webp",
+  "alts": [],
+  "pages": [
+   "inicio",
+   "galeria",
+   "quienes-somos"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 367,
+  "file": "src/assets/media/2025/08/tunel-penco-300x300-1.webp",
+  "width": 300,
+  "height": 300,
+  "bytes": 24094
+ },
+ {
+  "key": "2026/05/3tome.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2026/05/3tome.png",
+  "alts": [
+   "3tome"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1420,
+  "file": "src/assets/media/2026/05/3tome.png",
+  "width": 1915,
+  "height": 821,
+  "bytes": 2001444
+ },
+ {
+  "key": "2026/05/ccp3raedad2026.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2026/05/ccp3raedad2026.png",
+  "alts": [
+   "ccp3raedad2026"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1420,
+  "file": "src/assets/media/2026/05/ccp3raedad2026.png",
+  "width": 1915,
+  "height": 821,
+  "bytes": 2438156
+ },
+ {
+  "key": "2026/05/tienda.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2026/05/tienda-1024x1024.png",
+  "alts": [
+   "TIENDA"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 265,
+  "file": "src/assets/media/2026/05/tienda.png",
+  "width": 1254,
+  "height": 1254,
+  "bytes": 2961342
+ },
+ {
+  "key": "2026/05/WRCchile.png",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/2026/05/WRCchile.png",
+  "alts": [
+   "WRCchile"
+  ],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "background"
+  ],
+  "displayW": 1420,
+  "file": "src/assets/media/2026/05/WRCchile.png",
+  "width": 1915,
+  "height": 821,
+  "bytes": 2409858
+ },
+ {
+  "key": "elementor/thumbs/6-roc9nmkp4anxd1kcxom3ktl52tjasynnenkz5zatg0.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/6-roc9nmkp4anxd1kcxom3ktl52tjasynnenkz5zatg0.webp",
+  "alts": [
+   "6"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/6-roc9nmkp4anxd1kcxom3ktl52tjasynnenkz5zatg0.webp",
+  "width": 1024,
+  "height": 680,
+  "bytes": 82746
+ },
+ {
+  "key": "elementor/thumbs/GOPR0913-scaled-roc8zzwrb8bfhxvzwywqea8zh404avukhp6jukc3v4.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR0913-scaled-roc8zzwrb8bfhxvzwywqea8zh404avukhp6jukc3v4.jpg",
+  "alts": [
+   "DCIM100GOPROGOPR0913.JPG"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/GOPR0913-scaled-roc8zzwrb8bfhxvzwywqea8zh404avukhp6jukc3v4.jpg",
+  "width": 1024,
+  "height": 680,
+  "bytes": 108757
+ },
+ {
+  "key": "elementor/thumbs/GOPR1129-scaled-roc95mxwbg1d5pp2zeo5cv0jsc7ehi8l9m3fibz2j4.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1129-scaled-roc95mxwbg1d5pp2zeo5cv0jsc7ehi8l9m3fibz2j4.jpg",
+  "alts": [
+   "DCIM100GOPROGOPR1129.JPG"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/GOPR1129-scaled-roc95mxwbg1d5pp2zeo5cv0jsc7ehi8l9m3fibz2j4.jpg",
+  "width": 1024,
+  "height": 680,
+  "bytes": 148314
+ },
+ {
+  "key": "elementor/thumbs/GOPR1130-scaled-roc961zbcslybh38jl66gr7xai59wnwanoj76rcrrk.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1130-scaled-roc961zbcslybh38jl66gr7xai59wnwanoj76rcrrk.jpg",
+  "alts": [
+   "DCIM100GOPROGOPR1130.JPG"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/GOPR1130-scaled-roc961zbcslybh38jl66gr7xai59wnwanoj76rcrrk.jpg",
+  "width": 1024,
+  "height": 680,
+  "bytes": 95383
+ },
+ {
+  "key": "elementor/thumbs/GOPR1146-scaled-roc95rn39m7srri97ypa7btur9k8jzr8y9cuwps3o0.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1146-scaled-roc95rn39m7srri97ypa7btur9k8jzr8y9cuwps3o0.jpg",
+  "alts": [
+   "DCIM100GOPROGOPR1146.JPG"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/GOPR1146-scaled-roc95rn39m7srri97ypa7btur9k8jzr8y9cuwps3o0.jpg",
+  "width": 1024,
+  "height": 680,
+  "bytes": 88470
+ },
+ {
+  "key": "elementor/thumbs/GOPR1647_1720721831625-scaled-roc95xa4emfipfa2b151maembksfu6dmz19rsdjqmo.jpg",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1647_1720721831625-scaled-roc95xa4emfipfa2b151maembksfu6dmz19rsdjqmo.jpg",
+  "alts": [
+   "DCIM100GOPROGOPR1647.JPG"
+  ],
+  "pages": [
+   "habitaciones_pro__hostal-ashpai",
+   "habitaciones_pro__hostal-casas",
+   "habitaciones_pro__habitacion-de-hotel-bahia-azul-dichato",
+   "habitaciones_pro__cabana-con-tinaja-y-piscina-coliumo",
+   "habitaciones_pro__cabana-en-santa-barbara",
+   "habitaciones_pro__cabana-y-relax-en-coliumo"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 397,
+  "file": "src/assets/media/elementor/thumbs/GOPR1647_1720721831625-scaled-roc95xa4emfipfa2b151maembksfu6dmz19rsdjqmo.jpg",
+  "width": 1024,
+  "height": 680,
+  "bytes": 112347
+ },
+ {
+  "key": "externas/cdn.trustindex.io/loader.js",
+  "url": "https://cdn.trustindex.io/loader.js?wp-widget",
+  "alts": [],
+  "pages": [
+   "inicio"
+  ],
+  "kinds": [
+   "data-attr"
+  ],
+  "displayW": 0,
+  "file": null,
+  "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 4 on line 1 column 1 of data: Start tag expected, '<' not found"
+ },
+ {
+  "key": "externas/img.youtube.com/maxresdefault.jpg",
+  "url": "https://img.youtube.com/vi/Bk-u5Fe__eI/maxresdefault.jpg",
+  "alts": [
+   "Atardecer sunset laguna grande, San Pedro de la paz",
+   "GX010354"
+  ],
+  "pages": [
+   "galeria"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 75,
+  "file": "src/assets/media/externas/img.youtube.com/maxresdefault.jpg",
+  "width": 1280,
+  "height": 720,
+  "bytes": 152766
+ },
+ {
+  "key": "externas/secure.gravatar.com/2a171a0836b59710dc17993248bc8bd7d46919f09905fdb7e23a5d9917cdaccb",
+  "url": "https://secure.gravatar.com/avatar/2a171a0836b59710dc17993248bc8bd7d46919f09905fdb7e23a5d9917cdaccb?s=120&d=mm&r=g",
+  "alts": [
+   "Desarrollo"
+  ],
+  "pages": [
+   "author__admin"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 60,
+  "file": "src/assets/media/externas/secure.gravatar.com/2a171a0836b59710dc17993248bc8bd7d46919f09905fdb7e23a5d9917cdaccb",
+  "width": 120,
+  "height": 120,
+  "bytes": 1628
+ },
+ {
+  "key": "externas/secure.gravatar.com/850dd368e4533db6cb365c3c2803281077c297d4740db73560529cc63ee584b0",
+  "url": "https://secure.gravatar.com/avatar/850dd368e4533db6cb365c3c2803281077c297d4740db73560529cc63ee584b0?s=120&d=mm&r=g",
+  "alts": [
+   "Admin_user_avatar"
+  ],
+  "pages": [
+   "author__admin_user_avatar"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 60,
+  "file": "src/assets/media/externas/secure.gravatar.com/850dd368e4533db6cb365c3c2803281077c297d4740db73560529cc63ee584b0",
+  "width": 120,
+  "height": 120,
+  "bytes": 1628
+ },
+ {
+  "key": "externas/www.turismoavatar.cl/placeholder.png",
+  "url": "https://www.turismoavatar.cl/wp-content/plugins/elementor/assets/images/placeholder.png",
+  "alts": [],
+  "pages": [
+   "experiencias",
+   "resultados",
+   "experiencias__"
+  ],
+  "kinds": [
+   "slideshow"
+  ],
+  "displayW": 795,
+  "file": "src/assets/media/externas/www.turismoavatar.cl/placeholder.png",
+  "width": 1200,
+  "height": 800,
+  "bytes": 6146
+ },
+ {
+  "key": "woocommerce-placeholder.webp",
+  "url": "https://www.turismoavatar.cl/wp-content/uploads/woocommerce-placeholder.webp",
+  "alts": [
+   "Esperando la imagen de producto"
+  ],
+  "pages": [
+   "product__reserva"
+  ],
+  "kinds": [
+   "img"
+  ],
+  "displayW": 605,
+  "file": "src/assets/media/woocommerce-placeholder.webp",
+  "width": 1200,
+  "height": 1200,
+  "bytes": 7038
+ }
+]

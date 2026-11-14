@@ -1,0 +1,28 @@
+{
+  "origin": "https://www.turismoavatar.cl",
+  "startedAt": "2026-11-14T10:15:33.436Z",
+  "probes": {
+    "fetch-browser-ua": {
+      "status": 200,
+      "headers": {
+        "server": "LiteSpeed",
+        "x-litespeed-cache": "hit"
+      }
+    },
+    "fetch-bot-ua": {
+      "status": 200,
+      "headers": {
+        "server": "LiteSpeed",
+        "x-litespeed-cache": "hit"
+      }
+    },
+    "playwright": {
+      "status": 200,
+      "title": "TURISMO AVATAR"
+    }
+  },
+  "mode": "browser",
+  "errors": [],
+  "sitemap": "/wp-sitemap.xml",
+  "finishedAt": "2026-11-14T10:23:02.808Z"
+}

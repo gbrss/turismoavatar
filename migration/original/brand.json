@@ -1,0 +1,820 @@
+{
+  "textColors": [
+    {
+      "value": "#ffffff",
+      "weight": 825
+    },
+    {
+      "value": "#3a4f66",
+      "weight": 751
+    },
+    {
+      "value": "#192a3d",
+      "weight": 659
+    },
+    {
+      "value": "#000000",
+      "weight": 121
+    },
+    {
+      "value": "#f47800",
+      "weight": 35
+    },
+    {
+      "value": "#cc0000",
+      "weight": 15
+    },
+    {
+      "value": "#fda256",
+      "weight": 15
+    },
+    {
+      "value": "#b6783a",
+      "weight": 10
+    },
+    {
+      "value": "#242424",
+      "weight": 4
+    },
+    {
+      "value": "#151515",
+      "weight": 3
+    },
+    {
+      "value": "#8c8c8c",
+      "weight": 3
+    },
+    {
+      "value": "#556068",
+      "weight": 1
+    },
+    {
+      "value": "#22d3ee",
+      "weight": 1
+    }
+  ],
+  "backgroundColors": [
+    {
+      "value": "#ffffff",
+      "weight": 36058
+    },
+    {
+      "value": "#f2f5f7",
+      "weight": 4680
+    },
+    {
+      "value": "#000000",
+      "weight": 971
+    },
+    {
+      "value": "#14a6ef",
+      "weight": 793
+    },
+    {
+      "value": "#17233e",
+      "weight": 580
+    },
+    {
+      "value": "#f47800",
+      "weight": 446
+    },
+    {
+      "value": "#080808",
+      "weight": 328
+    },
+    {
+      "value": "#f47801",
+      "weight": 180
+    },
+    {
+      "value": "#ec1483",
+      "weight": 125
+    },
+    {
+      "value": "#3b5998",
+      "weight": 125
+    },
+    {
+      "value": "#cd201f",
+      "weight": 125
+    },
+    {
+      "value": "#25d366",
+      "weight": 104
+    },
+    {
+      "value": "#f0f1f3",
+      "weight": 77
+    },
+    {
+      "value": "#f1f2f3",
+      "weight": 21
+    },
+    {
+      "value": "#d5d8dc",
+      "weight": 9
+    },
+    {
+      "value": "#111111",
+      "weight": 5
+    },
+    {
+      "value": "#eeeeee",
+      "weight": 1
+    },
+    {
+      "value": "#3aabd6",
+      "weight": 0
+    },
+    {
+      "value": "#e9640a",
+      "weight": 0
+    }
+  ],
+  "borderColors": [
+    {
+      "value": "#000000",
+      "weight": 38
+    },
+    {
+      "value": "#ffffff",
+      "weight": 17
+    },
+    {
+      "value": "#14a6ef",
+      "weight": 15
+    },
+    {
+      "value": "#e1e8ed",
+      "weight": 14
+    },
+    {
+      "value": "#cccccc",
+      "weight": 8
+    },
+    {
+      "value": "#ebebeb",
+      "weight": 4
+    },
+    {
+      "value": "#f47800",
+      "weight": 2
+    },
+    {
+      "value": "#69727d",
+      "weight": 2
+    },
+    {
+      "value": "#e1e5eb",
+      "weight": 1
+    },
+    {
+      "value": "#e8e8e8",
+      "weight": 1
+    }
+  ],
+  "cssVars": {
+    "--theme-icon-color": "var(--theme-link-initial-color)",
+    "--theme-link-hover-color": "var(--theme-button-text-hover-color)",
+    "--theme-font-weight": "normal",
+    "--theme-text-transform": "uppercase",
+    "--theme-font-size": "15px",
+    "--theme-text-color": "#ffffff",
+    "--theme-link-initial-color": "var(--theme-text-color)",
+    "--mini-cart-background-color": "var(--theme-palette-color-3)",
+    "--theme-font-family": "monospace",
+    "--theme-form-text-initial-color": "#ffffff",
+    "--theme-form-text-focus-color": "#ffffff",
+    "--theme-form-field-border-initial-color": "var(--quantity-initial-color, var(--theme-button-background-initial-color))",
+    "--theme-button-text-initial-color": "var(--theme-text-color)",
+    "--theme-button-text-hover-color": "var(--theme-text-color)",
+    "--theme-button-background-initial-color": "rgba(224,229,235,0.6)",
+    "--theme-button-background-hover-color": "rgba(224,229,235,1)",
+    "--theme-text-decoration": "underline",
+    "--theme-button-font-weight": "600",
+    "--theme-button-font-size": "11px",
+    "--theme-form-field-border-focus-color": "var(--theme-palette-color-1)",
+    "--theme-form-selection-field-initial-color": "var(--theme-border-color)",
+    "--theme-form-selection-field-active-color": "var(--theme-palette-color-1)",
+    "--e-global-color-blocksy_palette_1": "var(--theme-palette-color-1)",
+    "--e-global-color-blocksy_palette_2": "var(--theme-palette-color-2)",
+    "--e-global-color-blocksy_palette_3": "var(--theme-palette-color-3)",
+    "--e-global-color-blocksy_palette_4": "var(--theme-palette-color-4)",
+    "--e-global-color-blocksy_palette_5": "var(--theme-palette-color-5)",
+    "--e-global-color-blocksy_palette_6": "var(--theme-palette-color-6)",
+    "--e-global-color-blocksy_palette_7": "var(--theme-palette-color-7)",
+    "--e-global-color-blocksy_palette_8": "var(--theme-palette-color-8)",
+    "--theme-palette-color-1": "#f47800",
+    "--theme-palette-color-2": "#b6783a",
+    "--theme-palette-color-3": "#3A4F66",
+    "--theme-palette-color-4": "#192a3d",
+    "--theme-palette-color-5": "#e1e8ed",
+    "--theme-palette-color-6": "#f2f5f7",
+    "--theme-palette-color-7": "#FAFBFC",
+    "--theme-palette-color-8": "#ffffff",
+    "--theme-selection-text-color": "#ffffff",
+    "--theme-selection-background-color": "var(--theme-palette-color-1)",
+    "--theme-border-color": "var(--theme-palette-color-1)",
+    "--theme-headings-color": "var(--theme-palette-color-4)",
+    "--quantity-arrows-initial-color": "var(--theme-text-color)",
+    "--badge-text-color": "#ffffff",
+    "--badge-background-color": "#24292E",
+    "--background-color": "rgba(218, 0, 28, 0.7)",
+    "--text-horizontal-alignment": "center",
+    "--spinner-color": "rgba(100, 100, 100, 0.8)",
+    "--theme-font-stack-default": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+    "--loader-color": "var(--theme-text-color)",
+    "--toggle-button-border-color": "currentColor",
+    "--theme-icon-hover-color": "#fff",
+    "--theme-table-font-size": "15px",
+    "--theme-table-text-align": "start",
+    "--theme-form-font-size": "0.9em",
+    "--theme-form-field-background-initial-color": "transparent",
+    "--quantity-initial-color": "transparent",
+    "--theme-icon-color-2": "#fff",
+    "--border-color": "#FFFFFF",
+    "--text-align": "initial",
+    "--ha-tooltip-arrow-color": "black",
+    "--e-social-icon-icon-color": "#fff",
+    "--e-global-color-primary": "#6EC1E4",
+    "--e-global-color-secondary": "#54595F",
+    "--e-global-color-text": "#7A7A7A",
+    "--e-global-color-accent": "#61CE70",
+    "--e-global-typography-primary-font-family": "\"Roboto\"",
+    "--e-global-typography-primary-font-weight": "600",
+    "--e-global-typography-secondary-font-family": "\"Roboto\"",
+    "--e-global-typography-secondary-font-weight": "400",
+    "--e-global-typography-text-font-family": "\"Lato\"",
+    "--e-global-typography-text-font-weight": "400",
+    "--e-global-typography-accent-font-family": "\"Roboto\"",
+    "--e-global-typography-accent-font-weight": "500",
+    "--swiper-theme-color": "#000",
+    "--swiper-preloader-color": "#000",
+    "--content-text-align": "center",
+    "--dynamic-text-color": "var( --e-global-color-blocksy_palette_1 )",
+    "--e-form-steps-indicator-inactive-secondary-color": "#ffffff",
+    "--e-form-steps-indicator-active-secondary-color": "#ffffff",
+    "--e-form-steps-indicator-completed-secondary-color": "#ffffff",
+    "--yith-wapo-required-option-color": "#AF2323",
+    "--yith-wapo-color-swatch-style": "50%",
+    "--yith-wapo-label-font-size": "16px",
+    "--yith-wapo-description-font-size": "12px",
+    "--yith-wapo-color-swatch-size": "40px",
+    "--yith-wapo-block-background-color": "#ffffff",
+    "--yith-wapo-accent-color-color": "#03bfac",
+    "--yith-wapo-form-border-color-color": "#7a7a7a",
+    "--yith-wapo-price-box-colors-text": "#474747",
+    "--yith-wapo-price-box-colors-background": "#ffffff",
+    "--yith-wapo-uploads-file-colors-background": "#f3f3f3",
+    "--yith-wapo-uploads-file-colors-border": "#c4c4c4",
+    "--yith-wapo-tooltip-colors-text": "#ffffff",
+    "--yith-wapo-tooltip-colors-background": "#03bfac",
+    "--wp--preset--color--black": "#000000",
+    "--wp--preset--color--cyan-bluish-gray": "#abb8c3",
+    "--wp--preset--color--white": "#ffffff",
+    "--wp--preset--color--pale-pink": "#f78da7",
+    "--wp--preset--color--vivid-red": "#cf2e2e",
+    "--wp--preset--color--luminous-vivid-orange": "#ff6900",
+    "--wp--preset--color--luminous-vivid-amber": "#fcb900",
+    "--wp--preset--color--light-green-cyan": "#7bdcb5",
+    "--wp--preset--color--vivid-green-cyan": "#00d084",
+    "--wp--preset--color--pale-cyan-blue": "#8ed1fc",
+    "--wp--preset--color--vivid-cyan-blue": "#0693e3",
+    "--wp--preset--color--vivid-purple": "#9b51e0",
+    "--wp--preset--color--palette-color-1": "var(--theme-palette-color-1, #f47800)",
+    "--wp--preset--color--palette-color-2": "var(--theme-palette-color-2, #b6783a)",
+    "--wp--preset--color--palette-color-3": "var(--theme-palette-color-3, #3A4F66)",
+    "--wp--preset--color--palette-color-4": "var(--theme-palette-color-4, #192a3d)",
+    "--wp--preset--color--palette-color-5": "var(--theme-palette-color-5, #e1e8ed)",
+    "--wp--preset--color--palette-color-6": "var(--theme-palette-color-6, #f2f5f7)",
+    "--wp--preset--color--palette-color-7": "var(--theme-palette-color-7, #FAFBFC)",
+    "--wp--preset--color--palette-color-8": "var(--theme-palette-color-8, #ffffff)",
+    "--wp--preset--font-size--small": "13px",
+    "--wp--preset--font-size--medium": "20px",
+    "--wp--preset--font-size--large": "clamp(22px, 1.375rem + ((1vw - 3.2px) * 0.625), 30px)",
+    "--wp--preset--font-size--x-large": "clamp(30px, 1.875rem + ((1vw - 3.2px) * 1.563), 50px)",
+    "--wp--preset--font-size--xx-large": "clamp(45px, 2.813rem + ((1vw - 3.2px) * 2.734), 80px)",
+    "--joinchat-font": "-apple-system,blinkmacsystemfont,\"Segoe UI\",roboto,oxygen-sans,ubuntu,cantarell,\"Helvetica Neue\",sans-serif",
+    "--text": "hsl(0deg 0% clamp(0%,var(--bw) * 1000%,100%)/clamp(70%,var(--bw) * 1000%,100%))",
+    "--color": "hsl(var(--hsl))",
+    "--lightbox-ui-color": "hsla(0,0%,93%,.9)",
+    "--lightbox-ui-color-hover": "#fff",
+    "--lightbox-text-color": "var(--lightbox-ui-color)",
+    "--mini-cart-divider-color": "rgba(255, 255, 255, 0.1)",
+    "--theme-button-text-transform": "uppercase",
+    "--wp-block-synced-color": "#7a00df",
+    "--wp-block-synced-color--rgb": "122,0,223",
+    "--wp-bound-block-color": "var(--wp-block-synced-color)",
+    "--wp-admin-theme-color": "#007cba",
+    "--wp-admin-theme-color--rgb": "0,124,186",
+    "--wp-admin-theme-color-darker-10": "#006ba1",
+    "--wp-admin-theme-color-darker-10--rgb": "0,107,160.5",
+    "--wp-admin-theme-color-darker-20": "#005a87",
+    "--wp-admin-theme-color-darker-20--rgb": "0,90,135",
+    "--wp--preset--font-size--normal": "16px",
+    "--wp--preset--font-size--huge": "42px",
+    "--divider-color": "#0c0d0e",
+    "--tabindex-color": "#0085f2",
+    "--tabindex-shadow-color": "rgba(0,133,242,0.4)",
+    "--yith-wccl-tooltip-text-color": "#ffffff"
+  },
+  "fonts": [
+    {
+      "value": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "weight": 1688
+    },
+    {
+      "value": "Poppins, sans-serif",
+      "weight": 316
+    },
+    {
+      "value": "Montserrat, sans-serif",
+      "weight": 291
+    },
+    {
+      "value": "Manrope, sans-serif",
+      "weight": 68
+    },
+    {
+      "value": "Georgia, serif",
+      "weight": 30
+    },
+    {
+      "value": "Lato, sans-serif",
+      "weight": 22
+    },
+    {
+      "value": "Nunito, sans-serif",
+      "weight": 18
+    },
+    {
+      "value": "helvetica, arial, sans-serif",
+      "weight": 4
+    },
+    {
+      "value": "Inter, sans-serif",
+      "weight": 2
+    },
+    {
+      "value": "\"trebuchet ms\", geneva, sans-serif",
+      "weight": 1
+    }
+  ],
+  "headingFonts": [
+    {
+      "value": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\" | 700 | none",
+      "weight": 131
+    },
+    {
+      "value": "Montserrat, sans-serif | 700 | none",
+      "weight": 91
+    },
+    {
+      "value": "Montserrat, sans-serif | 800 | none",
+      "weight": 53
+    },
+    {
+      "value": "Manrope, sans-serif | 700 | uppercase",
+      "weight": 24
+    },
+    {
+      "value": "Lato, sans-serif | 800 | none",
+      "weight": 10
+    },
+    {
+      "value": "Poppins, sans-serif | 700 | none",
+      "weight": 9
+    },
+    {
+      "value": "Montserrat, sans-serif | 800 | uppercase",
+      "weight": 6
+    },
+    {
+      "value": "Poppins, sans-serif | 500 | none",
+      "weight": 6
+    },
+    {
+      "value": "Lato, sans-serif | 800 | uppercase",
+      "weight": 4
+    },
+    {
+      "value": "Lato, sans-serif | 700 | none",
+      "weight": 4
+    }
+  ],
+  "logos": [
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/LOGO.png",
+      "alt": "TURISMO AVATAR",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR.webp",
+      "alt": "TURISMO AVATAR",
+      "w": 512,
+      "h": 512
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/IMG_20231204_121219-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR1056-1024x1024.webp",
+      "alt": "ALOJAMIENTOS",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/tour-300x300-1.webp",
+      "alt": "tour-300x300",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2026/05/tienda-1024x1024.png",
+      "alt": "TIENDA",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/tunel-penco-300x300-1.webp",
+      "alt": "",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp",
+      "alt": "",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/CCP-teatro-1-600x601-1.webp",
+      "alt": "CCP-teatro-1-600x601",
+      "w": 600,
+      "h": 601
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red11.jpg",
+      "alt": "hover-red11.jpg",
+      "w": 1600,
+      "h": 1100
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-768x921-1.webp",
+      "alt": "",
+      "w": 768,
+      "h": 921
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/IMG_20231204_121219.jpg",
+      "alt": "",
+      "w": 768,
+      "h": 759
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-300x300-1.webp",
+      "alt": "contact_bg_7-300x300",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/casa-poli-768x432-1.webp",
+      "alt": "",
+      "w": 768,
+      "h": 432
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/contact_bg_7-768x238-1.webp",
+      "alt": "contact_bg_7-768x238",
+      "w": 768,
+      "h": 238
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/arauco-1.jpg",
+      "alt": "arauco-1",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR0913-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1146-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/08/6.webp",
+      "alt": "",
+      "w": 410,
+      "h": 410
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1647_1720721831625-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1130-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1129-1024x1024.jpg",
+      "alt": "",
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_1.svg",
+      "alt": "",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/brand_1_5.svg",
+      "alt": "",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/IMG_20231204_121219.jpg",
+      "alt": "Bio Bio me inspira",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://img.youtube.com/vi/Bk-u5Fe__eI/maxresdefault.jpg",
+      "alt": "Atardecer sunset laguna grande, San Pedro de la paz",
+      "w": 1280,
+      "h": 720
+    },
+    {
+      "src": "https://img.youtube.com/vi/WzfrMOR4XJk/maxresdefault.jpg",
+      "alt": "GX010354",
+      "w": 1280,
+      "h": 720
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/CabalgataHualpen-600x338-1.webp",
+      "alt": "",
+      "w": 600,
+      "h": 338
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/LOGO-854x1024-1.webp",
+      "alt": "",
+      "w": 768,
+      "h": 921
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/08/Penco-600x398-1.webp",
+      "alt": "",
+      "w": 600,
+      "h": 398
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga.svg",
+      "alt": "",
+      "w": 85,
+      "h": 78
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-1.svg",
+      "alt": "",
+      "w": 69,
+      "h": 68
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-2.svg",
+      "alt": "",
+      "w": 74,
+      "h": 62
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/descarga-3.svg",
+      "alt": "",
+      "w": 62,
+      "h": 62
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/woocommerce-placeholder.webp",
+      "alt": "Esperando la imagen de producto",
+      "w": 1200,
+      "h": 1200
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-scaled.webp",
+      "alt": "",
+      "w": 1920,
+      "h": 1372
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/medium-shot-woman-sitting-log-300x300.webp",
+      "alt": "Mochila",
+      "w": 288,
+      "h": 288
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/shape6.png",
+      "alt": "",
+      "w": 1439,
+      "h": 90
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/WhatsApp.svg.png",
+      "alt": "",
+      "w": 768,
+      "h": 770
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/section-bg1.png",
+      "alt": "",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/08/rear-view-man-kayaking-scaled-1024x1024.jpg",
+      "alt": "",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red10.jpg",
+      "alt": "hover-red10.jpg",
+      "w": 1600,
+      "h": 1100
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red5.jpg",
+      "alt": "hover-red5.jpg",
+      "w": 1600,
+      "h": 1100
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red2a-1.jpg",
+      "alt": "hover-red2a-1.jpg",
+      "w": 1600,
+      "h": 1100
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/hover-red12.jpg",
+      "alt": "hover-red12.jpg",
+      "w": 1600,
+      "h": 1100
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-1.png",
+      "alt": "",
+      "w": 1280,
+      "h": 720
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-2.png",
+      "alt": "",
+      "w": 1280,
+      "h": 720
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/Portada-3.png",
+      "alt": "",
+      "w": 1280,
+      "h": 720
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR0913-scaled-roc8zzwrb8bfhxvzwywqea8zh404avukhp6jukc3v4.jpg",
+      "alt": "DCIM100GOPROGOPR0913.JPG",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1146-scaled-roc95rn39m7srri97ypa7btur9k8jzr8y9cuwps3o0.jpg",
+      "alt": "DCIM100GOPROGOPR1146.JPG",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/6-roc9nmkp4anxd1kcxom3ktl52tjasynnenkz5zatg0.webp",
+      "alt": "6",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1647_1720721831625-scaled-roc95xa4emfipfa2b151maembksfu6dmz19rsdjqmo.jpg",
+      "alt": "DCIM100GOPROGOPR1647.JPG",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1130-scaled-roc961zbcslybh38jl66gr7xai59wnwanoj76rcrrk.jpg",
+      "alt": "DCIM100GOPROGOPR1130.JPG",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/elementor/thumbs/GOPR1129-scaled-roc95mxwbg1d5pp2zeo5cv0jsc7ehi8l9m3fibz2j4.jpg",
+      "alt": "DCIM100GOPROGOPR1129.JPG",
+      "w": 1024,
+      "h": 680
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/10/casa-poli-e1732202603523.jpg",
+      "alt": "",
+      "w": 0,
+      "h": 0
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/hover-red2a-1-1024x704-1-300x300.jpg",
+      "alt": "City Tour 7 lagunas",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR3756_1737677330009-1024x1024.jpg",
+      "alt": "Experiencia Sup",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/Bismarck-1024x1024.jpg",
+      "alt": "Senderismo historico Cerro Caracol",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2025/07/GOPR3576_1737327895652-1024x1024.jpg",
+      "alt": "Trekking Tour Tomé",
+      "w": 300,
+      "h": 300
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1647_1720721831625-2048x1536.jpg",
+      "alt": "",
+      "w": 410,
+      "h": 307
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1129-2048x1536.jpg",
+      "alt": "",
+      "w": 410,
+      "h": 307
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR0913-2048x1536.jpg",
+      "alt": "",
+      "w": 410,
+      "h": 307
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1146-2048x1536.jpg",
+      "alt": "",
+      "w": 410,
+      "h": 307
+    },
+    {
+      "src": "https://www.turismoavatar.cl/wp-content/uploads/2024/11/GOPR1130-2048x1536.jpg",
+      "alt": "",
+      "w": 410,
+      "h": 307
+    },
+    {
+      "src": "https://secure.gravatar.com/avatar/850dd368e4533db6cb365c3c2803281077c297d4740db73560529cc63ee584b0?s=120&d=mm&r=g",
+      "alt": "Admin_user_avatar",
+      "w": 120,
+      "h": 120
+    },
+    {
+      "src": "https://secure.gravatar.com/avatar/2a171a0836b59710dc17993248bc8bd7d46919f09905fdb7e23a5d9917cdaccb?s=120&d=mm&r=g",
+      "alt": "Desarrollo",
+      "w": 120,
+      "h": 120
+    }
+  ],
+  "icons": [
+    {
+      "rel": "icon",
+      "href": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR-32x32.webp",
+      "sizes": "32x32"
+    },
+    {
+      "rel": "icon",
+      "href": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR-192x192.webp",
+      "sizes": "192x192"
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://www.turismoavatar.cl/wp-content/uploads/2024/09/cropped-LOGO-TURISMO-AVATAR-180x180.webp",
+      "sizes": null
+    }
+  ]
+}
