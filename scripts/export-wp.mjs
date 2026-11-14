@@ -65,7 +65,13 @@ async function main() {
   await mkdir(OUT, { recursive: true });
   console.log(`Exportando ${BASE}`);
 
-  const types = (await get(`${BASE}/wp-json/wp/v2/types`))?.data ?? {};
+  const probe = await fetch(`${BASE}/wp-json/wp/v2/types`, { headers: { 'user-agent': UA } }).catch((e) => ({ ok: false, status: e.message }));
+  if (!probe.ok) {
+    console.error(`\n✗ El WordPress no respondió (${probe.status}). Probablemente el hosting bloquea servidores/IPs de data center.`);
+    console.error('  Ejecuta este script desde tu computador: npm install && npm run wp:export, y luego haz commit y push.\n');
+    process.exit(1);
+  }
+  const types = (await probe.json()) ?? {};
   await writeFile(join(OUT, 'types.json'), JSON.stringify(types, null, 2));
 
   const exported = {};

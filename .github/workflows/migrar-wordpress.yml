@@ -1,7 +1,8 @@
 name: Migrar WordPress
 
 # Exporta contenido e imágenes de www.turismoavatar.cl (WordPress) al repo.
-# Se ejecuta solo al cambiar el script, o a mano desde Actions → "Migrar WordPress" → Run workflow.
+# Se ejecuta a mano desde Actions → "Migrar WordPress" → Run workflow.
+# Si el hosting bloquea a GitHub, ejecuta `npm run wp:export` desde tu computador.
 on:
   workflow_dispatch:
     inputs:
@@ -9,9 +10,6 @@ on:
         description: 'Descargar toda la biblioteca de medios (no solo las imágenes usadas)'
         type: boolean
         default: false
-  push:
-    branches: [main]
-    paths: ['scripts/export-wp.mjs']
 
 permissions:
   contents: write

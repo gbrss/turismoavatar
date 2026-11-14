@@ -35,11 +35,19 @@ El chatbot lee `/catalogo.json`, que se genera en cada build: al editar el conte
 
 ## Migrar imágenes y contenido del WordPress
 
-La GitHub Action **Migrar WordPress** (`.github/workflows/migrar-wordpress.yml`) descarga las imágenes usadas por el sitio, exporta páginas, productos WooCommerce y alojamientos a `migration/wp-export/` (con un `RESUMEN.md`) y hace commit. Corre sola al subir cambios en `scripts/export-wp.mjs` y se puede lanzar a mano en *Actions → Migrar WordPress → Run workflow* (opción para bajar toda la biblioteca de medios).
+`scripts/export-wp.mjs` descarga las imágenes usadas por el sitio y exporta páginas, productos WooCommerce y alojamientos a `migration/wp-export/` (con un `RESUMEN.md`).
+
+**Recomendado — desde tu computador** (el hosting actual bloquea a los servidores de GitHub):
+
+```bash
+npm install
+npm run wp:export                 # ALL_MEDIA=1 npm run wp:export para toda la biblioteca
+git add src/assets/media migration && git commit -m "Migrar imágenes WordPress" && git push
+```
+
+También existe la GitHub Action **Migrar WordPress** (*Actions → Run workflow*), útil si el hosting deja de bloquear.
 
 > ⚠️ Ejecútala **antes** de apuntar el dominio a Cloudflare Pages, mientras el WordPress siga en línea.
-
-En local: `npm run wp:export`.
 
 ## Desplegar en Cloudflare Pages
 
