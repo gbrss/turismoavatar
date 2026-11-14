@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/hero-video.json', 'scripts/hero-video.sh']
+    paths: ['scripts/hero-video.json', 'scripts/hero-video.sh', 'scripts/storyboards.py']
 
 permissions:
   contents: write
@@ -17,7 +17,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg jq bc
       - run: pip install -q -U yt-dlp
-      - run: bash scripts/hero-video.sh
+      - run: python3 scripts/storyboards.py || true
+      - run: bash scripts/hero-video.sh || true
       - name: Guardar en el repo
         if: always()
         run: |
