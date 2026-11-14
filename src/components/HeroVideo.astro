@@ -1,5 +1,5 @@
 ---
-// Video de fondo del hero: YouTube silenciado, sin controles ni pausa, con loop por fundido a oscuro.
+// Video de fondo del hero: public/media/video/hero.mp4 (generado con Google Flow, sin audio, loop con fundido).
 // El reproductor se dibuja a 1920×1080 y se escala con CSS para cubrir: así YouTube entrega HD también en móviles.
 // No se carga con "reducir movimiento" ni con ahorro de datos: en esos casos queda la foto.
 import { existsSync } from 'node:fs';
@@ -13,7 +13,8 @@ const localWebm = existsSync('public/media/video/hero.webm');
 {
   local && (
     <video
-      class="pointer-events-none absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+      class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[62%_45%] opacity-0 transition-opacity duration-500 motion-reduce:hidden"
+      onplaying="this.style.opacity=1"
       autoplay
       muted
       loop
