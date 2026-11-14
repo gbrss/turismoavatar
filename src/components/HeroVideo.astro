@@ -42,6 +42,7 @@ const { id, start, end } = site.heroVideo;
     window.onYouTubeIframeAPIReady = () => {
       let shown = false;
       let looping = false;
+      let waitingResume = false;
       const player: YTPlayer = new window.YT.Player(slot.appendChild(document.createElement('div')), {
         host: 'https://www.youtube-nocookie.com',
         videoId: id,
@@ -51,17 +52,20 @@ const { id, start, end } = site.heroVideo;
         events: {
           onReady: (e: { target: YTPlayer }) => {
             e.target.mute();
-            e.target.playVideo();
           },
           onStateChange: (e: { data: number }) => {
             if (e.data === 1 && !shown) {
               shown = true;
-              setTimeout(() => (box.style.opacity = '1'), 600);
+              setTimeout(() => (box.style.opacity = '1'), 300);
             }
-            if (e.data === 0) {
-              player.seekTo(start, true);
-              player.playVideo();
+            if (e.data === 1 && looping && waitingResume) {
+              waitingResume = false;
+              setTimeout(() => {
+                slot.style.opacity = '1';
+                setTimeout(() => (looping = false), FADE);
+              }, 150);
             }
+            if (e.data === 0) player.seekTo(start, true);
           },
         },
       });
@@ -72,11 +76,15 @@ const { id, start, end } = site.heroVideo;
           looping = true;
           slot.style.opacity = '0';
           setTimeout(() => {
+            waitingResume = true;
             player.seekTo(start, true);
+            // Respaldo por si YouTube no emite el evento de reproducción tras el salto
             setTimeout(() => {
+              if (!waitingResume) return;
+              waitingResume = false;
               slot.style.opacity = '1';
               setTimeout(() => (looping = false), FADE);
-            }, 300);
+            }, 1500);
           }, FADE);
         }
       }, 200);
