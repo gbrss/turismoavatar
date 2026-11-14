@@ -10,8 +10,8 @@ const src = variant === 'horizontal' ? horizontal : vertical;
 <Image
   src={src}
   alt="Turismo Avatar"
-  widths={variant === 'horizontal' ? [180, 360] : [160, 320]}
-  sizes={variant === 'horizontal' ? '180px' : '160px'}
-  class:list={[variant === 'horizontal' ? 'h-11 w-auto' : 'h-auto w-40', className]}
+  widths={variant === 'horizontal' ? [160, 320, 480] : [160, 320]}
+  sizes={variant === 'horizontal' ? '152px' : '160px'}
+  class:list={[variant === 'horizontal' ? 'h-12 w-auto' : 'h-auto w-40', className]}
   loading={eager ? 'eager' : 'lazy'}
 />
