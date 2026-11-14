@@ -52,27 +52,29 @@ const path = Astro.url.pathname;
     </div>
   </div>
 
-  <div id="menu-movil" hidden class="fixed inset-0 z-50 overflow-y-auto bg-marino text-white xl:hidden">
-    <div class="wrap flex h-20 items-center justify-between">
-      <Logo />
-      <button type="button" class="grid h-11 w-11 place-items-center rounded-full hover:bg-white/10" data-menu-close>
-        <span class="sr-only">Cerrar menú</span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-      </button>
-    </div>
-    <nav aria-label="Menú móvil" class="wrap pb-10 pt-4">
-      <ul class="grid gap-1">
-        <li><a href="/" class="block py-2 font-display text-3xl font-extrabold">Inicio</a></li>
-        {nav.map((item) => <li><a href={item.href} class="block py-2 font-display text-3xl font-extrabold">{item.label}</a></li>)}
-        <li><a href="/empresas" class="block py-2 font-display text-3xl font-extrabold">Grupos y empresas</a></li>
-      </ul>
-      <div class="mt-8 grid gap-3">
-        <a href="/reservas" class="btn btn-primary">Reservar ahora</a>
-        <a href={whatsappLink()} class="btn btn-wa" target="_blank" rel="noopener">Escribir por WhatsApp</a>
-      </div>
-    </nav>
-  </div>
 </header>
+
+<!-- Fuera del <header>: su backdrop-blur crearía un bloque contenedor y el menú quedaría de 80 px -->
+<div id="menu-movil" hidden class="fixed inset-0 z-[70] overflow-y-auto bg-marino text-white xl:hidden" role="dialog" aria-modal="true" aria-label="Menú">
+  <div class="wrap flex h-20 items-center justify-between">
+    <Logo />
+    <button type="button" class="grid h-11 w-11 place-items-center rounded-full hover:bg-white/10" data-menu-close>
+      <span class="sr-only">Cerrar menú</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </div>
+  <nav aria-label="Menú móvil" class="wrap pb-10 pt-4">
+    <ul class="grid gap-1">
+      <li><a href="/" class="block py-2 font-display text-3xl font-extrabold">Inicio</a></li>
+      {nav.map((item) => <li><a href={item.href} class="block py-2 font-display text-3xl font-extrabold">{item.label}</a></li>)}
+      <li><a href="/empresas" class="block py-2 font-display text-3xl font-extrabold">Grupos y empresas</a></li>
+    </ul>
+    <div class="mt-8 grid gap-3">
+      <a href="/reservas" class="btn btn-primary">Reservar ahora</a>
+      <a href={whatsappLink()} class="btn btn-wa" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+    </div>
+  </nav>
+</div>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -89,4 +91,10 @@ const path = Astro.url.pathname;
   toggle?.addEventListener('click', () => setOpen(true));
   close?.addEventListener('click', () => setOpen(false));
   document.addEventListener('keydown', (e) => e.key === 'Escape' && menu && !menu.hidden && setOpen(false));
+  // Cerrar al elegir un enlace (útil para anclas dentro de la misma página)
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+    menu.hidden = true;
+    toggle?.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
+  }));
 </script>
