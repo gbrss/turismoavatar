@@ -76,7 +76,7 @@ Mientras Access no esté configurado se puede usar el respaldo `ADMIN_PASSWORD` 
 ### 4. Publicación (token de GitHub)
 GitHub → *Settings → Developer settings → Fine-grained tokens → Generate new token*:
 - Repository access: **solo** `gbrss/turismoavatar`
-- Permisos: **Contents: Read and write**, **Checks: Read**, **Commit statuses: Read**
+- Permisos: **Contents: Read and write** (Metadata: Read se agrega solo). El estado del build se lee de las verificaciones públicas del repo.
 
 Guárdalo como secreto `GITHUB_TOKEN` en Pages (opcionales: `GITHUB_REPO`, `GITHUB_BRANCH`).
 El proyecto de Pages debe estar conectado al repositorio de GitHub (despliegue automático en `main`).

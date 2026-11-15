@@ -76,7 +76,7 @@ secreto CF_ACCESS_TEAM_DOMAIN "Dominio del equipo (ej. turismoavatar.cloudflarea
 secreto CF_ACCESS_AUD "Application Audience (AUD) tag"
 
 paso "Publicación desde el editor (GitHub)"
-echo "  Token fine-grained solo para gbrss/turismoavatar: Contents (lectura y escritura), Checks y Commit statuses (lectura)."
+echo "  Token fine-grained solo para gbrss/turismoavatar: Contents (lectura y escritura)."
 secreto GITHUB_TOKEN "Token de GitHub" oculto
 
 paso "Contraseña de respaldo (solo se usa si Access no está configurado)"
