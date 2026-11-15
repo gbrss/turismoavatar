@@ -1,5 +1,5 @@
 // Panel de administración de Turismo Avatar.
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { lazy, Suspense } from 'react';
 import { clp } from '@/blocks/core';
 import { AdminCtx, useAdmin, api, Empty, Loading, Panel, cls, fmtDate, type AdminData, type CmsItem, type Me } from './lib';
@@ -8,6 +8,7 @@ import Chats from './Chats';
 import Leads from './Leads';
 import Fichas from './Fichas';
 import MediaLibrary from './Media';
+import { chime, useLive, useSilentReload, type Area, type Aviso } from './live';
 
 // El editor visual es pesado: se descarga solo al abrirlo
 const HomeEditor = lazy(() => import('./HomeEditor'));
@@ -46,14 +47,19 @@ function Icon({ name }: { name: string }) {
 }
 
 function Dashboard({ go }: { go: (r: Ruta) => void }) {
-  const { me } = useAdmin();
+  const { me, rev } = useAdmin();
   const [b, setB] = useState<{ items: Booking[]; stats: { status: string; n: number; total: number; mes: number }[]; proximas: number } | null>(null);
   const [c, setC] = useState<{ resumen: { conversaciones: number; derivadas: number } } | null>(null);
+  const loadB = () => api<NonNullable<typeof b>>('/api/admin/bookings?estado=pendiente&limite=5').then(setB).catch(() => {});
+  const loadC = () => api<NonNullable<typeof c>>('/api/admin/chats?dias=30').then(setC).catch(() => {});
   useEffect(() => {
     if (!me.servicios.db) return;
-    api<NonNullable<typeof b>>('/api/admin/bookings?estado=pendiente&limite=5').then(setB).catch(() => {});
-    api<NonNullable<typeof c>>('/api/admin/chats?dias=30').then(setC).catch(() => {});
+    loadB();
+    loadC();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me]);
+  useSilentReload(rev.bookings, loadB);
+  useSilentReload(rev.chats, loadC);
   const stat = (s: string) => b?.stats.find((x) => x.status === s);
   const mes = b?.stats.reduce((a, x) => a + x.mes, 0);
   const pagado = (stat('pagada')?.total ?? 0) + (stat('confirmada')?.total ?? 0);
@@ -122,8 +128,11 @@ export default function AdminApp() {
   const [me, setMe] = useState<Me | null>(null);
   const [media, setMedia] = useState<CmsItem[]>([]);
   const [error, setError] = useState('');
-  const [toasts, setToasts] = useState<{ id: number; msg: string; tipo: 'ok' | 'error' }[]>([]);
+  const [toasts, setToasts] = useState<{ id: number; msg: string; tipo: 'ok' | 'error' | 'aviso'; title?: string; href?: string }[]>([]);
   const [menu, setMenu] = useState(false);
+  const [nuevos, setNuevos] = useState<Record<Area, number>>({ reservas: 0, cami: 0, mensajes: 0 });
+  const [sinVer, setSinVer] = useState(0);
+  const [permiso, setPermiso] = useState<NotificationPermission | 'no'>(() => ('Notification' in window ? Notification.permission : 'no'));
 
   useEffect(() => {
     const on = () => (setRuta(routeFromHash()), setMenu(false));
@@ -149,11 +158,45 @@ export default function AdminApp() {
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), tipo === 'error' ? 7000 : 3500);
   }, []);
 
+  // Tiempo real: avisos de reservas, conversaciones con Cami y mensajes nuevos
+  const rutaRef = useRef(ruta);
+  rutaRef.current = ruta;
+  const onAviso = useCallback((a: Aviso) => {
+    const id = Date.now() + Math.random();
+    setToasts((t) => [...t.slice(-3), { id, msg: a.body, title: a.title, tipo: 'aviso', href: `#/${a.area}` }]);
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 9000);
+    if (rutaRef.current !== a.area || document.hidden) setNuevos((n) => ({ ...n, [a.area]: n[a.area] + 1 }));
+    if (document.hidden) setSinVer((n) => n + 1);
+    if (a.important) chime();
+    if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+      try {
+        const n = new Notification(a.title, { body: a.body, icon: '/icon-192.png', tag: `${a.area}-${id}` });
+        n.onclick = () => (window.focus(), (location.hash = `/${a.area}`), n.close());
+      } catch {
+        /* algunos móviles no permiten notificaciones fuera de un service worker */
+      }
+    }
+  }, []);
+  const { rev, estado: live, refrescar } = useLive(Boolean(me?.servicios.db), onAviso);
+  useSilentReload(rev.media, () => reloadMedia());
+
+  useEffect(() => {
+    if (ruta === 'reservas' || ruta === 'cami' || ruta === 'mensajes') setNuevos((n) => ({ ...n, [ruta]: 0 }));
+  }, [ruta]);
+  useEffect(() => {
+    const on = () => !document.hidden && setSinVer(0);
+    document.addEventListener('visibilitychange', on);
+    return () => document.removeEventListener('visibilitychange', on);
+  }, []);
+  useEffect(() => {
+    document.title = `${sinVer ? `(${sinVer}) ` : ''}Panel · Turismo Avatar`;
+  }, [sinVer]);
+
   const go = (r: Ruta) => (location.hash = `/${r}`);
 
   if (error) return <p className="p-8 text-red-700">No se pudo abrir el panel: {error}</p>;
   if (!data || !me) return <Loading />;
-  const value = { data, me, media, reloadMedia, toast };
+  const value = { data, me, media, reloadMedia, toast, rev };
   const title = NAV.find(([k]) => k === ruta)![1];
 
   return (
@@ -177,11 +220,25 @@ export default function AdminApp() {
                 {NAV.map(([k, label]) => (
                   <a key={k} href={`#/${k}`} aria-current={ruta === k ? 'page' : undefined} className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-semibold text-white/80 hover:bg-white/10 hover:text-white aria-[current=page]:bg-naranja aria-[current=page]:text-marino">
                     <Icon name={k} />
-                    {label}
+                    <span className="flex-1">{label}</span>
+                    {k in nuevos && nuevos[k as Area] > 0 && (
+                      <span className="grid h-6 min-w-6 place-items-center rounded-full bg-naranja px-1.5 text-xs font-extrabold text-marino" aria-label={`${nuevos[k as Area]} nuevos`}>
+                        {nuevos[k as Area]}
+                      </span>
+                    )}
                   </a>
                 ))}
               </nav>
               <div className="mt-auto grid gap-2 border-t border-white/10 px-2 pt-4 text-sm">
+                {permiso === 'default' && (
+                  <button
+                    type="button"
+                    onClick={() => Notification.requestPermission().then((p) => (setPermiso(p), p === 'granted' && toast('Avisos activados: te avisaremos de reservas y conversaciones nuevas')))}
+                    className="rounded-xl bg-white/10 px-3 py-2 text-left font-bold text-white hover:bg-white/15"
+                  >
+                    🔔 Activar avisos en este dispositivo
+                  </button>
+                )}
                 <a href="/" target="_blank" rel="noopener" className="font-bold text-naranja">
                   Ver el sitio ↗
                 </a>
@@ -205,7 +262,13 @@ export default function AdminApp() {
                   <path d="M4 7h16M4 12h16M4 17h16" />
                 </svg>
               </button>
-              <h1 className="font-display text-2xl font-extrabold">{title}</h1>
+              <h1 className="flex-1 font-display text-2xl font-extrabold">{title}</h1>
+              {me.servicios.db && (
+                <button type="button" onClick={refrescar} title="Se actualiza solo. Toca para actualizar ahora." className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold ring-1 ring-roca">
+                  <span className={cls('h-2.5 w-2.5 rounded-full', live === 'en-vivo' ? 'animate-pulse bg-[#1f9d55]' : live === 'conectando' ? 'bg-naranja' : 'bg-red-600')} aria-hidden="true" />
+                  {live === 'en-vivo' ? 'En vivo' : live === 'conectando' ? 'Conectando…' : 'Sin conexión'}
+                </button>
+              )}
             </header>
             {ruta === 'inicio' && <Dashboard go={go} />}
             {ruta === 'reservas' && <Bookings />}
@@ -217,11 +280,21 @@ export default function AdminApp() {
         </div>
       )}
       <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[2000] grid justify-items-center gap-2 px-4" aria-live="polite">
-        {toasts.map((t) => (
-          <p key={t.id} className={cls('pointer-events-auto max-w-md rounded-full px-5 py-3 text-sm font-bold shadow-xl', t.tipo === 'error' ? 'bg-red-700 text-white' : 'bg-marino text-white')}>
-            {t.msg}
-          </p>
-        ))}
+        {toasts.map((t) =>
+          t.tipo === 'aviso' ? (
+            <a key={t.id} href={t.href} className="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl bg-white p-4 text-left shadow-2xl ring-2 ring-naranja">
+              <span className="mt-1 h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-naranja" aria-hidden="true" />
+              <span className="min-w-0">
+                <span className="block font-display font-extrabold">{t.title}</span>
+                <span className="line-clamp-2 block text-sm text-gris">{t.msg}</span>
+              </span>
+            </a>
+          ) : (
+            <p key={t.id} className={cls('pointer-events-auto max-w-md rounded-full px-5 py-3 text-sm font-bold shadow-xl', t.tipo === 'error' ? 'bg-red-700 text-white' : 'bg-marino text-white')}>
+              {t.msg}
+            </p>
+          ),
+        )}
       </div>
     </AdminCtx.Provider>
   );

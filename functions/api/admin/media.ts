@@ -57,9 +57,10 @@ export const onRequestPost = async ({ request, env, data }: Ctx) => {
   return adminJson({ item: { id, key, kind, name, alt, width, height, bytes } });
 };
 
-export const onRequestPatch = async ({ request, env }: Ctx) => {
+export const onRequestPatch = async ({ request, env, data }: Ctx) => {
   const { id, alt } = (await request.json()) as { id: string; alt: string };
   await env.DB?.prepare('UPDATE cms_media SET alt = ?1 WHERE id = ?2').bind(clean(alt, 200), id).run();
+  await audit(env, data.user, 'archivo.descripcion', id);
   return adminJson({ ok: true });
 };
 

@@ -1,5 +1,6 @@
 // Mensajes del formulario de contacto, empresas y proveedores, y suscriptores del newsletter.
 import { useEffect, useState } from 'react';
+import { useSilentReload } from './live';
 import { api, Empty, Loading, Panel, cls, fmtDateTime, useAdmin, waLink } from './lib';
 
 interface Lead {
@@ -16,16 +17,18 @@ interface Lead {
 const KIND: Record<string, string> = { contacto: 'Contacto', empresa: 'Empresa / grupo', proveedor: 'Quiere publicar' };
 
 export default function Leads() {
-  const { me, toast } = useAdmin();
+  const { me, toast, rev } = useAdmin();
   const [tab, setTab] = useState<'mensajes' | 'suscriptores'>('mensajes');
   const [items, setItems] = useState<Lead[] | null>(null);
   const [subs, setSubs] = useState<{ email: string; created_at: string; source: string }[] | null>(null);
 
-  useEffect(() => {
+  const load = () => {
     if (!me.servicios.db) return;
     if (tab === 'mensajes') api<{ items: Lead[] }>('/api/admin/leads').then((r) => setItems(r.items));
     else api<{ items: NonNullable<typeof subs> }>('/api/admin/leads?tipo=suscriptores').then((r) => setSubs(r.items));
-  }, [tab, me]);
+  };
+  useEffect(load, [tab, me]); // eslint-disable-line react-hooks/exhaustive-deps
+  useSilentReload(rev.leads + rev.subs, load);
 
   const setStatus = async (l: Lead, status: string) => {
     await api('/api/admin/leads', { method: 'PATCH', body: JSON.stringify({ id: l.id, status }) });

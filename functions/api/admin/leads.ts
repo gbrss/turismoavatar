@@ -1,5 +1,5 @@
 import type { Env } from '../../../server/lib';
-import { adminJson, type AdminUser } from '../../../server/admin';
+import { adminJson, audit, type AdminUser } from '../../../server/admin';
 
 type Ctx = EventContext<Env, string, { user: AdminUser }>;
 
@@ -15,10 +15,11 @@ export const onRequestGet = async ({ request, env }: Ctx) => {
   return adminJson({ items: results });
 };
 
-export const onRequestPatch = async ({ request, env }: Ctx) => {
+export const onRequestPatch = async ({ request, env, data }: Ctx) => {
   if (!env.DB) return adminJson({ error: 'Sin base de datos' }, 503);
   const { id, status } = (await request.json()) as { id: number; status: string };
   if (!['nuevo', 'respondido', 'archivado'].includes(status)) return adminJson({ error: 'Estado inválido' }, 400);
   await env.DB.prepare('UPDATE leads SET status = ?1 WHERE id = ?2').bind(status, id).run();
+  await audit(env, data.user, 'mensaje.estado', `${id} → ${status}`);
   return adminJson({ ok: true });
 };

@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { cmsWidths, parseCms, type Pic, type SiteData } from '@/blocks/core';
+import type { Rev } from './live';
 
 export async function api<T = Record<string, unknown>>(path: string, init: RequestInit = {}): Promise<T> {
   const isForm = init.body instanceof FormData;
@@ -51,6 +52,8 @@ interface Ctx {
   media: CmsItem[];
   reloadMedia: () => Promise<void>;
   toast: (msg: string, tipo?: 'ok' | 'error') => void;
+  /** Cambia cada vez que llegan datos nuevos (tiempo real) */
+  rev: Rev;
 }
 export const AdminCtx = createContext<Ctx | null>(null);
 export const useAdmin = () => useContext(AdminCtx)!;

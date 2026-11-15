@@ -1,7 +1,8 @@
 // Reservas: filtros, cambio de estado, notas internas, contacto directo y exportación a Excel.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { clp } from '@/blocks/core';
 import { api, Btn, Empty, Loading, Panel, STATUS, cls, fmtDate, fmtDateTime, useAdmin, useDebounced, waLink } from './lib';
+import { useSilentReload } from './live';
 
 export interface Booking {
   code: string;
@@ -24,9 +25,14 @@ export interface Booking {
 
 const TIPOS: Record<string, string> = { experiencia: 'Experiencia', alojamiento: 'Alojamiento', programa: 'Programa', cotizacion: 'Cotización' };
 
-export function BookingCard({ b, onChange }: { b: Booking; onChange: (b: Booking) => void }) {
+export function BookingCard({ b, onChange, nueva }: { b: Booking; onChange: (b: Booking) => void; nueva?: boolean }) {
   const { toast } = useAdmin();
   const [notes, setNotes] = useState(b.admin_notes ?? '');
+  const editing = useRef(false);
+  // Si otra persona cambia las notas, se actualizan (salvo que las estés escribiendo)
+  useEffect(() => {
+    if (!editing.current) setNotes(b.admin_notes ?? '');
+  }, [b.admin_notes]);
   const patch = async (body: Partial<Booking>) => {
     try {
       const r = await api<{ item: Booking }>('/api/admin/bookings', { method: 'PATCH', body: JSON.stringify({ code: b.code, ...body }) });
@@ -39,7 +45,8 @@ export function BookingCard({ b, onChange }: { b: Booking; onChange: (b: Booking
   const when = b.date_end ? `${fmtDate(b.date)} al ${fmtDate(b.date_end)}` : fmtDate(b.date, { weekday: 'short', day: 'numeric', month: 'short' });
   const msg = `Hola ${b.name.split(' ')[0]} 👋 Te escribimos de Turismo Avatar por tu solicitud ${b.code}: ${b.item_title}, ${when}, ${b.people} ${b.people === 1 ? 'persona' : 'personas'}.`;
   return (
-    <article className="rounded-2xl bg-white p-5 ring-1 ring-roca">
+    <article className={cls('rounded-2xl bg-white p-5 ring-1 transition-shadow duration-700', nueva ? 'ring-2 ring-naranja shadow-[0_0_0_6px_rgb(255_140_0/0.15)]' : 'ring-roca')}>
+      {nueva && <p className="mb-2 inline-block rounded-full bg-naranja px-2.5 py-0.5 text-xs font-extrabold text-marino">Nueva</p>}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs font-bold text-gris">
@@ -89,7 +96,11 @@ export function BookingCard({ b, onChange }: { b: Booking; onChange: (b: Booking
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            onBlur={() => notes !== (b.admin_notes ?? '') && patch({ admin_notes: notes })}
+            onFocus={() => (editing.current = true)}
+            onBlur={() => {
+              editing.current = false;
+              if (notes !== (b.admin_notes ?? '')) patch({ admin_notes: notes });
+            }}
             rows={3}
             placeholder="Ej: pagó abono por transferencia, punto de encuentro confirmado…"
             className="input font-normal"
@@ -101,7 +112,9 @@ export function BookingCard({ b, onChange }: { b: Booking; onChange: (b: Booking
 }
 
 export default function Bookings() {
-  const { me } = useAdmin();
+  const { me, rev } = useAdmin();
+  const [nuevas, setNuevas] = useState<Set<string>>(new Set());
+  const vistos = useRef<Set<string> | null>(null);
   const [items, setItems] = useState<Booking[] | null>(null);
   const [error, setError] = useState('');
   const [estado, setEstado] = useState('');
@@ -113,13 +126,29 @@ export default function Bookings() {
   const dq = useDebounced(q, 350);
   const params = new URLSearchParams(Object.entries({ estado, tipo, q: dq, desde, hasta, orden }).filter(([, v]) => v) as [string, string][]);
 
-  useEffect(() => {
-    setItems(null);
+  const load = (silent = false) => {
+    if (!silent) setItems(null);
     api<{ items: Booking[] }>(`/api/admin/bookings?${params}`)
-      .then((r) => (setItems(r.items), setError('')))
-      .catch((e) => (setError(e.message), setItems([])));
+      .then((r) => {
+        setItems(r.items);
+        setError('');
+        // Resalta las reservas que llegaron mientras el panel estaba abierto
+        if (silent && vistos.current) {
+          const llegadas = r.items.filter((x) => !vistos.current!.has(x.code)).map((x) => x.code);
+          if (llegadas.length) {
+            setNuevas((n) => new Set([...n, ...llegadas]));
+            setTimeout(() => setNuevas((n) => new Set([...n].filter((c) => !llegadas.includes(c)))), 20000);
+          }
+        }
+        vistos.current = new Set([...(vistos.current ?? []), ...r.items.map((x) => x.code)]);
+      })
+      .catch((e) => !silent && (setError(e.message), setItems([])));
+  };
+  useEffect(() => {
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.toString()]);
+  useSilentReload(rev.bookings, () => load(true));
 
   if (!me.servicios.db) return <Empty>Conecta la base de datos D1 para ver las reservas (ver ADMIN.md). Mientras tanto siguen llegando por correo y WhatsApp.</Empty>;
   return (
@@ -160,7 +189,7 @@ export default function Bookings() {
       {!items ? (
         <Loading />
       ) : items.length ? (
-        items.map((b) => <BookingCard key={b.code} b={b} onChange={(nb) => setItems((l) => l!.map((x) => (x.code === nb.code ? nb : x)))} />)
+        items.map((b) => <BookingCard key={b.code} b={b} nueva={nuevas.has(b.code)} onChange={(nb) => setItems((l) => l!.map((x) => (x.code === nb.code ? nb : x)))} />)
       ) : (
         <Empty>No hay reservas con esos filtros.</Empty>
       )}

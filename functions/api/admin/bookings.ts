@@ -64,6 +64,7 @@ export const onRequestPatch = async ({ request, env, data }: Ctx) => {
   }
   if (body.admin_notes !== undefined) {
     await env.DB.prepare(`UPDATE bookings SET admin_notes = ?1, updated_at = datetime('now') WHERE code = ?2`).bind(cleanMultiline(body.admin_notes, 2000), code).run();
+    await audit(env, data.user, 'reserva.nota', code);
   }
   const row = await env.DB.prepare('SELECT * FROM bookings WHERE code = ?1').bind(code).first();
   return adminJson({ item: row });

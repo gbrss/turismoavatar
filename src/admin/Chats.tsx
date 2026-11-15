@@ -1,5 +1,6 @@
 // Conversaciones con Cami: lista por sesión, conversación completa y preguntas más repetidas.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSilentReload } from './live';
 import { api, Empty, Loading, Panel, cls, fmtDateTime, useAdmin, useDebounced } from './lib';
 
 interface Sesion {
@@ -23,7 +24,8 @@ interface Msg {
 }
 
 export default function Chats() {
-  const { me } = useAdmin();
+  const { me, rev } = useAdmin();
+  const fin = useRef<HTMLDivElement>(null);
   const [dias, setDias] = useState(30);
   const [q, setQ] = useState('');
   const [humano, setHumano] = useState(false);
@@ -32,19 +34,33 @@ export default function Chats() {
   const [sel, setSel] = useState<string | null>(null);
   const [msgs, setMsgs] = useState<Msg[] | null>(null);
 
-  useEffect(() => {
+  const loadList = (silent = false) => {
     if (!me.servicios.db) return;
-    setData(null);
+    if (!silent) setData(null);
     api<NonNullable<typeof data>>(`/api/admin/chats?dias=${dias}&q=${encodeURIComponent(dq)}${humano ? '&humano=1' : ''}`)
       .then(setData)
-      .catch(() => setData({ items: [], resumen: { mensajes: 0, conversaciones: 0, derivadas: 0 }, top: [] }));
-  }, [dias, dq, humano, me]);
-
-  useEffect(() => {
+      .catch(() => !silent && setData({ items: [], resumen: { mensajes: 0, conversaciones: 0, derivadas: 0 }, top: [] }));
+  };
+  const loadMsgs = (silent = false) => {
     if (!sel) return;
-    setMsgs(null);
-    api<{ items: Msg[] }>(`/api/admin/chats?sesion=${encodeURIComponent(sel)}`).then((r) => setMsgs(r.items));
+    if (!silent) setMsgs(null);
+    api<{ items: Msg[] }>(`/api/admin/chats?sesion=${encodeURIComponent(sel)}`).then((r) =>
+      setMsgs((prev) => {
+        // Mensajes nuevos de la conversación abierta: baja al final
+        if (prev && r.items.length > prev.length) setTimeout(() => fin.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), 50);
+        return r.items;
+      }),
+    );
+  };
+  useEffect(() => {
+    loadList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dias, dq, humano, me]);
+  useEffect(() => {
+    loadMsgs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sel]);
+  useSilentReload(rev.chats, () => (loadList(true), loadMsgs(true)));
 
   if (!me.servicios.db) return <Empty>Conecta la base de datos D1 para guardar y ver las conversaciones (ver ADMIN.md).</Empty>;
   return (
@@ -125,6 +141,7 @@ export default function Chats() {
                     </li>
                   ))}
                 </ol>
+                <div ref={fin} />
                 <p className="mt-4 text-xs text-gris">Las conversaciones no guardan nombres ni teléfonos: si el cliente siguió por WhatsApp, la verás en tu WhatsApp.</p>
               </>
             )
