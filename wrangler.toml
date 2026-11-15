@@ -12,12 +12,10 @@ binding = "DB"
 database_name = "turismoavatar"
 database_id = "f6ad9e82-7b3e-413b-b28b-9817a1233a6a"
 
-# Fotos y videos que sube el dueño desde el panel (/admin). Para activarlo:
-#   1) npx wrangler r2 bucket create turismoavatar-media
-#   2) descomenta el bloque
-# [[r2_buckets]]
-# binding = "MEDIA"
-# bucket_name = "turismoavatar-media"
+# Fotos y videos que sube el dueño desde el panel (/admin), servidos en /cms-media/…
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "turismoavatar-media"
 
 # Workers AI para el chatbot (sin API keys externas).
 [ai]
