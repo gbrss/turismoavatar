@@ -25,6 +25,24 @@ El dueño de Turismo Avatar administra el sitio desde **https://www.turismoavata
 
 ## Configuración (una sola vez)
 
+**Rápido, con wrangler:** crea D1 y R2, aplica las tablas, activa los bindings en `wrangler.toml` y pide los secretos:
+```bash
+npx wrangler login
+bash scripts/setup-admin.sh
+git add wrangler.toml && git commit -m "Panel: D1 y R2" && git push
+```
+Antes del script crea la aplicación de Cloudflare Access (paso 3) para tener a mano el dominio del equipo y el AUD, y el token de GitHub (paso 4).
+Los secretos también se pueden cargar uno por uno:
+```bash
+npx wrangler pages secret put CF_ACCESS_TEAM_DOMAIN --project-name turismoavatar
+npx wrangler pages secret put CF_ACCESS_AUD --project-name turismoavatar
+npx wrangler pages secret put GITHUB_TOKEN --project-name turismoavatar
+npx wrangler pages secret put ADMIN_PASSWORD --project-name turismoavatar   # opcional, respaldo
+```
+`GITHUB_REPO` y `GITHUB_BRANCH` ya están en `[vars]` de `wrangler.toml`.
+
+Paso a paso manual:
+
 ### 1. Base de datos D1
 ```bash
 npx wrangler d1 create turismoavatar        # copia el database_id

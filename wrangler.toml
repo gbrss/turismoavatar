@@ -31,9 +31,13 @@ SITE_NAME = "Turismo Avatar"
 WHATSAPP_NUMBER = "56949981427"
 NOTIFY_EMAIL = "contacto@turismoavatar.cl"
 MAIL_FROM = "Turismo Avatar <reservas@turismoavatar.cl>"
+# Panel /admin: repositorio donde publica el editor visual
+GITHUB_REPO = "gbrss/turismoavatar"
+GITHUB_BRANCH = "main"
 # Secrets (configurar en el dashboard o con `wrangler pages secret put`):
 #   RESEND_API_KEY      → envío de emails de reservas
 #   TURNSTILE_SECRET    → antispam de formularios (opcional)
+#   (todo lo del panel se configura con: bash scripts/setup-admin.sh)
 #   CF_ACCESS_TEAM_DOMAIN, CF_ACCESS_AUD → login del panel /admin con código al correo (Cloudflare Access)
 #   GITHUB_TOKEN        → el panel publica cambios del editor (commit al repo → Pages reconstruye)
 #   ADMIN_PASSWORD      → respaldo: usuario "admin" + contraseña, solo si Access no está configurado
