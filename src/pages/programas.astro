@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/PageHero.astro';
 import Media from '@/components/Media.astro';
 import CtaBand from '@/components/CtaBand.astro';
+import GeneradorProgramas from '@/components/GeneradorProgramas.astro';
 import { getCollection } from 'astro:content';
 import { site, whatsappLink, clp } from '@/data/site';
 
@@ -10,82 +11,14 @@ const progs = (await getCollection('programas')).sort((a, b) => a.data.order - b
 const generales = progs.filter((p) => p.data.group === 'general');
 const terceraEdad = progs.filter((p) => p.data.group === 'tercera-edad');
 const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
-const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order - b.data.order);
 const expTitle = (id: string) => exps.find((e) => e.id === id)?.data.title ?? id;
 
-// Datos para el asistente "Arma tu programa"
-const interesesDe: Record<string, string[]> = {
-  'sup-dichato': ['mar'], 'clases-sup': ['mar'], 'sup-rio-menque': ['mar', 'naturaleza'], 'kayak-lagunas': ['mar', 'relax'],
-  'trekking-tome': ['naturaleza', 'mar'], 'senderismo-cerro-caracol': ['naturaleza', 'ciudad', 'patrimonio'],
-  'cabalgata-hualpen': ['naturaleza'], 'ruta-tunel-penco': ['patrimonio', 'naturaleza'], 'city-tour-7-lagunas': ['ciudad', 'patrimonio', 'relax'],
-};
-const wizardData = {
-  exps: exps.map((e) => ({
-    id: e.id,
-    title: e.data.title,
-    url: `/experiencias/${e.id}`,
-    price: e.data.priceFrom ?? null,
-    difficulty: e.data.difficulty,
-    minAge: e.data.minAge ?? 0,
-    tags: interesesDe[e.id] ?? [],
-    destinos: e.data.destinos,
-  })),
-  alojs: alojs.map((a) => ({ id: a.id, title: a.data.title, url: `/alojamientos/${a.id}`, price: a.data.pricePerNight, relax: a.data.amenities.some((x) => /tinaja|piscina/i.test(x)) })),
-  progs: progs.map((p) => ({ id: p.id, title: p.data.title, days: p.data.days, group: p.data.group, price: p.data.priceFrom ?? null })),
-  wa: site.whatsapp,
-};
-const perfiles = [['familia', 'Familia'], ['pareja', 'Pareja'], ['amigos', 'Amigos'], ['tercera-edad', 'Tercera edad'], ['empresa', 'Empresa o colegio']];
-const duraciones = [['1', '1 día'], ['3', '2 a 3 días'], ['4', '4 días o más']];
-const intereses = [['mar', 'Mar, SUP y kayak'], ['naturaleza', 'Trekking y naturaleza'], ['ciudad', 'Ciudad y lagunas'], ['patrimonio', 'Historia y patrimonio'], ['relax', 'Descanso con tinaja']];
-const chip = 'cursor-pointer rounded-full border-2 border-marino/15 bg-white px-4 py-2.5 font-semibold transition has-[:checked]:border-marino has-[:checked]:bg-marino has-[:checked]:text-white has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-cielo';
 ---
 
-<Base title="Programas, itinerarios y escapadas en el Biobío" description="Arma tu programa en 3 pasos o elige un itinerario: Experiencia Tomé, Gran Concepción en un día, escapada costera y Vacaciones Tercera Edad 2026 desde $103.256.">
-  <PageHero title="Programas e itinerarios" lead="Combinaciones de experiencias y alojamiento listas para reservar, o un programa armado a tu medida en tres pasos." crumbs={[{ href: '/programas', label: 'Programas' }]} />
+<Base title="Programas, itinerarios y escapadas en el Biobío" description="Genera tu programa turístico en 3 pasos (perfil, origen y duración) o elige un itinerario: Experiencia Tomé, Gran Concepción en un día, escapada costera y Vacaciones Tercera Edad 2026 desde $103.256.">
+  <PageHero title="Programas e itinerarios" lead="Combinaciones de experiencias y alojamiento listas para reservar, o genera un programa a tu medida en tres pasos." crumbs={[{ href: '/programas', label: 'Programas' }]} />
 
-  <!-- Asistente -->
-  <section class="wrap pb-20" aria-labelledby="arma">
-    <div class="overflow-hidden rounded-3xl bg-white ring-1 ring-roca">
-      <div class="grid lg:grid-cols-[1fr_1.1fr]">
-        <form data-wizard class="grid gap-8 p-6 sm:p-10">
-          <div>
-            <h2 id="arma" class="text-h3 sm:text-[2rem]">Arma tu programa en 3 pasos</h2>
-            <p class="mt-2 text-gris">Te proponemos un itinerario con nuestras experiencias reales. Lo ajustamos contigo por WhatsApp.</p>
-          </div>
-          <fieldset>
-            <legend class="font-display font-extrabold"><span class="text-naranja-700">1.</span> ¿Quiénes viajan?</legend>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {perfiles.map(([v, l], i) => <label class={chip}><input class="sr-only" type="radio" name="perfil" value={v} checked={i === 1} />{l}</label>)}
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend class="font-display font-extrabold"><span class="text-naranja-700">2.</span> ¿Cuántos días tienes?</legend>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {duraciones.map(([v, l], i) => <label class={chip}><input class="sr-only" type="radio" name="dias" value={v} checked={i === 0} />{l}</label>)}
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend class="font-display font-extrabold"><span class="text-naranja-700">3.</span> ¿Qué te gustaría vivir?</legend>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {intereses.map(([v, l], i) => <label class={chip}><input class="sr-only" type="checkbox" name="interes" value={v} checked={i < 2} />{l}</label>)}
-            </div>
-          </fieldset>
-        </form>
-
-        <div class="bg-marino p-6 text-white sm:p-10" aria-live="polite">
-          <p class="font-bold text-naranja">Tu programa sugerido</p>
-          <h3 data-w-title class="mt-1 font-display text-2xl font-extrabold">—</h3>
-          <ol data-w-list class="mt-6 grid gap-3"></ol>
-          <p data-w-total class="mt-6 text-white/75"></p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a data-w-wa href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-primary">Enviar por WhatsApp</a>
-            <a data-w-reserve href="/reservas?item=cotizacion:a-medida" class="btn btn-ghost">Solicitar cotización</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script type="application/json" id="wizard-data" set:html={JSON.stringify(wizardData)} />
-  </section>
+  <GeneradorProgramas />
 
   <!-- Programas listos -->
   <div class="wrap grid gap-24 pb-24">
@@ -145,85 +78,3 @@ const chip = 'cursor-pointer rounded-full border-2 border-marino/15 bg-white px-
 
   <CtaBand title="¿Quieres un programa a tu medida?" text="Dinos cuántos días tienes y qué te gusta. Te armamos un itinerario con experiencias, traslados y alojamiento." />
 </Base>
-
-<script>
-  type Exp = { id: string; title: string; url: string; price: number | null; difficulty: string; minAge: number; tags: string[]; destinos: string[] };
-  type Aloj = { id: string; title: string; url: string; price: number; relax: boolean };
-  type Prog = { id: string; title: string; days: number; group: string; price: number | null };
-  const data = JSON.parse(document.getElementById('wizard-data')!.textContent!) as { exps: Exp[]; alojs: Aloj[]; progs: Prog[]; wa: string };
-  const form = document.querySelector<HTMLFormElement>('[data-wizard]')!;
-  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
-  const clp = (n: number) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
-
-  function render() {
-    const fd = new FormData(form);
-    const perfil = String(fd.get('perfil'));
-    const dias = Number(fd.get('dias'));
-    const intereses = fd.getAll('interes').map(String);
-    const list = $('[data-w-list]');
-    list.replaceChildren();
-    const items: { label: string; title: string; url: string; price: number | null; unit?: string }[] = [];
-
-    if (perfil === 'tercera-edad') {
-      data.progs.filter((p) => p.group === 'tercera-edad' && (dias >= 4 ? p.days >= 4 : p.days <= 3)).forEach((p) =>
-        items.push({ label: `${p.days} días`, title: p.title, url: `/programas#tercera-edad`, price: p.price, unit: 'por persona' }),
-      );
-      data.exps.filter((e) => e.difficulty === 'Baja' && e.tags.some((t) => intereses.includes(t))).slice(0, 1).forEach((e) =>
-        items.push({ label: 'Para sumar', title: e.title, url: e.url, price: e.price, unit: 'por persona' }),
-      );
-    } else {
-      const maxExp = dias === 1 ? 2 : dias === 3 ? 4 : 5;
-      let pool = data.exps.filter((e) => e.tags.some((t) => intereses.includes(t)));
-      if (perfil === 'familia') pool = pool.filter((e) => e.difficulty !== 'Alta' && e.minAge <= 12);
-      if (!pool.length) pool = data.exps.slice(0, maxExp);
-      // Primero cubrimos cada interés con la mejor experiencia (con precio publicado), luego completamos
-      const chosen: Exp[] = [];
-      // Con precio publicado primero; a igualdad, en la misma zona que lo ya elegido (menos traslados)
-      const near = (e: Exp) => (chosen.some((c) => c.destinos.some((d) => e.destinos.includes(d))) ? 0 : 1);
-      const rank = (e: Exp) => (e.price ? 0 : 2) + near(e);
-      for (const it of intereses) {
-        const best = pool.filter((e) => e.tags.includes(it) && !chosen.includes(e)).sort((a, b) => rank(a) - rank(b))[0];
-        if (best && chosen.length < maxExp) chosen.push(best);
-      }
-      pool
-        .filter((e) => !chosen.includes(e))
-        .sort((a, b) => rank(a) - rank(b) || b.tags.filter((t) => intereses.includes(t)).length - a.tags.filter((t) => intereses.includes(t)).length)
-        .forEach((e) => chosen.length < maxExp && chosen.push(e));
-      chosen.forEach((e, i) => items.push({ label: dias === 1 ? (i === 0 ? 'Mañana' : 'Tarde') : `Día ${Math.min(i + 1, dias)}`, title: e.title, url: e.url, price: e.price, unit: 'por persona' }));
-      if (dias > 1) {
-        const a = data.alojs.find((x) => (intereses.includes('relax') ? x.relax : true)) ?? data.alojs[0];
-        items.push({ label: `${dias - 1} ${dias - 1 === 1 ? 'noche' : 'noches'}`, title: a.title, url: a.url, price: a.price, unit: 'por noche' });
-      }
-    }
-
-    const titles: Record<string, string> = { familia: 'en familia', pareja: 'en pareja', amigos: 'con amigos', 'tercera-edad': 'para la tercera edad', empresa: 'para tu equipo' };
-    $('[data-w-title]').textContent = `${dias === 1 ? 'Un día' : dias === 3 ? 'Escapada de 2 a 3 días' : 'Viaje de 4 días o más'} ${titles[perfil] ?? ''}`;
-    for (const it of items) {
-      const li = document.createElement('li');
-      li.className = 'grid grid-cols-[6.5rem_1fr] gap-3 border-b border-white/10 pb-3';
-      const label = document.createElement('span');
-      label.className = 'text-sm font-bold text-cielo';
-      label.textContent = it.label;
-      const body = document.createElement('span');
-      const a = document.createElement('a');
-      a.href = it.url;
-      a.className = 'font-display font-bold hover:text-naranja hover:underline';
-      a.textContent = it.title;
-      const p = document.createElement('span');
-      p.className = 'block text-sm text-white/70';
-      p.textContent = it.price ? `Desde ${clp(it.price)} ${it.unit ?? ''}` : 'Precio a consultar';
-      body.append(a, p);
-      li.append(label, body);
-      $('[data-w-list]').append(li);
-    }
-    const known = items.filter((i) => i.price && i.unit === 'por persona').reduce((s, i) => s + i.price!, 0);
-    $('[data-w-total]').textContent = perfil === 'empresa'
-      ? 'Para empresas y colegios armamos una cotización grupal con traslados y alimentación.'
-      : known ? `Referencia de actividades: ${clp(known)} por persona (sin alojamiento). Confirmamos valores finales contigo.` : '';
-    const msg = `Hola Turismo Avatar 👋 Armé este programa en la web (${$('[data-w-title]').textContent}):\n${items.map((i) => `• ${i.label}: ${i.title}`).join('\n')}\n¿Me ayudan a cotizarlo?`;
-    $<HTMLAnchorElement>('[data-w-wa]').href = `https://wa.me/${data.wa}?text=${encodeURIComponent(msg)}`;
-    $<HTMLAnchorElement>('[data-w-reserve]').href = perfil === 'empresa' ? '/empresas' : '/reservas?item=cotizacion:a-medida';
-  }
-  form.addEventListener('change', render);
-  render();
-</script>
