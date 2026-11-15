@@ -205,6 +205,12 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
     set: (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch {} },
   };
+  // Identificador de la conversación (para verla completa en el panel)
+  const sessionId = () => {
+    let id = store.get('cami-session');
+    if (!id) store.set('cami-session', (id = crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`));
+    return id;
+  };
   let history: Msg[] = [];
   try { history = JSON.parse(store.get('cami-history') ?? '[]'); } catch { history = []; }
 
@@ -401,7 +407,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ messages: history.slice(-10), page: location.pathname }),
+        body: JSON.stringify({ messages: history.slice(-10), page: location.pathname, session: sessionId() }),
       });
       if (!res.ok) throw new Error();
       const data: { reply: string; handoff?: { label: string; href: string } } = await res.json();

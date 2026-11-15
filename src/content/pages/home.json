@@ -1,0 +1,187 @@
+{
+  "root": {
+    "props": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "content": [
+    {
+      "type": "Hero",
+      "props": {
+        "eyebrow": "Tour operador en Concepción desde 2018",
+        "title": "Diseñamos experiencias memorables en el Biobío",
+        "text": "Trekking, SUP en el mar, city tours por las siete lagunas y cabañas con tinaja frente a la costa. Con guías locales que conocen cada rincón.",
+        "image": "2024/11/GOPR3756_1737677330009-scaled.jpg",
+        "imageAlt": "Grupo remando en SUP entre botes de pescadores en la bahía de Dichato",
+        "focus": "62% 45%",
+        "video": "/media/video/hero.mp4",
+        "primary": {
+          "label": "Ver experiencias",
+          "href": "/experiencias"
+        },
+        "whatsappLabel": "Cotizar por WhatsApp",
+        "videoButton": "Ver video",
+        "destacada": "sup-dichato",
+        "destacadaLabel": "La más reservada",
+        "showNav": true,
+        "id": "Hero-portada"
+      }
+    },
+    {
+      "type": "Experiences",
+      "props": {
+        "title": "Escoge tu aventura ideal",
+        "text": "Salidas con guía local, equipos incluidos y precios claros desde el primer clic.",
+        "linkLabel": "Ver las {n} experiencias",
+        "modo": "destacadas",
+        "elegidas": [],
+        "categoria": "nautico",
+        "limite": 4,
+        "fondo": "claro",
+        "id": "Experiences-destacadas"
+      }
+    },
+    {
+      "type": "Promos",
+      "props": {
+        "title": "Promociones de temporada",
+        "grande": {
+          "title": "Experiencia Tomé",
+          "text": "Tres experiencias, un día inolvidable. Naturaleza, aventura y diversidad. ¡Argentinos bienvenidos!",
+          "tags": [
+            {
+              "t": "Trekking a Playa Montecristo"
+            },
+            {
+              "t": "SUP en Dichato"
+            },
+            {
+              "t": "Atardecer en Coliumo"
+            }
+          ],
+          "image": "2025/07/GOPR3576_1737327895652-scaled.jpg",
+          "href": "/programas#experiencia-tome",
+          "button": "Reservar mi cupo"
+        },
+        "lista": {
+          "eyebrow": "Vacaciones Tercera Edad · Escapadas 2026",
+          "title": "Viaja, relájate y disfruta Chile",
+          "href": "/programas#tercera-edad"
+        },
+        "chica": {
+          "eyebrow": "WRC Rally Chile Biobío",
+          "title": "Vive el Mundial de Rally sin preocuparte de nada",
+          "linkLabel": "Únete a la lista de espera",
+          "image": "youtube/aUodZdx7wPw.jpg",
+          "href": "/rally-wrc"
+        },
+        "id": "Promos-temporada"
+      }
+    },
+    {
+      "type": "WhyUs",
+      "props": {
+        "eyebrow": "Turismo Avatar",
+        "title": "Descubre por qué somos tu mejor opción",
+        "text": "Ofrecemos experiencias turísticas únicas en Concepción con un servicio personalizado, seguro y de alta calidad. Nos apasiona compartir la riqueza cultural, histórica y natural de nuestra región con un turismo que también apoya a la comunidad local y su entorno.",
+        "pilares": [
+          {
+            "title": "Guías expertos locales",
+            "text": "Nacimos y vivimos en el Biobío. Te mostramos la región como la conocemos nosotros."
+          },
+          {
+            "title": "Cuidamos el medio ambiente",
+            "text": "Turismo sostenible que apoya a la comunidad local y respeta su entorno."
+          },
+          {
+            "title": "Experiencias personalizadas",
+            "text": "Ajustamos cada salida a tu grupo, tu ritmo y lo que quieres vivir."
+          },
+          {
+            "title": "Actividades bien planificadas",
+            "text": "Equipos, seguridad y logística resueltos para que solo disfrutes."
+          }
+        ],
+        "image1": "2025/08/IMG_20231204_121219.jpg",
+        "image1Alt": "Vuelo en parapente con Turismo Avatar sobre la costa del Biobío",
+        "image2": "2025/08/GOPR5827-scaled-e1747705915168-1024x1024-1.webp",
+        "image2Alt": "Guía de Turismo Avatar con tabla de SUP junto a la camioneta de la empresa",
+        "statLabel": "años creando experiencias en el Biobío",
+        "showMemberships": true,
+        "id": "WhyUs-porque"
+      }
+    },
+    {
+      "type": "Destinos",
+      "props": {
+        "title": "Escoge tu próximo destino",
+        "text": "Lugares cuidadosamente seleccionados, desde los cerros de Concepción hasta las caletas de Tomé y el golfo de Arauco. Toca un punto para ver qué hacer ahí.",
+        "fondo": "blanco",
+        "id": "Destinos-mapa"
+      }
+    },
+    {
+      "type": "Lodgings",
+      "props": {
+        "title": "¿Necesitas alojamiento en el Biobío?",
+        "text": "Descansa después de un día lleno de exploración. Cabañas con tinaja y piscina en Coliumo, hotel con desayuno en Dichato y opciones en Penco y Santa Bárbara.",
+        "button": "Ver alojamientos",
+        "id": "Lodgings-alojamientos"
+      }
+    },
+    {
+      "type": "MediaGallery",
+      "props": {
+        "title": "Nuestra galería de aventuras",
+        "text": "Deja que cada foto te inspire a conquistar lo desconocido.",
+        "instagramLabel": "Síguenos en Instagram @turismoavatar",
+        "videos": 3,
+        "fotos": 12,
+        "button": "Ver galería completa",
+        "id": "MediaGallery-galeria"
+      }
+    },
+    {
+      "type": "Business",
+      "props": {
+        "cards": [
+          {
+            "title": "¿Quieres publicar tu experiencia turística?",
+            "text": "Creemos que la cooperación en el turismo es clave. Si tienes cabañas, tours o un emprendimiento en el Biobío, súmate a nuestra vitrina.",
+            "linkLabel": "Quiero ser parte",
+            "href": "/publica-tu-experiencia",
+            "estilo": "naranja"
+          },
+          {
+            "title": "Empresas, colegios y grupos",
+            "text": "Team building, giras de estudio y salidas privadas con la logística resuelta. Cotización en 24 horas.",
+            "linkLabel": "Cotizar para mi grupo",
+            "href": "/empresas",
+            "estilo": "borde"
+          }
+        ],
+        "id": "Business-negocios"
+      }
+    },
+    {
+      "type": "Faq",
+      "props": {
+        "title": "Preguntas frecuentes",
+        "cantidad": 4,
+        "linkLabel": "Ver todas las preguntas",
+        "id": "Faq-preguntas"
+      }
+    },
+    {
+      "type": "Cta",
+      "props": {
+        "title": "¿Armamos tu próxima aventura?",
+        "text": "Cuéntanos fecha, cuántas personas y qué te gustaría vivir. Te respondemos por WhatsApp, normalmente el mismo día.",
+        "message": "",
+        "id": "Cta-contacto"
+      }
+    }
+  ],
+  "zones": {}
+}

@@ -26,7 +26,7 @@ Extraída del sitio original (logo y tema Blocksy): naranjo `#f47800`, celeste d
 | Empresas | `/empresas` | Cotización de grupos, colegios y team building |
 | Proveedores | `/publica-tu-experiencia` | Postulación de emprendedores turísticos |
 | Chatbot "Cami" | widget en todas las páginas | Workers AI con el catálogo (tours, alojamientos, tercera edad, rally, tienda); respuestas por reglas si la IA no está disponible |
-| Panel | `/admin/reservas` | Reservas (cambiar estado, exportar CSV), leads y preguntas del chatbot |
+| Panel | `/admin` | Reservas, conversaciones con Cami, mensajes, editor visual del home, fichas y biblioteca de fotos — ver [ADMIN.md](ADMIN.md) |
 
 ## Editar contenido
 
@@ -69,7 +69,7 @@ También existe la GitHub Action **Migrar WordPress** (*Actions → Run workflow
    - Variable de entorno: `NODE_VERSION = 22`
 2. **Secrets** (Settings → Variables and Secrets):
    - `RESEND_API_KEY` — emails de reservas ([resend.com](https://resend.com), verificar el dominio `turismoavatar.cl`)
-   - `ADMIN_PASSWORD` — acceso a `/admin/reservas` (usuario `admin`)
+   - `CF_ACCESS_TEAM_DOMAIN` + `CF_ACCESS_AUD` — login del panel con código al correo; `GITHUB_TOKEN` — publicar desde el editor; `ADMIN_PASSWORD` — respaldo (usuario `admin`). Detalle en [ADMIN.md](ADMIN.md)
    - Opcional antispam: `TURNSTILE_SECRET` + variable de build `PUBLIC_TURNSTILE_SITEKEY`
 3. **Base de datos D1** (recomendado):
    ```bash

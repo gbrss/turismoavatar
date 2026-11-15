@@ -11,6 +11,15 @@ export interface Env {
   TURNSTILE_SECRET?: string;
   ADMIN_PASSWORD?: string;
   AI_MODEL?: string;
+  /** Fotos y videos subidos desde el panel */
+  MEDIA?: R2Bucket;
+  /** Cloudflare Access: equipo (ej. turismoavatar.cloudflareaccess.com) y AUD de la aplicación */
+  CF_ACCESS_TEAM_DOMAIN?: string;
+  CF_ACCESS_AUD?: string;
+  /** Publicación: token de GitHub con permiso Contents (lectura/escritura) sobre el repo */
+  GITHUB_TOKEN?: string;
+  GITHUB_REPO?: string;
+  GITHUB_BRANCH?: string;
 }
 
 export interface Catalog {

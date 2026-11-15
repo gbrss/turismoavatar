@@ -1,6 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
-import { getMedia } from '@/lib/media';
+import { getMedia, cmsImage } from '@/lib/media';
 
 interface Props {
   src?: string;
@@ -21,6 +21,7 @@ const {
   fetchpriority = 'auto',
 } = Astro.props;
 const img = getMedia(src);
+const cms = img ? undefined : cmsImage(src);
 // Variación de color estable por imagen para los marcadores de posición
 const hue = [...(src ?? alt)].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
 const tones = [
@@ -31,7 +32,12 @@ const tones = [
 ---
 
 {
-  img ? (
+  cms ? (
+    <picture>
+      <source type="image/webp" srcset={cms.widths.map((w) => `${cms.url(w)} ${w}w`).join(', ')} sizes={sizes} />
+      <img src={cms.src} alt={alt} width={cms.width} height={cms.height} sizes={sizes} loading={loading} fetchpriority={fetchpriority} decoding="async" class:list={['h-full w-full object-cover', className]} />
+    </picture>
+  ) : img ? (
     <Picture
       src={img}
       alt={alt}

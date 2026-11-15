@@ -3,7 +3,7 @@
 // Sin dependencias: radios nativos para elegir, calendario propio accesible y resumen con total en vivo.
 import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
-import { getMedia } from '@/lib/media';
+import { getMedia, cmsImage } from '@/lib/media';
 import { destinoBySlug } from '@/data/destinos';
 import { site, clp } from '@/data/site';
 import marca from '@/assets/brand/marca.png';
@@ -13,7 +13,7 @@ const { preselect, heading = 'Reserva tu experiencia' } = Astro.props;
 
 const thumb = async (src?: string) => {
   const m = getMedia(src);
-  return m ? (await getImage({ src: m, width: 480, height: 360, fit: 'cover', format: 'webp' })).src : null;
+  return m ? (await getImage({ src: m, width: 480, height: 360, fit: 'cover', format: 'webp' })).src : ((c) => (c ? c.url(c.widths[0]) : null))(cmsImage(src));
 };
 const exps = (await getCollection('experiencias')).sort((a, b) => a.data.order - b.data.order);
 const alojs = (await getCollection('alojamientos')).sort((a, b) => a.data.order - b.data.order);

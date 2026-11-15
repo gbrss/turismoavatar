@@ -102,9 +102,16 @@ function waHandoff(c: Catalog, messages: Msg[]) {
   return `https://wa.me/${c.site.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
+// Guarda cada pregunta con su sesión para ver las conversaciones completas en el panel
+const log = (env: Env, request: Request, payload: { page?: string; session?: string }, q: string, a: string, engine: string, handoff: boolean) =>
+  env.DB!.prepare('INSERT INTO chat_logs (page, question, answer, engine, session_id, handoff, country) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)')
+    .bind(clean(payload.page, 200), q, a.slice(0, 2000), engine, /^[\w-]{8,40}$/.test(payload.session ?? '') ? payload.session : null, handoff ? 1 : 0, (request as Request & { cf?: { country?: string } }).cf?.country ?? null)
+    .run()
+    .catch(() => {});
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUntil }) => {
   if (await rateLimited(request, 'chat', 40, 600)) return bad('Demasiados mensajes. Intenta en unos minutos.', 429);
-  let payload: { messages?: Msg[]; page?: string };
+  let payload: { messages?: Msg[]; page?: string; session?: string };
   try {
     payload = await request.json();
   } catch {
@@ -127,10 +134,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     reply = '¡Claro! Te dejo con una persona de nuestro equipo por WhatsApp. Ya va tu consulta escrita, solo presiona el botón y envía el mensaje 😊';
     if (env.DB) {
       waitUntil(
-        env.DB.prepare('INSERT INTO chat_logs (page, question, answer, engine) VALUES (?1, ?2, ?3, ?4)')
-          .bind(clean(payload.page, 200), last.content, reply, 'humano')
-          .run()
-          .catch(() => {}),
+        log(env, request, payload, last.content, reply, 'humano', true),
       );
     }
     return json({ reply, handoff });
@@ -151,17 +155,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
   }
   if (!reply) reply = ruleBased(last.content, catalog);
 
-  if (env.DB) {
-    waitUntil(
-      env.DB.prepare('INSERT INTO chat_logs (page, question, answer, engine) VALUES (?1, ?2, ?3, ?4)')
-        .bind(clean(payload.page, 200), last.content, reply.slice(0, 2000), engine)
-        .run()
-        .catch(() => {}),
-    );
-  }
   // Cada vez que Cami sugiere WhatsApp, se agrega el botón con la consulta ya escrita
-  const mencionaWa = /whats ?app|wa\.me|wsp|\+?56 ?9 ?4998 ?1427/i.test(reply);
-  if (mencionaWa) {
+  const sugiereWa = /whats ?app|wa\.me|wsp|\+?56 ?9 ?4998 ?1427/i.test(reply);
+  if (env.DB) waitUntil(log(env, request, payload, last.content, reply, engine, sugiereWa));
+  if (sugiereWa) {
     reply = reply.replace(/:?\s*https?:\/\/(?:wa\.me|api\.whatsapp\.com)\/\S+/gi, '').trim();
     return json({ reply, handoff: { label: 'Escribir por WhatsApp', href: waHandoff(catalog, messages) } });
   }

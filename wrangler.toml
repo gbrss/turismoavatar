@@ -15,6 +15,13 @@ compatibility_flags = ["nodejs_compat"]
 # database_name = "turismoavatar"
 # database_id = "PEGAR_AQUI"
 
+# Fotos y videos que sube el dueño desde el panel (/admin). Para activarlo:
+#   1) npx wrangler r2 bucket create turismoavatar-media
+#   2) descomenta el bloque
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "turismoavatar-media"
+
 # Workers AI para el chatbot (sin API keys externas).
 [ai]
 binding = "AI"
@@ -27,4 +34,7 @@ MAIL_FROM = "Turismo Avatar <reservas@turismoavatar.cl>"
 # Secrets (configurar en el dashboard o con `wrangler pages secret put`):
 #   RESEND_API_KEY      → envío de emails de reservas
 #   TURNSTILE_SECRET    → antispam de formularios (opcional)
-#   ADMIN_PASSWORD      → acceso a /admin/reservas
+#   CF_ACCESS_TEAM_DOMAIN, CF_ACCESS_AUD → login del panel /admin con código al correo (Cloudflare Access)
+#   GITHUB_TOKEN        → el panel publica cambios del editor (commit al repo → Pages reconstruye)
+#   ADMIN_PASSWORD      → respaldo: usuario "admin" + contraseña, solo si Access no está configurado
+# Guía completa: ADMIN.md

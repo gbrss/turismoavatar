@@ -1,0 +1,20 @@
+---
+// Panel de administración de Turismo Avatar (app React, protegida por Cloudflare Access).
+import '@/styles/global.css';
+import AdminApp from '@/admin/App';
+---
+
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#192a3d" />
+    <title>Panel · Turismo Avatar</title>
+    <link rel="icon" href="/favicon-64.png" type="image/png" />
+  </head>
+  <body class="min-h-dvh bg-niebla antialiased">
+    <AdminApp client:only="react" />
+  </body>
+</html>

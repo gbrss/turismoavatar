@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://www.turismoavatar.cl',
@@ -14,6 +15,7 @@ export default defineConfig({
     responsiveStyles: true,
   },
   integrations: [
+    react(),
     sitemap({
       filter: (page) => !page.includes('/admin') && !page.includes('/reservas/gracias'),
       changefreq: 'weekly',
