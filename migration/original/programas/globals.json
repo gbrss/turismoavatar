@@ -1,0 +1,228 @@
+{
+ "location": {
+  "ancestorOrigins": {},
+  "href": "https://www.turismoavatar.cl/programas/",
+  "origin": "https://www.turismoavatar.cl",
+  "protocol": "https:",
+  "host": "www.turismoavatar.cl",
+  "hostname": "www.turismoavatar.cl",
+  "port": "",
+  "pathname": "/programas/",
+  "search": "",
+  "hash": ""
+ },
+ "elementorFrontendConfig": {
+  "environmentMode": {
+   "edit": false,
+   "wpPreview": false,
+   "isScriptDebug": false
+  },
+  "i18n": {
+   "shareOnFacebook": "Compartir en Facebook",
+   "shareOnX": "Compartir en X",
+   "pinIt": "Pinear",
+   "download": "Descargar",
+   "downloadImage": "Descargar imagen",
+   "fullscreen": "Pantalla completa",
+   "zoom": "Zoom",
+   "share": "Compartir",
+   "playVideo": "Reproducir vídeo",
+   "previous": "Anterior",
+   "next": "Siguiente",
+   "close": "Cerrar",
+   "a11yCarouselPrevSlideMessage": "Diapositiva anterior",
+   "a11yCarouselNextSlideMessage": "Diapositiva siguiente",
+   "a11yCarouselFirstSlideMessage": "Esta es la primera diapositiva",
+   "a11yCarouselLastSlideMessage": "Esta es la última diapositiva",
+   "a11yCarouselPaginationBulletMessage": "Ir a la diapositiva"
+  },
+  "is_rtl": false,
+  "breakpoints": {
+   "xs": 0,
+   "sm": 480,
+   "md": 768,
+   "lg": 1025,
+   "xl": 1440,
+   "xxl": 1600
+  },
+  "responsive": {
+   "breakpoints": {
+    "mobile": {
+     "label": "Móvil vertical",
+     "value": 767,
+     "default_value": 767,
+     "direction": "max",
+     "is_enabled": true
+    },
+    "mobile_extra": {
+     "label": "Móvil horizontal",
+     "value": 880,
+     "default_value": 880,
+     "direction": "max",
+     "is_enabled": false
+    },
+    "tablet": {
+     "label": "Tableta vertical",
+     "value": 1024,
+     "default_value": 1024,
+     "direction": "max",
+     "is_enabled": true
+    },
+    "tablet_extra": {
+     "label": "Tableta horizontal",
+     "value": 1200,
+     "default_value": 1200,
+     "direction": "max",
+     "is_enabled": false
+    },
+    "laptop": {
+     "label": "Portátil",
+     "value": 1366,
+     "default_value": 1366,
+     "direction": "max",
+     "is_enabled": false
+    },
+    "widescreen": {
+     "label": "Pantalla grande",
+     "value": 2400,
+     "default_value": 2400,
+     "direction": "min",
+     "is_enabled": false
+    }
+   },
+   "hasCustomBreakpoints": false,
+   "activeBreakpoints": {
+    "mobile": {
+     "label": "Móvil vertical",
+     "value": 767,
+     "default_value": 767,
+     "direction": "max",
+     "is_enabled": true
+    },
+    "tablet": {
+     "label": "Tableta vertical",
+     "value": 1024,
+     "default_value": 1024,
+     "direction": "max",
+     "is_enabled": true
+    }
+   }
+  },
+  "version": "4.4.0",
+  "is_static": false,
+  "experimentalFeatures": {
+   "e_font_icon_svg": true,
+   "additional_custom_breakpoints": true,
+   "container": true,
+   "e_optimized_markup": true,
+   "theme_builder_v2": true,
+   "e_mcp_revision_snapshots": true,
+   "nested-elements": true,
+   "e_atomic_elements": true,
+   "e_opt_in_v4": true,
+   "import-export-customization": true,
+   "e_pro_atomic_form": true,
+   "mega-menu": true,
+   "e_pro_variables": true,
+   "e_pro_interactions": true
+  },
+  "urls": {
+   "assets": "https://www.turismoavatar.cl/wp-content/plugins/elementor/assets/",
+   "ajaxurl": "https://www.turismoavatar.cl/wp-admin/admin-ajax.php",
+   "uploadUrl": "https://www.turismoavatar.cl/wp-content/uploads"
+  },
+  "nonces": {
+   "floatingButtonsClickTracking": "874866dc8f",
+   "atomicFormsSendForm": "d1312ce869"
+  },
+  "swiperClass": "swiper",
+  "settings": {
+   "page": {
+    "ha_cmc_init_switcher": "no"
+   },
+   "editorPreferences": []
+  },
+  "kit": {
+   "body_background_background": "gradient",
+   "active_breakpoints": [
+    "viewport_mobile",
+    "viewport_tablet"
+   ],
+   "global_image_lightbox": "yes",
+   "lightbox_enable_counter": "yes",
+   "lightbox_enable_fullscreen": "yes",
+   "lightbox_enable_zoom": "yes",
+   "lightbox_enable_share": "yes",
+   "lightbox_title_src": "title",
+   "lightbox_description_src": "description",
+   "woocommerce_notices_elements": [],
+   "ha_rpb_enable": "no"
+  },
+  "post": {
+   "id": 2944,
+   "title": "Itinerario%20%E2%80%93%20TURISMO%20AVATAR",
+   "excerpt": "",
+   "featuredImage": false
+  },
+  "legacyMode": {
+   "elementWrappers": false
+  }
+ },
+ "joinchat_obj": {
+  "settings": {
+   "telephone": "56949981427",
+   "whatsapp_web": false,
+   "message_send": "Hola! Necesito más información sobre Itinerario https://www.turismoavatar.cl/programas/",
+   "tracking_url": "https://www.turismoavatar.cl/wp-json/joinchat/v1/track-click"
+  },
+  "is_mobile": false
+ },
+ "sbjs": {
+  "get": {
+   "current": {
+    "typ": "typein",
+    "src": "(direct)",
+    "mdm": "(none)",
+    "cmp": "(none)",
+    "cnt": "(none)",
+    "trm": "(none)",
+    "id": "(none)",
+    "plt": "(none)",
+    "fmt": "(none)",
+    "tct": "(none)"
+   },
+   "current_add": {
+    "fd": "2026-11-15 01:12:57",
+    "ep": "https://www.turismoavatar.cl/programas/",
+    "rf": "(none)"
+   },
+   "first": {
+    "typ": "typein",
+    "src": "(direct)",
+    "mdm": "(none)",
+    "cmp": "(none)",
+    "cnt": "(none)",
+    "trm": "(none)",
+    "id": "(none)",
+    "plt": "(none)",
+    "fmt": "(none)",
+    "tct": "(none)"
+   },
+   "first_add": {
+    "fd": "2026-11-15 01:12:57",
+    "ep": "https://www.turismoavatar.cl/programas/",
+    "rf": "(none)"
+   },
+   "session": {
+    "pgs": "1",
+    "cpg": "https://www.turismoavatar.cl/programas/"
+   },
+   "udata": {
+    "vst": "1",
+    "uip": "(none)",
+    "uag": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+   },
+   "promo": {}
+  }
+ }
+}

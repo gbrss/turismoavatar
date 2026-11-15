@@ -1,0 +1,2 @@
+frames: https://www.turismoavatar.cl/programas/ | https://turismo-avatar-bot-446018569219.southamerica-west1.run.app/ → usando https://www.turismoavatar.cl/programas/
+scripts cargados: 47, relevantes: https://turismo-avatar-bot-446018569219.southamerica-west1.run.app/assets/index-ND94fJIk.js
