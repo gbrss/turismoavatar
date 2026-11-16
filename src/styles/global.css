@@ -233,128 +233,163 @@
   }
 }
 
-/* ───────────── Escapadas Tercera Edad: botones y panel interactivos ───────────── */
+/* ───────────── Escapadas Tercera Edad: banner animado + 4 tarjetas con movimiento ───────────── */
 @layer components {
-  .esc-tab {
+  .ta-hero {
     position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    min-height: 11rem;
+    aspect-ratio: 1614 / 324;
+    box-shadow: 0 24px 50px -28px rgb(25 42 61 / 0.55);
+  }
+  .ta-hero picture,
+  .ta-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .ta-hero-img {
+    object-position: 24% 50%;
+    transform-origin: 30% 40%;
+    animation: ta-pan 16s ease-in-out infinite alternate;
+  }
+  @media (min-width: 900px) {
+    .ta-hero-img { object-position: center; }
+  }
+  /* Sol: resplandor que late y rayos que giran sobre el sol de la foto */
+  .ta-sun,
+  .ta-rays {
+    position: absolute;
+    left: 4.6%;
+    top: 14%;
+    border-radius: 999px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+  .ta-sun {
+    width: 12rem;
+    height: 12rem;
+    background: radial-gradient(circle, rgb(255 255 255 / 0.95) 0%, rgb(255 244 200 / 0.4) 30%, transparent 62%);
+    mix-blend-mode: screen;
+    animation: ta-sun 3.4s ease-in-out infinite;
+  }
+  .ta-rays {
+    width: 16rem;
+    height: 16rem;
+    background: repeating-conic-gradient(from 0deg, rgb(255 255 255 / 0.55) 0 4deg, transparent 4deg 18deg);
+    -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+    mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+    mix-blend-mode: screen;
+    animation: ta-spin 30s linear infinite;
+  }
+  .ta-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.4) 50%, transparent 62%);
+    transform: translateX(-130%);
+    animation: esc-shine 7s ease-in-out 1.5s infinite;
+  }
+  .ta-title {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 1.75rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+    text-transform: uppercase;
+    color: var(--color-marino);
+    text-align: center;
+  }
+  .ta-spark {
+    flex: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: repeating-linear-gradient(0deg, var(--color-naranja) 0 3px, transparent 3px 8px);
+    clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%);
+    transform: rotate(-12deg);
+    animation: ta-blink 1.8s ease-in-out infinite;
+  }
+  .ta-spark-r {
+    transform: scaleX(-1) rotate(-12deg);
+    animation-delay: 0.9s;
+  }
+  .ta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 900px) {
+    .ta-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+  }
+  /* Cada tarjeta flota (con retraso distinto) y la foto "respira" dentro */
+  .ta-item {
+    animation: ta-float 5.2s ease-in-out var(--d, 0s) infinite;
+  }
+  .ta-card {
+    position: relative;
+    display: block;
     overflow: hidden;
-    padding: 0.85rem 0.9rem;
-    border-radius: 1.25rem;
-    background: color-mix(in srgb, white 8%, transparent);
-    border: 2px solid color-mix(in srgb, white 14%, transparent);
-    color: white;
-    transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), background-color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    aspect-ratio: 3 / 2;
+    border-radius: 1.6rem;
+    filter: drop-shadow(0 14px 18px rgb(25 42 61 / 0.28));
+    transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1), filter 0.3s;
   }
-  .esc-tab:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--c) 70%, white);
+  .ta-card:hover,
+  .ta-card:focus-visible {
+    transform: translateY(-8px) scale(1.05) rotate(-1.2deg);
+    filter: drop-shadow(0 22px 24px rgb(25 42 61 / 0.4));
   }
-  .esc-tab[aria-selected='true'] {
+  .ta-item:nth-child(even) .ta-card:hover { transform: translateY(-8px) scale(1.05) rotate(1.2deg); }
+  .ta-card picture,
+  .ta-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .ta-card-img {
+    animation: ta-breathe 7s ease-in-out var(--d, 0s) infinite alternate;
+  }
+  .ta-card-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.5) 50%, transparent 65%);
+    transform: translateX(-130%);
+  }
+  .ta-card:hover .ta-card-shine {
+    transform: translateX(130%);
+    transition: transform 0.8s ease;
+  }
+  .ta-card-vacia {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 1rem;
     background: var(--c);
-    border-color: color-mix(in srgb, var(--c) 60%, white);
-    box-shadow: 0 14px 30px -12px var(--c);
-    transform: translateY(-2px) scale(1.02);
+    color: white;
   }
   .esc-num {
-    flex: none;
     display: grid;
     place-items: center;
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 999px;
     background: white;
     color: var(--c);
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 1.25rem;
-  }
-  .esc-tab[aria-selected='true'] .esc-num {
-    animation: esc-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
-  }
-  .esc-arrow {
-    flex: none;
-    font-weight: 800;
-    opacity: 0;
-    transform: translateX(-0.5rem);
-    transition: opacity 0.2s, transform 0.25s;
-  }
-  .esc-tab:hover .esc-arrow,
-  .esc-tab[aria-selected='true'] .esc-arrow {
-    opacity: 1;
-    transform: none;
-  }
-  .esc-bar {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px;
-    width: 100%;
-    background: white;
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  [data-escapadas][data-play='1'] .esc-tab[aria-selected='true'] .esc-bar {
-    animation: esc-fill var(--esc-ms, 7s) linear forwards;
-  }
-  [data-escapadas]:hover .esc-bar,
-  [data-escapadas]:focus-within .esc-bar {
-    animation-play-state: paused !important;
-  }
-  .esc-stage {
-    position: relative;
-    isolation: isolate;
-    min-height: 30rem;
-    overflow: hidden;
-    border-radius: 1.75rem;
-    background: #0e1b2a;
-  }
-  .esc-panel {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.75rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s, visibility 0s 0.5s;
-  }
-  @media (min-width: 640px) {
-    .esc-panel {
-      padding: 2.5rem;
-    }
-  }
-  .esc-panel[data-on='1'] {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.5s;
-  }
-  .esc-panel[data-on='1'] .esc-photo {
-    animation: kenburns 9s ease-out both;
-  }
-  .esc-panel[data-on='1'] > :not(div:first-child) {
-    animation: esc-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  }
-  .esc-panel[data-on='1'] > :nth-child(3) { animation-delay: 0.05s; }
-  .esc-panel[data-on='1'] > :nth-child(4) { animation-delay: 0.1s; }
-  .esc-panel[data-on='1'] > :nth-child(5) { animation-delay: 0.15s; }
-  .esc-panel[data-on='1'] > :nth-child(6) { animation-delay: 0.2s; }
-  .esc-pill {
-    align-self: flex-start;
-    padding: 0.3rem 0.9rem;
-    border-radius: 999px;
-    background: var(--c);
-    font-weight: 800;
-    font-size: 0.9rem;
-  }
-  .esc-price {
-    padding: 0.55rem 1.1rem;
-    border-radius: 1rem;
-    background: var(--c);
-    animation: esc-glow 2.4s ease-in-out infinite;
+    font-size: 1.15rem;
   }
   .esc-cta {
     position: relative;
@@ -373,9 +408,7 @@
     box-shadow: 0 12px 28px -10px #e8680f;
     transition: transform 0.2s;
   }
-  .esc-cta:hover {
-    transform: translateY(-2px) scale(1.03);
-  }
+  .esc-cta:hover { transform: translateY(-2px) scale(1.03); }
   .esc-cta::after {
     content: '';
     position: absolute;
@@ -388,18 +421,29 @@
     display: inline-block;
     animation: esc-tap 1.4s ease-in-out infinite;
   }
-  @keyframes esc-fill { to { transform: scaleX(1); } }
-  @keyframes esc-pop { 0% { transform: scale(0.6); } 100% { transform: scale(1); } }
-  @keyframes esc-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes esc-glow { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--c) 35%, transparent); } }
-  @keyframes esc-shine { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+  @keyframes ta-pan { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.1) translate3d(-1.2%, 0.8%, 0); } }
+  @keyframes ta-sun { 50% { opacity: 0.55; transform: translate(-50%, -50%) scale(1.18); } }
+  @keyframes ta-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+  @keyframes ta-blink { 50% { opacity: 0.35; } }
+  @keyframes ta-float { 50% { transform: translateY(-9px); } }
+  @keyframes ta-breathe { from { transform: scale(1); } to { transform: scale(1.07); } }
+  @keyframes esc-shine { 0%, 55% { transform: translateX(-130%); } 85%, 100% { transform: translateX(130%); } }
   @keyframes esc-tap { 50% { transform: translateY(-6px) rotate(-8deg); } }
 }
 
-@media (max-width: 1023px) {
-  .esc-tab { gap: 0.5rem; padding: 0.75rem 0.65rem; }
-  .esc-arrow { display: none; }
-  .esc-num { width: 2rem; height: 2rem; font-size: 1rem; }
-  .esc-stage { min-height: 33rem; }
+@media (max-width: 899px) {
   .esc-cta { font-size: 1.1rem; padding: 0.9rem 1.5rem; white-space: nowrap; }
+  .ta-sun { width: 8rem; height: 8rem; }
+  .ta-rays { width: 11rem; height: 11rem; }
+}
+
+/* Con "reducir movimiento" nada se mueve solo */
+@media (prefers-reduced-motion: reduce) {
+  .ta-hero-img, .ta-sun, .ta-rays, .ta-shine, .ta-spark, .ta-item, .ta-card-img, .esc-cta::after, .esc-hand { animation: none !important; }
+  .ta-card, .ta-card-shine { transition: none !important; }
+}
+
+@media (max-width: 520px) {
+  .ta-title { font-size: 1.3rem; }
+  .ta-spark { width: 1.1rem; height: 1.1rem; }
 }

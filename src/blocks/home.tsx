@@ -189,14 +189,14 @@ export function Experiences(p: ExperiencesProps) {
   );
 }
 
-/* ───────────── Escapadas Tercera Edad (botones interactivos) ───────────── */
+/* ───────────── Escapadas Tercera Edad (formato del slide: banner animado + 4 tarjetas con movimiento) ───────────── */
 export interface EscapadasProps {
-  eyebrow: T;
   title: T;
-  text: T;
+  heroImage: string;
+  heroAlt: string;
   fotos: { programa: string; image: string }[];
   ctaLabel: string;
-  autoplay: boolean;
+  fondo: Fondo;
 }
 const ESC_COLORES = ['#1d3fae', '#0f7a3a', '#7b1fa2', '#e8680f'];
 export function Escapadas(p: EscapadasProps) {
@@ -206,84 +206,44 @@ export function Escapadas(p: EscapadasProps) {
   if (!lista.length) return null;
   const foto = (id: string, own?: string) => (p.fotos ?? []).find((f) => f.programa === id)?.image || own || '';
   return (
-    <section className="relative isolate overflow-hidden bg-marino py-20 text-white sm:py-28" data-escapadas data-autoplay={p.autoplay ? '1' : '0'}>
+    <section className={`overflow-hidden py-16 sm:py-24 ${fondo(p.fondo) || 'bg-white'}`} data-escapadas>
       <div className="wrap">
-        <div className="max-w-2xl">
-          {p.eyebrow && <p className="font-bold text-naranja">{p.eyebrow}</p>}
-          <h2 className="mt-2 text-h2">{p.title}</h2>
-          {p.text && <p className="mt-3 text-lg text-white/75">{p.text}</p>}
+        <div className="ta-hero">
+          <Img k={p.heroImage} alt={p.heroAlt} sizes="(min-width: 1280px) 1248px, 100vw" className="ta-hero-img" />
+          <span className="ta-rays" aria-hidden="true" />
+          <span className="ta-sun" aria-hidden="true" />
+          <span className="ta-shine" aria-hidden="true" />
         </div>
-        <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-8">
-          <div role="tablist" aria-label="Destinos Tercera Edad" className="grid grid-cols-2 gap-3 lg:grid-cols-1">
-            {lista.map((x, i) => (
-              <button
-                key={x.id}
-                type="button"
-                role="tab"
-                id={`esc-tab-${i}`}
-                aria-selected={i === 0}
-                aria-controls={`esc-panel-${i}`}
-                tabIndex={i === 0 ? 0 : -1}
-                data-esc-tab={i}
-                style={{ ['--c' as string]: ESC_COLORES[i % ESC_COLORES.length] }}
-                className="esc-tab"
-              >
-                <span className="esc-num">{i + 1}</span>
-                <span className="min-w-0 flex-1 text-left">
-                  <span className="block font-display text-base font-extrabold leading-tight sm:text-lg">{x.title}</span>
-                  <span className="mt-0.5 block text-sm text-white/75">
-                    {x.days} días{x.nights != null ? ` · ${x.nights} noches` : ''}
-                  </span>
-                </span>
-                <span className="esc-arrow" aria-hidden="true">
-                  →
-                </span>
-                <span className="esc-bar" aria-hidden="true" />
-              </button>
-            ))}
-          </div>
-          <div className="esc-stage">
-            {lista.map((x, i) => (
-              <div
-                key={x.id}
-                role="tabpanel"
-                id={`esc-panel-${i}`}
-                aria-labelledby={`esc-tab-${i}`}
-                data-esc-panel={i}
-                data-on={i === 0 ? '1' : '0'}
-                style={{ ['--c' as string]: ESC_COLORES[i % ESC_COLORES.length] }}
-                className="esc-panel"
-              >
-                <div className="absolute inset-0 -z-10">
-                  <Img k={foto(x.id, x.image)} alt="" sizes="(min-width: 1024px) 55vw, 100vw" className="esc-photo" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-marino-900/95 via-marino-900/40 to-marino-900/10" />
-                  <div className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ background: 'linear-gradient(135deg, var(--c), transparent 70%)' }} />
-                </div>
-                <span className="esc-pill">
-                  {x.days} días{x.nights != null ? ` · ${x.nights} noches` : ''}
-                </span>
-                <h3 className="mt-4 font-display text-4xl font-extrabold leading-tight sm:text-5xl">{x.title}</h3>
-                <p className="mt-2 max-w-md text-lg text-white/85">{x.summary}</p>
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  {x.priceFrom ? (
-                    <p className="esc-price">
-                      <span className="text-sm font-semibold text-white/80">Desde</span> <span className="font-display text-3xl font-extrabold">{clp(x.priceFrom)}</span>{' '}
-                      <span className="text-sm font-semibold text-white/80">por persona</span>
-                    </p>
-                  ) : null}
-                </div>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <a href={wa(`${data.site.whatsappGreeting} Vacaciones Tercera Edad 2026: ${x.title}.`)} target="_blank" rel="noopener" className="btn btn-primary esc-reserva">
-                    Reservar este viaje
-                  </a>
-                  <a href="/programas#tercera-edad" className="btn btn-ghost">
-                    Ver itinerario
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <h2 className="ta-title">
+          <span className="ta-spark" aria-hidden="true" />
+          {p.title}
+          <span className="ta-spark ta-spark-r" aria-hidden="true" />
+        </h2>
+        <ul className="ta-grid">
+          {lista.map((x, i) => {
+            const img = foto(x.id, x.image);
+            const detalle = `${x.title}, ${x.days} días${x.nights != null ? ` y ${x.nights} noches` : ''}${x.priceFrom ? `, desde ${clp(x.priceFrom)} por persona` : ''}`;
+            return (
+              <li key={x.id} className="ta-item" style={{ ['--d' as string]: `${i * 0.6}s`, ['--c' as string]: ESC_COLORES[i % ESC_COLORES.length] }}>
+                <a href={wa(`${data.site.whatsappGreeting} Vacaciones Tercera Edad 2026: ${x.title}.`)} target="_blank" rel="noopener" className="ta-card" aria-label={`${detalle}. Reservar por WhatsApp`}>
+                  {img ? (
+                    <Img k={img} alt="" sizes="(min-width: 1024px) 300px, 50vw" className="ta-card-img" />
+                  ) : (
+                    <span className="ta-card-vacia">
+                      <span className="esc-num">{i + 1}</span>
+                      <span className="block font-display text-xl font-extrabold">{x.title}</span>
+                      <span className="text-sm">
+                        {x.days} días{x.nights != null ? ` · ${x.nights} noches` : ''}
+                      </span>
+                      {x.priceFrom ? <span className="font-display text-2xl font-extrabold">{clp(x.priceFrom)}</span> : null}
+                    </span>
+                  )}
+                  <span className="ta-card-shine" aria-hidden="true" />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
         {p.ctaLabel && (
           <div className="mt-10 flex justify-center">
             <a href={wa(`${data.site.whatsappGreeting} las Vacaciones Tercera Edad 2026.`)} target="_blank" rel="noopener" className="esc-cta">

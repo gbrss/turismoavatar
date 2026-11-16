@@ -125,20 +125,20 @@ export function makeConfig(d: AdminData): Config {
       Escapadas: {
         label: 'Escapadas Tercera Edad',
         fields: {
-          eyebrow: text('Frase superior', true),
-          title: text('Título', true),
-          text: area('Texto', true),
+          heroImage: image('Banner de arriba (foto animada)'),
+          heroAlt: text('Descripción del banner (para buscadores y lectores de pantalla)'),
+          title: text('Título sobre las tarjetas', true),
           fotos: {
             type: 'array',
-            label: 'Foto de cada destino',
-            arrayFields: { programa: { type: 'select', label: 'Destino', options: progs }, image: image('Foto') },
+            label: 'Tarjeta de cada destino',
+            arrayFields: { programa: { type: 'select', label: 'Destino', options: progs }, image: image('Imagen de la tarjeta') },
             getItemSummary: (i: any) => progs.find((e) => e.value === i.programa)?.label ?? 'Elige un destino',
           } as Field,
           ctaLabel: text('Texto del botón grande (vacío = sin botón)'),
-          autoplay: yesno('Cambiar de destino automáticamente'),
+          fondo,
           hidden,
         },
-        defaultProps: { eyebrow: 'Vacaciones Tercera Edad · Escapadas 2026', title: 'Viaja, relájate y disfruta Chile', text: '4 destinos increíbles. Toca uno para ver el detalle.', fotos: [], ctaLabel: 'Haz clic y reserva', autoplay: true, hidden: false },
+        defaultProps: { heroImage: '', heroAlt: 'Vacaciones Tercera Edad, Escapadas 2026', title: '4 destinos increíbles', fotos: [], ctaLabel: 'Haz clic y reserva', fondo: 'blanco', hidden: false },
         render: wrap(Escapadas),
       },
       Promos: {

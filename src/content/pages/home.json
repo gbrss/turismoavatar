@@ -45,29 +45,29 @@
     {
       "type": "Escapadas",
       "props": {
-        "eyebrow": "Vacaciones Tercera Edad · Escapadas 2026",
-        "title": "Viaja, relájate y disfruta Chile",
-        "text": "4 destinos increíbles con alojamiento, traslados y guía. Toca uno para ver el detalle.",
+        "heroImage": "2026/11/ta-hero.webp",
+        "heroAlt": "Vacaciones Tercera Edad, Escapadas 2026. ¡Viaja, relájate y disfruta Chile! Adultos mayores sonriendo frente a un lago y la cordillera.",
+        "title": "4 destinos increíbles",
         "fotos": [
           {
             "programa": "tercera-edad-angostura-del-biobio",
-            "image": "2025/08/tour-300x300-1.webp"
+            "image": "2026/11/ta-angostura.webp"
           },
           {
             "programa": "tercera-edad-canete-lago-lanalhue",
-            "image": "2025/08/casa-poli-768x432-1.webp"
+            "image": "2026/11/ta-canete.webp"
           },
           {
             "programa": "tercera-edad-lonquimay",
-            "image": "2024/09/medium-shot-woman-sitting-log-scaled.webp"
+            "image": "2026/11/ta-lonquimay.webp"
           },
           {
             "programa": "tercera-edad-valle-las-trancas",
-            "image": "2025/08/CabalgataHualpen-600x338-1.webp"
+            "image": "2026/11/ta-trancas.webp"
           }
         ],
         "ctaLabel": "Haz clic y reserva",
-        "autoplay": true,
+        "fondo": "blanco",
         "id": "Escapadas-tercera-edad"
       }
     },
