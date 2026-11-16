@@ -29,6 +29,39 @@
       }
     },
     {
+      "type": "Hero",
+      "props": {
+        "eyebrow": "Tour operador en Concepción",
+        "title": "Diseñamos experiencias memorables en el Biobío",
+        "text": "",
+        "image": "",
+        "imageAlt": "",
+        "video": "",
+        "focus": "50% 50%",
+        "primary": {
+          "label": "Ver experiencias",
+          "href": "/experiencias"
+        },
+        "whatsappLabel": "Cotizar por WhatsApp",
+        "videoButton": "",
+        "destacada": "",
+        "destacadaLabel": "La más reservada",
+        "showNav": false,
+        "hidden": false,
+        "id": "Hero-cfb60d88-49b8-4748-9b7a-d0cd089f0fc6"
+      }
+    },
+    {
+      "type": "Lodgings",
+      "props": {
+        "title": "¿Necesitas alojamiento?",
+        "text": "",
+        "button": "Ver alojamientos",
+        "hidden": true,
+        "id": "Lodgings-c4584313-3f29-4ffe-8ff3-e0e9579a5f3d"
+      }
+    },
+    {
       "type": "Escapadas",
       "props": {
         "heroImage": "2026/11/ta-hero.webp",
