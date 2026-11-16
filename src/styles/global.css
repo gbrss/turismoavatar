@@ -336,7 +336,7 @@
     position: relative;
     display: block;
     overflow: hidden;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 383 / 251;
     border-radius: 1.6rem;
     filter: drop-shadow(0 14px 18px rgb(25 42 61 / 0.28));
     transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1), filter 0.3s;
@@ -354,8 +354,12 @@
     width: 100%;
     height: 100%;
   }
+  /* La imagen se ve completa (sin zoom ni recorte); la vida viene del flote, el brillo y el color */
+  .ta-card img {
+    object-fit: fill !important;
+  }
   .ta-card-img {
-    animation: ta-breathe 7s ease-in-out var(--d, 0s) infinite alternate;
+    animation: ta-breathe 6s ease-in-out var(--d, 0s) infinite alternate;
   }
   .ta-card-shine {
     position: absolute;
@@ -426,7 +430,7 @@
   @keyframes ta-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
   @keyframes ta-blink { 50% { opacity: 0.35; } }
   @keyframes ta-float { 50% { transform: translateY(-9px); } }
-  @keyframes ta-breathe { from { transform: scale(1); } to { transform: scale(1.07); } }
+  @keyframes ta-breathe { from { filter: saturate(1) brightness(1); } to { filter: saturate(1.18) brightness(1.05); } }
   @keyframes esc-shine { 0%, 55% { transform: translateX(-130%); } 85%, 100% { transform: translateX(130%); } }
   @keyframes esc-tap { 50% { transform: translateY(-6px) rotate(-8deg); } }
 }
