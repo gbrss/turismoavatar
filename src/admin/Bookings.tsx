@@ -1,4 +1,4 @@
-// Reservas: filtros, cambio de estado, notas internas, contacto directo y exportación a Excel.
+// Reservas: filtros, edición, eliminación, cambio de estado, notas internas, contacto directo y exportación a Excel.
 import { useEffect, useRef, useState } from 'react';
 import { clp } from '@/blocks/core';
 import { api, Btn, Empty, Loading, Panel, STATUS, cls, fmtDate, fmtDateTime, useAdmin, useDebounced, waLink } from './lib';
@@ -25,8 +25,40 @@ export interface Booking {
 
 const TIPOS: Record<string, string> = { experiencia: 'Experiencia', alojamiento: 'Alojamiento', programa: 'Programa', cotizacion: 'Cotización' };
 
-export function BookingCard({ b, onChange, nueva }: { b: Booking; onChange: (b: Booking) => void; nueva?: boolean }) {
+export function BookingCard({ b, onChange, onDelete, nueva }: { b: Booking; onChange: (b: Booking) => void; onDelete?: (code: string) => void; nueva?: boolean }) {
   const { toast } = useAdmin();
+  const [modo, setModo] = useState<'ver' | 'editar' | 'borrar'>('ver');
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({ item_title: b.item_title, name: b.name, email: b.email, phone: b.phone, date: b.date, date_end: b.date_end ?? '', people: String(b.people), estimated_total: b.estimated_total != null ? String(b.estimated_total) : '', notes: b.notes ?? '' });
+  const abrirEdicion = () => {
+    setForm({ item_title: b.item_title, name: b.name, email: b.email, phone: b.phone, date: b.date, date_end: b.date_end ?? '', people: String(b.people), estimated_total: b.estimated_total != null ? String(b.estimated_total) : '', notes: b.notes ?? '' });
+    setModo('editar');
+  };
+  const guardar = async () => {
+    setBusy(true);
+    try {
+      const r = await api<{ item: Booking }>('/api/admin/bookings', { method: 'PATCH', body: JSON.stringify({ code: b.code, ...form, date_end: form.date_end || null, estimated_total: form.estimated_total === '' ? null : Number(form.estimated_total) }) });
+      onChange(r.item);
+      setModo('ver');
+      toast(`Reserva ${b.code} actualizada`);
+    } catch (e) {
+      toast((e as Error).message, 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
+  const eliminar = async () => {
+    setBusy(true);
+    try {
+      await api(`/api/admin/bookings?code=${encodeURIComponent(b.code)}`, { method: 'DELETE' });
+      toast(`Reserva ${b.code} eliminada`);
+      onDelete?.(b.code);
+    } catch (e) {
+      toast((e as Error).message, 'error');
+      setBusy(false);
+    }
+  };
+  const campo = (k: keyof typeof form) => ({ value: form[k], onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [k]: e.target.value })) });
   const [notes, setNotes] = useState(b.admin_notes ?? '');
   const editing = useRef(false);
   // Si otra persona cambia las notas, se actualizan (salvo que las estés escribiendo)
@@ -107,6 +139,90 @@ export function BookingCard({ b, onChange, nueva }: { b: Booking; onChange: (b: 
           />
         </label>
       </div>
+
+      {modo === 'ver' && (
+        <div className="mt-4 flex flex-wrap justify-end gap-2 border-t border-roca pt-4">
+          <Btn variant="ghost" onClick={abrirEdicion}>
+            Editar reserva
+          </Btn>
+          <Btn variant="danger" onClick={() => setModo('borrar')}>
+            Eliminar
+          </Btn>
+        </div>
+      )}
+
+      {modo === 'editar' && (
+        <form
+          className="mt-4 grid gap-3 border-t border-roca pt-4 sm:grid-cols-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            guardar();
+          }}
+        >
+          <p className="font-display text-base font-extrabold sm:col-span-2">Editar reserva {b.code}</p>
+          <label className="grid gap-1 text-sm font-bold sm:col-span-2">
+            Qué se reservó
+            <input className="input font-normal" required maxLength={160} {...campo('item_title')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Nombre del cliente
+            <input className="input font-normal" required maxLength={120} {...campo('name')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Teléfono
+            <input className="input font-normal" required type="tel" maxLength={30} {...campo('phone')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Correo
+            <input className="input font-normal" required type="email" maxLength={160} {...campo('email')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Personas
+            <input className="input font-normal" required type="number" min={1} max={200} {...campo('people')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Fecha
+            <input className="input font-normal" required type="date" {...campo('date')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Fecha de término <span className="font-normal text-gris">(opcional, para alojamientos)</span>
+            <input className="input font-normal" type="date" {...campo('date_end')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold">
+            Valor aproximado en pesos <span className="font-normal text-gris">(opcional)</span>
+            <input className="input font-normal" type="number" min={0} step={1} inputMode="numeric" {...campo('estimated_total')} />
+          </label>
+          <label className="grid gap-1 text-sm font-bold sm:col-span-2">
+            Comentarios del cliente
+            <textarea className="input font-normal" rows={3} maxLength={1500} {...campo('notes')} />
+          </label>
+          <div className="flex flex-wrap justify-end gap-2 sm:col-span-2">
+            <Btn variant="ghost" onClick={() => setModo('ver')} disabled={busy}>
+              Cancelar
+            </Btn>
+            <Btn type="submit" disabled={busy}>
+              {busy ? 'Guardando…' : 'Guardar cambios'}
+            </Btn>
+          </div>
+        </form>
+      )}
+
+      {modo === 'borrar' && (
+        <div role="alertdialog" aria-label="Confirmar eliminación" className="mt-4 rounded-xl bg-red-50 p-4 ring-1 ring-red-200">
+          <p className="font-bold text-red-800">
+            ¿Eliminar la reserva {b.code} de {b.name}?
+          </p>
+          <p className="mt-1 text-sm text-red-800/80">Se borra para siempre y no se puede deshacer. Si solo quieres dejarla de lado, cámbiale el estado a “Cancelada”.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Btn variant="ghost" onClick={() => setModo('ver')} disabled={busy}>
+              No, conservar
+            </Btn>
+            <Btn variant="dark" className="!bg-red-700 hover:!bg-red-800" onClick={eliminar} disabled={busy}>
+              {busy ? 'Eliminando…' : 'Sí, eliminar'}
+            </Btn>
+          </div>
+        </div>
+      )}
     </article>
   );
 }
@@ -189,7 +305,7 @@ export default function Bookings() {
       {!items ? (
         <Loading />
       ) : items.length ? (
-        items.map((b) => <BookingCard key={b.code} b={b} nueva={nuevas.has(b.code)} onChange={(nb) => setItems((l) => l!.map((x) => (x.code === nb.code ? nb : x)))} />)
+        items.map((b) => <BookingCard key={b.code} b={b} nueva={nuevas.has(b.code)} onChange={(nb) => setItems((l) => l!.map((x) => (x.code === nb.code ? nb : x)))} onDelete={(c) => setItems((l) => l!.filter((x) => x.code !== c))} />)
       ) : (
         <Empty>No hay reservas con esos filtros.</Empty>
       )}

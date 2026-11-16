@@ -99,7 +99,7 @@ function Dashboard({ go }: { go: (r: Ruta) => void }) {
         ) : b.items.length ? (
           <div className="grid gap-3">
             {b.items.map((x) => (
-              <BookingCard key={x.code} b={x} onChange={(nb) => setB((o) => o && { ...o, items: o.items.map((i) => (i.code === nb.code ? nb : i)) })} />
+              <BookingCard key={x.code} b={x} onChange={(nb) => setB((o) => o && { ...o, items: o.items.map((i) => (i.code === nb.code ? nb : i)) })} onDelete={(c) => setB((o) => o && { ...o, items: o.items.filter((i) => i.code !== c) })} />
             ))}
           </div>
         ) : (
