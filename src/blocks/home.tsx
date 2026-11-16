@@ -105,7 +105,7 @@ export function Hero(p: HeroProps) {
             ))}
             {[
               ['/alojamientos', 'Alojamientos'],
-              ['/programas#tercera-edad', 'Tercera edad'],
+              ['/tercera-edad', 'Tercera edad'],
               ['/rally-wrc', 'Rally WRC'],
               ['/tienda', 'Tienda'],
             ].map(([href, label]) => (
@@ -201,7 +201,6 @@ export interface EscapadasProps {
 const ESC_COLORES = ['#1d3fae', '#0f7a3a', '#7b1fa2', '#e8680f'];
 export function Escapadas(p: EscapadasProps) {
   const { data } = useSite();
-  const wa = useWhatsapp();
   const lista = data.programas.filter((x) => x.group === 'tercera-edad');
   if (!lista.length) return null;
   const foto = (id: string, own?: string) => (p.fotos ?? []).find((f) => f.programa === id)?.image || own || '';
@@ -225,7 +224,7 @@ export function Escapadas(p: EscapadasProps) {
             const detalle = `${x.title}, ${x.days} días${x.nights != null ? ` y ${x.nights} noches` : ''}${x.priceFrom ? `, desde ${clp(x.priceFrom)} por persona` : ''}`;
             return (
               <li key={x.id} className="ta-item" style={{ ['--d' as string]: `${i * 0.6}s`, ['--c' as string]: ESC_COLORES[i % ESC_COLORES.length] }}>
-                <a href={wa(`${data.site.whatsappGreeting} Vacaciones Tercera Edad 2026: ${x.title}.`)} target="_blank" rel="noopener" className="ta-card" aria-label={`${detalle}. Reservar por WhatsApp`}>
+                <a href={`/tercera-edad?destino=${x.id}#reservar`} className="ta-card" aria-label={`${detalle}. Reservar`}>
                   {img ? (
                     <Img k={img} alt="" sizes="(min-width: 1024px) 300px, 50vw" className="ta-card-img" />
                   ) : (
@@ -246,7 +245,7 @@ export function Escapadas(p: EscapadasProps) {
         </ul>
         {p.ctaLabel && (
           <div className="mt-10 flex justify-center">
-            <a href={wa(`${data.site.whatsappGreeting} las Vacaciones Tercera Edad 2026.`)} target="_blank" rel="noopener" className="esc-cta">
+            <a href="/tercera-edad#reservar" className="esc-cta">
               {p.ctaLabel}
               <span className="esc-hand" aria-hidden="true">
                 👆

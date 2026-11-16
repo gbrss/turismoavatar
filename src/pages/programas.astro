@@ -68,7 +68,7 @@ const expTitle = (id: string) => exps.find((e) => e.id === id)?.data.title ?? id
             <p class="mt-5 text-sm text-gris">Desde</p>
             <p class="font-display text-3xl font-extrabold">{clp(p.data.priceFrom!)}</p>
             <p class="text-sm text-gris">por persona</p>
-            <a href={`/reservas?item=programa:${p.id}`} class="btn btn-primary mt-5">Reservar</a>
+            <a href={`/tercera-edad?destino=${p.id}#reservar`} class="btn btn-primary mt-5">Reservar</a>
           </li>
         ))}
       </ol>

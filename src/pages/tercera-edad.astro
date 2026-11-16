@@ -1,0 +1,326 @@
+---
+import Base from '@/layouts/Base.astro';
+import Media from '@/components/Media.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+import { site, whatsappLink, clp } from '@/data/site';
+import { destinos, fuente, contactoSernatur, incluye, noIncluye, quienes, documentos, cancelaciones, preguntas } from '@/data/tercera-edad';
+
+const progs = (await getCollection('programas')).filter((p) => p.data.group === 'tercera-edad').sort((a, b) => a.data.order - b.data.order);
+const items = progs.map((p) => ({ id: p.id, ...p.data, extra: destinos.find((d) => d.id === p.id) }));
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY as string | undefined;
+const minPrice = Math.min(...progs.map((p) => p.data.priceFrom ?? Infinity));
+const hoy = new Date().toISOString().slice(0, 10);
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'FAQPage',
+      mainEntity: preguntas.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
+    ...items.map((x) => ({
+      '@type': 'TouristTrip',
+      name: `${x.title} — Vacaciones Tercera Edad 2026`,
+      description: x.summary,
+      touristType: 'Adultos mayores',
+      provider: { '@type': 'TravelAgency', name: site.name },
+      offers: x.priceFrom ? { '@type': 'Offer', priceCurrency: 'CLP', price: x.priceFrom, availability: 'https://schema.org/InStock' } : undefined,
+    })),
+  ],
+};
+---
+
+<Base
+  title="Vacaciones Tercera Edad 2026: escapadas desde Concepción"
+  description={`Escapadas de 3 y 4 días para adultos mayores con todo incluido: Angostura del Biobío, Cañete y Lago Lanalhue, Lonquimay y Valle Las Trancas desde ${clp(minPrice)} por persona. Reserva tu cupo.`}
+  jsonLd={ld}
+>
+  <!-- Portada -->
+  <section class="relative isolate overflow-hidden bg-marino pb-16 pt-14 text-white sm:pt-20">
+    <div class="wrap">
+      <nav aria-label="Ruta de navegación" class="mb-4 text-sm text-white/70"><a href="/" class="hover:underline">Inicio</a> / Tercera edad</nav>
+      <h1 class="max-w-3xl text-h1">Vacaciones Tercera Edad · Escapadas 2026</h1>
+      <p class="mt-4 max-w-2xl text-lg text-white/80">Viaja, relájate y disfruta Chile. Cuatro destinos con transporte, alojamiento, comidas, excursiones y guía incluidos, desde {clp(minPrice)} por persona.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="#reservar" class="btn btn-primary">Reservar mi cupo</a>
+        <a href="#destinos" class="btn btn-ghost">Ver los destinos</a>
+        <a href={whatsappLink(`${site.whatsappGreeting} las Vacaciones Tercera Edad 2026.`)} target="_blank" rel="noopener" class="btn btn-wa">Consultar por WhatsApp</a>
+      </div>
+      <div class="ta-hero mt-12">
+        <Media src="2026/11/ta-hero.webp" alt="Vacaciones Tercera Edad, Escapadas 2026: adultos mayores sonriendo frente a un lago y la cordillera" widths={[800, 1400]} sizes="(min-width: 1280px) 1248px, 100vw" loading="eager" fetchpriority="high" class="ta-hero-img" />
+        <span class="ta-rays" aria-hidden="true"></span>
+        <span class="ta-sun" aria-hidden="true"></span>
+        <span class="ta-shine" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Destinos -->
+  <section id="destinos" class="scroll-mt-20 bg-white py-20 sm:py-28">
+    <div class="wrap">
+      <h2 class="max-w-2xl text-h2">4 destinos increíbles</h2>
+      <p class="mt-3 max-w-2xl text-lg text-gris">Valores por persona, en habitación doble. Las fechas de salida se confirman al reservar y pueden cambiar.</p>
+      <ol class="mt-12 grid gap-10">
+        {
+          items.map((x) => (
+            <li id={x.id} class="grid scroll-mt-24 items-start gap-6 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-10">
+              <div class="overflow-hidden rounded-3xl lg:sticky lg:top-24" style="aspect-ratio: 383 / 251">
+                <Media src={x.extra?.foto} alt={`${x.title}, ${x.days} días y ${x.nights} noches, desde ${clp(x.priceFrom ?? 0)} por persona`} widths={[400, 800]} sizes="(min-width: 1024px) 416px, 100vw" class="!object-fill" />
+              </div>
+              <div>
+                <p class="font-bold text-cielo-700">{x.days} días / {x.nights} noches · Salida desde Concepción</p>
+                <h3 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">{x.title}</h3>
+                <p class="mt-2 max-w-xl text-lg text-gris">{x.summary}</p>
+                <p class="mt-4">
+                  <span class="text-sm text-gris">Desde </span>
+                  <span class="font-display text-3xl font-extrabold">{clp(x.priceFrom!)}</span>
+                  <span class="text-sm text-gris"> por persona{x.extra?.temporada ? ` · ${x.extra.temporada.toLowerCase()}` : ''}</span>
+                </p>
+                {x.extra?.excursion && (
+                  <div class="mt-5">
+                    <h4 class="font-display text-lg font-bold">Excursión incluida: {x.extra.excursion.nombre} <span class="font-normal text-gris">({x.extra.excursion.duracion})</span></h4>
+                    <ul class="mt-2 grid gap-1.5 text-gris">
+                      {x.extra.excursion.detalle.map((d) => <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-naranja" aria-hidden="true"></span>{d}</li>)}
+                    </ul>
+                  </div>
+                )}
+                {x.extra?.alojamiento && (
+                  <p class="mt-4 text-gris"><strong class="text-tinta">Alojamiento:</strong> {x.extra.alojamiento.join(' o ')}.</p>
+                )}
+                {x.extra?.opcional && (
+                  <p class="mt-3 rounded-2xl bg-niebla p-4 text-gris">
+                    <strong class="text-tinta">Tour opcional (no incluido): {x.extra.opcional.nombre}</strong> ({x.extra.opcional.duracion}). {x.extra.opcional.detalle}
+                    {x.extra.opcional.precio && <> <strong class="text-tinta">{x.extra.opcional.precio}</strong> por persona, {x.extra.opcional.minimo}.</>}
+                  </p>
+                )}
+                {x.extra?.nota && <p class="mt-4 text-gris">{x.extra.nota}</p>}
+                <a href={`#reservar`} data-elegir={x.id} class="btn btn-primary mt-6">Reservar {x.title}</a>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Qué incluye / quién puede viajar -->
+  <section class="bg-niebla py-20 sm:py-28">
+    <div class="wrap grid gap-12 lg:grid-cols-2">
+      <div>
+        <h2 class="text-h2">Qué incluye</h2>
+        <ul class="mt-6 grid gap-3">
+          {incluye.map((t) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-naranja" aria-hidden="true"></span>{t}</li>)}
+        </ul>
+        <h3 class="mt-8 font-display text-xl font-bold">No incluye</h3>
+        <ul class="mt-3 grid gap-2 text-gris">
+          {noIncluye.map((t) => <li class="flex gap-3"><span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gris" aria-hidden="true"></span>{t}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-h2">Quién puede viajar</h2>
+        <ul class="mt-6 grid gap-3">
+          {quienes.map((t) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-naranja" aria-hidden="true"></span>{t}</li>)}
+        </ul>
+        <h3 class="mt-8 font-display text-xl font-bold">Qué documentos llevar</h3>
+        <ul class="mt-3 grid gap-2 text-gris">
+          {documentos.map((t) => <li class="flex gap-3"><span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gris" aria-hidden="true"></span>{t}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservar -->
+  <section id="reservar" class="relative scroll-mt-20 overflow-hidden bg-marino py-20 text-white sm:py-28">
+    <div class="wrap">
+      <h2 class="max-w-2xl text-h2">Reserva tu cupo</h2>
+      <p class="mt-3 max-w-2xl text-lg text-white/80">Completa el formulario y te contactamos para confirmar la fecha de salida, el valor final y cómo pagar. Enviar la solicitud no tiene costo ni te compromete.</p>
+
+      <div class="mt-10 rounded-3xl bg-white p-5 text-tinta shadow-xl sm:p-8 lg:p-10">
+        <form data-ta-form action="/api/reservas" method="post" novalidate class="grid gap-5 sm:grid-cols-2 [&_.field]:content-start">
+          <fieldset class="sm:col-span-2">
+            <legend class="font-display text-lg font-bold">1. ¿A qué destino quieres viajar?</legend>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {
+                items.map((x, i) => (
+                  <label class="relative cursor-pointer">
+                    <input type="radio" name="destino" value={x.id} data-title={x.title} data-days={x.days} class="peer sr-only" required checked={i === 0} />
+                    <span class="block rounded-2xl border-2 border-roca p-4 transition peer-checked:border-naranja peer-checked:bg-naranja/10 peer-focus-visible:outline peer-focus-visible:outline-4 peer-focus-visible:outline-cielo">
+                      <span class="block font-display font-extrabold leading-tight">{x.title}</span>
+                      <span class="mt-1 block text-sm text-gris">{x.days} días / {x.nights} noches</span>
+                      <span class="mt-1 block font-bold">{clp(x.priceFrom!)}</span>
+                    </span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <p class="font-display text-lg font-bold sm:col-span-2">2. Fecha y pasajeros</p>
+          <div class="field">
+            <label for="ta-date">Fecha preferida de salida</label>
+            <input id="ta-date" name="date" type="date" min={hoy} required />
+            <p class="text-sm text-gris">Si ya tienes una fecha de la lista oficial, elígela. Si no, te proponemos las disponibles.</p>
+          </div>
+          <div class="field">
+            <label for="ta-people">Cantidad de pasajeros</label>
+            <input id="ta-people" name="people" type="number" min="1" max="40" value="2" inputmode="numeric" required />
+          </div>
+          <div class="field">
+            <label for="ta-type">Tipo de pasajero principal</label>
+            <select id="ta-type" name="tipo">
+              <option>Tiene 60 años o más</option>
+              <option>Jubilado, pensionado o montepiado</option>
+              <option>Persona con discapacidad</option>
+              <option>Viajo con un grupo o club</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ta-room">Habitación</label>
+            <select id="ta-room" name="habitacion">
+              <option>Doble</option>
+              <option>Triple</option>
+              <option>Individual (se paga la diferencia, si el hotel la tiene)</option>
+              <option>Viajo solo(a) y comparto habitación</option>
+            </select>
+          </div>
+
+          <p class="mt-2 font-display text-lg font-bold sm:col-span-2">3. Tus datos</p>
+          <div class="field">
+            <label for="ta-name">Nombre y apellido</label>
+            <input id="ta-name" name="name" type="text" autocomplete="name" maxlength="120" required />
+          </div>
+          <div class="field">
+            <label for="ta-phone">Teléfono o WhatsApp</label>
+            <input id="ta-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="+56 9 1234 5678" required />
+          </div>
+          <div class="field">
+            <label for="ta-email">Correo electrónico</label>
+            <input id="ta-email" name="email" type="email" autocomplete="email" maxlength="160" required />
+          </div>
+          <div class="field">
+            <label for="ta-contact">¿Cómo prefieres que te contactemos?</label>
+            <select id="ta-contact" name="contactPref">
+              <option>WhatsApp</option>
+              <option>Llamada</option>
+              <option>Correo</option>
+            </select>
+          </div>
+          <div class="field sm:col-span-2">
+            <label for="ta-notes">Comentarios <span class="font-normal text-gris">(opcional)</span></label>
+            <textarea id="ta-notes" name="notes" rows="3" maxlength="1000" placeholder="Dieta especial (sin sal, vegetariana, sin gluten), movilidad reducida, si viajas con acompañante o con un club…"></textarea>
+            <p class="text-sm text-gris">No necesitamos tu RUT ni documentos ahora. Se piden al momento de viajar.</p>
+          </div>
+
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <input type="hidden" name="item" value="" />
+          {sitekey && <div class="cf-turnstile sm:col-span-2" data-sitekey={sitekey} data-language="es"></div>}
+          <p data-ta-error role="alert" class="hidden rounded-xl bg-naranja/10 px-4 py-3 font-semibold text-naranja-700 sm:col-span-2"></p>
+          <div class="sm:col-span-2">
+            <button type="submit" data-ta-submit class="btn btn-primary w-full sm:w-auto sm:min-w-64">Enviar solicitud de reserva</button>
+          </div>
+        </form>
+
+        <div data-ta-done hidden tabindex="-1" class="text-center">
+          <p class="font-display text-3xl font-extrabold">¡Recibimos tu solicitud!</p>
+          <p class="mt-3 text-lg text-gris">Tu código es <strong data-ta-code class="text-tinta"></strong>. Te contactaremos pronto para confirmar fecha, valor final y forma de pago.</p>
+          <a data-ta-wa href="#" target="_blank" rel="noopener" class="btn btn-wa mt-6">Avisar por WhatsApp para confirmar más rápido</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Condiciones -->
+  <section class="bg-white py-20 sm:py-28">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_1fr]">
+      <div>
+        <h2 class="text-h2">Cambios y cancelaciones</h2>
+        <p class="mt-3 text-gris">Para cupos regulares, según las condiciones del programa. Se descuenta siempre la comisión de agencia.</p>
+        <div class="mt-6 overflow-hidden rounded-2xl border border-roca">
+          <table class="w-full text-left">
+            <caption class="sr-only">Condiciones de cancelación según los días antes de la salida</caption>
+            <thead class="bg-niebla"><tr><th scope="col" class="p-3 font-display">Cuándo cancelas</th><th scope="col" class="p-3 font-display">Qué se devuelve</th></tr></thead>
+            <tbody class="divide-y divide-roca">
+              {cancelaciones.map((c) => <tr><th scope="row" class="p-3 align-top font-semibold">{c.cuando}</th><td class="p-3 text-gris">{c.que}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-gris">Si cancelas por motivos de salud o fuerza mayor se devuelve el copago, con la documentación entregada dentro de los 30 días desde el inicio del viaje.</p>
+      </div>
+      <div>
+        <h2 class="text-h2">Preguntas frecuentes</h2>
+        <div class="mt-6 divide-y divide-roca border-y border-roca">
+          {
+            preguntas.map((f, i) => (
+              <details class="group py-4" open={i === 0}>
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-semibold">{f.q}<span class="text-2xl text-naranja-700 transition group-open:rotate-45" aria-hidden="true">+</span></summary>
+                <p class="mt-3 text-gris">{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+        <p class="mt-6 text-sm text-gris">
+          Información del programa de Sernatur: <a href={fuente.url} target="_blank" rel="noopener" class="font-bold text-naranja-700 underline underline-offset-4">{fuente.nombre}</a>. Dudas del programa: Turismo Atiende {contactoSernatur.atiende} o WhatsApp {contactoSernatur.whatsapp}. Los valores, fechas y condiciones pueden cambiar; los confirmamos al reservar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="¿Viajan en grupo, club o junta de vecinos?" text="Cuéntanos cuántos son y te armamos una cotización grupal con las fechas que mejor les acomoden." message={`${site.whatsappGreeting} las Vacaciones Tercera Edad 2026 para un grupo.`} />
+</Base>
+
+{sitekey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-ta-form]');
+  if (form) {
+    const radios = [...form.querySelectorAll<HTMLInputElement>('input[name="destino"]')];
+    const elegir = (id?: string | null) => {
+      const r = radios.find((x) => x.value === id);
+      if (r) r.checked = true;
+    };
+    elegir(new URLSearchParams(location.search).get('destino'));
+    document.querySelectorAll<HTMLElement>('[data-elegir]').forEach((a) => a.addEventListener('click', () => elegir(a.dataset.elegir)));
+
+    const err = form.querySelector<HTMLElement>('[data-ta-error]')!;
+    const btn = form.querySelector<HTMLButtonElement>('[data-ta-submit]')!;
+    const mostrar = (m: string) => {
+      err.textContent = m;
+      err.classList.toggle('hidden', !m);
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      mostrar('');
+      const fd = new FormData(form);
+      const dest = radios.find((r) => r.checked);
+      if (!dest) return mostrar('Elige un destino.');
+      if (!fd.get('date')) return mostrar('Elige la fecha en que te gustaría viajar.');
+      if (!String(fd.get('name') ?? '').trim()) return mostrar('Escribe tu nombre.');
+      if (!String(fd.get('phone') ?? '').trim()) return mostrar('Escribe tu teléfono o WhatsApp.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(fd.get('email') ?? ''))) return mostrar('Revisa tu correo electrónico.');
+      fd.set('item', `programa:${dest.value}`);
+      const detalle = [`Vacaciones Tercera Edad 2026 (salida desde Concepción)`, `Pasajero: ${fd.get('tipo')}`, `Habitación: ${fd.get('habitacion')}`, String(fd.get('notes') ?? '').trim()].filter(Boolean).join('\n');
+      fd.set('notes', detalle);
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: fd });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(out.error || 'No pudimos enviar la solicitud.');
+        const done = document.querySelector<HTMLElement>('[data-ta-done]')!;
+        form.hidden = true;
+        done.hidden = false;
+        done.querySelector('[data-ta-code]')!.textContent = out.code;
+        done.querySelector<HTMLAnchorElement>('[data-ta-wa]')!.href = out.whatsapp;
+        done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        done.focus({ preventScroll: true });
+        (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({ event: 'booking_request', item: dest.value });
+      } catch (x) {
+        mostrar(`${x instanceof Error ? x.message : 'No pudimos enviar la solicitud.'} También puedes escribirnos por WhatsApp.`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud de reserva';
+      }
+    });
+  }
+</script>
