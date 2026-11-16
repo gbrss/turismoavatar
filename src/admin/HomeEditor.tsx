@@ -1,6 +1,6 @@
 // Editor visual del home (Puck): arrastrar, ordenar, duplicar y editar secciones con vista previa real.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Puck, type Data } from '@puckeditor/core';
+import { Puck, usePuck, type Data } from '@puckeditor/core';
 import '@puckeditor/core/puck.css';
 import { makeConfig, dictionary, viewports } from './puck-config';
 import { api, Btn, Loading, Modal, fmtDateTime, useAdmin } from './lib';
@@ -15,8 +15,62 @@ interface EdCtx {
   publish: () => void;
   history: () => void;
   dirty: boolean;
+  etiquetas: Record<string, string>;
 }
 const EditorCtx = createContext<EdCtx | null>(null);
+
+// Mostrar u ocultar cada sección del home con un interruptor, sin abrir sus campos
+function Secciones() {
+  const c = useContext(EditorCtx)!;
+  const { appState, dispatch } = usePuck();
+  const [abierto, setAbierto] = useState(false);
+  const items = appState.data.content;
+  const ocultas = items.filter((b) => (b.props as { hidden?: boolean }).hidden).length;
+  const alternar = (id: string) => {
+    const content = items.map((b) => (b.props.id === id ? { ...b, props: { ...b.props, hidden: !(b.props as { hidden?: boolean }).hidden } } : b));
+    dispatch({ type: 'setData', data: { content } });
+  };
+  return (
+    <div className="relative">
+      <Btn variant="ghost" onClick={() => setAbierto((v) => !v)} aria-expanded={abierto}>
+        Secciones{ocultas ? ` (${ocultas} oculta${ocultas > 1 ? 's' : ''})` : ''}
+      </Btn>
+      {abierto && (
+        <>
+          <button type="button" aria-label="Cerrar" className="fixed inset-0 z-[998] cursor-default" onClick={() => setAbierto(false)} />
+          <div className="fixed right-4 top-16 z-[999] w-80 max-w-[90vw] rounded-2xl bg-white p-3 text-tinta shadow-xl ring-1 ring-roca" role="dialog" aria-label="Secciones del home">
+            <p className="px-2 pb-2 text-sm font-bold">Secciones del home</p>
+            <ul className="max-h-[60vh] overflow-y-auto">
+              {items.map((b) => {
+                const oculta = Boolean((b.props as { hidden?: boolean }).hidden);
+                const titulo = (b.props as { title?: string }).title;
+                return (
+                  <li key={b.props.id} className="flex items-center justify-between gap-3 rounded-xl px-2 py-2 hover:bg-niebla">
+                    <span className="min-w-0">
+                      <span className={`block truncate text-sm font-bold ${oculta ? 'text-gris line-through' : ''}`}>{c.etiquetas[b.type] ?? b.type}</span>
+                      {titulo && <span className="block truncate text-xs text-gris">{titulo}</span>}
+                    </span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={!oculta}
+                      aria-label={`${oculta ? 'Mostrar' : 'Ocultar'} ${c.etiquetas[b.type] ?? b.type}`}
+                      onClick={() => alternar(b.props.id)}
+                      className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${oculta ? 'bg-roca' : 'bg-[#1f9d55]'}`}
+                    >
+                      <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all ${oculta ? 'left-0.5' : 'left-[22px]'}`} />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="px-2 pt-2 text-xs text-gris">Las ocultas no aparecen en el sitio. Presiona Publicar para aplicar.</p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 function HeaderActions() {
   const c = useContext(EditorCtx)!;
@@ -34,6 +88,7 @@ function HeaderActions() {
         ← Panel
       </a>
       <span className={`hidden max-w-40 text-xs font-semibold xl:inline ${c.estado === 'error' ? 'text-red-700' : 'text-gris'}`}>{dep ?? label}</span>
+      <Secciones />
       <Btn variant="ghost" onClick={c.history}>
         Historial
       </Btn>
@@ -47,9 +102,13 @@ function HeaderActions() {
   );
 }
 
+// Estable entre renders: si cambiara, el encabezado se volvería a montar y el menú de secciones se cerraría al tocar un interruptor
+const overrides = { headerActions: () => <HeaderActions /> };
+
 export default function HomeEditor() {
   const { data: admin, me, toast } = useAdmin();
   const config = useMemo(() => makeConfig(admin), [admin]);
+  const etiquetas = useMemo(() => Object.fromEntries(Object.entries(config.components).map(([k, v]) => [k, (v as { label?: string }).label ?? k])), [config]);
   const [initial, setInitial] = useState<Data | null>(null);
   const [version, setVersion] = useState(0);
   const [aviso, setAviso] = useState<string | null>(null);
@@ -153,7 +212,7 @@ export default function HomeEditor() {
 
   if (!initial) return <Loading />;
   return (
-    <EditorCtx.Provider value={{ estado, deploy, publishing, publish, history: () => setHistOpen(true), dirty }}>
+    <EditorCtx.Provider value={{ estado, deploy, publishing, publish, history: () => setHistOpen(true), dirty, etiquetas }}>
       {aviso && (
         <div className="flex flex-wrap items-center justify-center gap-3 bg-naranja/15 px-4 py-2 text-sm font-semibold text-naranja-700">
           {aviso}
@@ -172,7 +231,7 @@ export default function HomeEditor() {
         viewports={viewports}
         height={aviso ? 'calc(100dvh - 36px)' : '100dvh'}
         iframe={{ enabled: true, waitForStyles: true }}
-        overrides={{ headerActions: () => <HeaderActions /> }}
+        overrides={overrides}
       />
       <History open={histOpen} onClose={() => setHistOpen(false)} onRestore={restore} />
     </EditorCtx.Provider>
