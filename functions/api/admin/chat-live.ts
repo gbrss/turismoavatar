@@ -23,6 +23,13 @@ export const onRequestPost = async ({ request, env, data }: Ctx) => {
     return adminJson({ ok: true });
   }
 
+  if (b.accion === 'nombre') {
+    const nombre = clean(b.nombre, 30);
+    if (!nombre) return adminJson({ error: 'Escribe un nombre.' }, 400);
+    await env.DB.prepare(`UPDATE chat_takeovers SET agent = ?2 WHERE session_id = ?1 AND email = ?3 AND ${activa}`).bind(sesion, nombre, data.user.email).run();
+    return adminJson({ ok: true });
+  }
+
   if (b.accion === 'soltar') {
     await env.DB.prepare(`UPDATE chat_takeovers SET released_at = datetime('now') WHERE session_id = ?1 AND released_at IS NULL`).bind(sesion).run();
     await audit(env, data.user, 'chat.soltar', sesion);

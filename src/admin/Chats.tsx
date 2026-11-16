@@ -72,6 +72,14 @@ export default function Chats() {
   const [texto, setTexto] = useState("");
   const [enviando, setEnviando] = useState(false);
   const { toast } = useAdmin();
+  const nombreGuardado = () => {
+    try {
+      return localStorage.getItem("ta-agente") ?? undefined;
+    } catch {
+      return undefined;
+    }
+  };
+  const [nombre, setNombre] = useState<string | undefined>(nombreGuardado);
 
   const loadList = (silent = false) => {
     if (!me.servicios.db) return;
@@ -105,9 +113,21 @@ export default function Chats() {
       });
     });
   };
-  const vivo = async (accion: "tomar" | "soltar" | "enviar") => {
+  const vivo = async (accion: "tomar" | "soltar" | "enviar" | "nombre") => {
     if (!sel) return;
     let nombre: string | undefined;
+    if (accion === "nombre") {
+      const actual = nombreGuardado() ?? toma?.agent ?? "";
+      nombre = prompt("¿Con qué nombre te verá el cliente?", actual)?.trim();
+      if (!nombre) return;
+      try {
+        localStorage.setItem("ta-agente", nombre);
+      } catch {
+        /* sin almacenamiento */
+      }
+      setNombre(nombre);
+      if (!toma?.activa) return toast("Nombre guardado.");
+    }
     if (accion === "tomar") {
       try {
         nombre = localStorage.getItem("ta-agente") ?? undefined;
@@ -297,7 +317,7 @@ export default function Chats() {
                       )}
                   </ol>
                 </div>
-                <Atencion sel={sel} toma={toma} yo={me.email} texto={texto} setTexto={setTexto} enviando={enviando} vivo={vivo} />
+                <Atencion nombre={nombre} sel={sel} toma={toma} yo={me.email} texto={texto} setTexto={setTexto} enviando={enviando} vivo={vivo} />
                 <p className="mt-4 text-xs text-gris">
                   Las conversaciones no guardan nombres ni teléfonos: si el
                   cliente siguió por WhatsApp, la verás en tu WhatsApp.
@@ -337,6 +357,7 @@ export default function Chats() {
 
 // Caja para atender al cliente en vivo
 function Atencion({
+  nombre,
   sel,
   toma,
   yo,
@@ -345,13 +366,14 @@ function Atencion({
   enviando,
   vivo,
 }: {
+  nombre?: string;
   sel: string;
   toma: Toma | null;
   yo: string;
   texto: string;
   setTexto: (t: string) => void;
   enviando: boolean;
-  vivo: (a: "tomar" | "soltar" | "enviar") => void;
+  vivo: (a: "tomar" | "soltar" | "enviar" | "nombre") => void;
 }) {
   if (sel.startsWith("msg-"))
     return <p className="mt-4 rounded-xl bg-niebla p-3 text-sm text-gris">Esta conversación es antigua y no se puede atender en vivo.</p>;
@@ -362,7 +384,18 @@ function Atencion({
         <Btn onClick={() => vivo("tomar")} disabled={enviando}>
           Tomar conversación
         </Btn>
-        <p className="min-w-0 flex-1 text-sm text-gris">Cami deja de responder y tú le escribes al cliente directamente en el chat del sitio.</p>
+        <p className="min-w-0 flex-1 text-sm text-gris">
+          Cami deja de responder y tú le escribes al cliente directamente en el chat del sitio.
+          {nombre ? (
+            <>
+              {" "}
+              Atenderás como <strong>{nombre}</strong>.
+            </>
+          ) : null}{" "}
+          <button type="button" onClick={() => vivo("nombre")} className="font-bold text-cielo-700 underline">
+            {nombre ? "Cambiar nombre" : "Elegir nombre"}
+          </button>
+        </p>
       </div>
     );
   if (toma && toma.email !== yo)
@@ -375,7 +408,12 @@ function Atencion({
         if (texto.trim()) vivo("enviar");
       }}
     >
-      <p className="text-sm font-bold text-[#157a3e]">Atiendes como {toma?.agent}. Cami está en pausa.</p>
+      <p className="text-sm font-bold text-[#157a3e]">
+        Atiendes como {toma?.agent}. Cami está en pausa.{" "}
+        <button type="button" onClick={() => vivo("nombre")} className="font-bold text-cielo-700 underline">
+          Cambiar nombre
+        </button>
+      </p>
       <textarea
         className="input min-h-20"
         value={texto}
