@@ -54,7 +54,8 @@
         ],
         "ctaLabel": "Haz clic y reserva",
         "fondo": "blanco",
-        "id": "Escapadas-tercera-edad"
+        "id": "Escapadas-tercera-edad",
+        "hidden": true
       }
     },
     {
@@ -68,7 +69,8 @@
         "categoria": "nautico",
         "limite": 4,
         "fondo": "claro",
-        "id": "Experiences-destacadas"
+        "id": "Experiences-destacadas",
+        "hidden": true
       }
     },
     {
