@@ -29,20 +29,6 @@
       }
     },
     {
-      "type": "Experiences",
-      "props": {
-        "title": "Escoge tu aventura ideal",
-        "text": "Salidas con guía local, equipos incluidos y precios claros desde el primer clic.",
-        "linkLabel": "Ver las {n} experiencias",
-        "modo": "destacadas",
-        "elegidas": [],
-        "categoria": "nautico",
-        "limite": 4,
-        "fondo": "claro",
-        "id": "Experiences-destacadas"
-      }
-    },
-    {
       "type": "Escapadas",
       "props": {
         "heroImage": "2026/11/ta-hero.webp",
@@ -69,6 +55,20 @@
         "ctaLabel": "Haz clic y reserva",
         "fondo": "blanco",
         "id": "Escapadas-tercera-edad"
+      }
+    },
+    {
+      "type": "Experiences",
+      "props": {
+        "title": "Escoge tu aventura ideal",
+        "text": "Salidas con guía local, equipos incluidos y precios claros desde el primer clic.",
+        "linkLabel": "Ver las {n} experiencias",
+        "modo": "destacadas",
+        "elegidas": [],
+        "categoria": "nautico",
+        "limite": 4,
+        "fondo": "claro",
+        "id": "Experiences-destacadas"
       }
     },
     {

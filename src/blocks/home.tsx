@@ -206,7 +206,7 @@ export function Escapadas(p: EscapadasProps) {
   if (!lista.length) return null;
   const foto = (id: string, own?: string) => (p.fotos ?? []).find((f) => f.programa === id)?.image || own || '';
   return (
-    <section className={`overflow-hidden py-16 sm:py-24 ${fondo(p.fondo) || 'bg-white'}`} data-escapadas>
+    <section id="tercera-edad" className={`scroll-mt-20 overflow-hidden py-16 sm:py-24 ${fondo(p.fondo) || 'bg-white'}`} data-escapadas>
       <div className="wrap">
         <div className="ta-hero">
           <Img k={p.heroImage} alt={p.heroAlt} sizes="(min-width: 1280px) 1248px, 100vw" className="ta-hero-img" />

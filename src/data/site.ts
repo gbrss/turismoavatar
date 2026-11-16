@@ -72,6 +72,7 @@ export const nav = [
   { href: '/experiencias', label: 'Experiencias' },
   { href: '/alojamientos', label: 'Alojamientos' },
   { href: '/programas', label: 'Programas' },
+  { href: '/#tercera-edad', label: 'Tercera edad' },
   { href: '/destinos', label: 'Destinos' },
   { href: '/tienda', label: 'Tienda' },
   { href: '/galeria', label: 'Galería' },
