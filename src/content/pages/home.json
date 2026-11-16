@@ -189,7 +189,8 @@
         "title": "¿Necesitas alojamiento en el Biobío?",
         "text": "Descansa después de un día lleno de exploración. Cabañas con tinaja y piscina en Coliumo, hotel con desayuno en Dichato y opciones en Penco y Santa Bárbara.",
         "button": "Ver alojamientos",
-        "id": "Lodgings-alojamientos"
+        "id": "Lodgings-alojamientos",
+        "hidden": true
       }
     },
     {
