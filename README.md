@@ -6,6 +6,8 @@ Migración del sitio WordPress de **Turismo Avatar** (tour operador en Concepci�
 - Reservas, contacto, newsletter, chatbot y panel de administración con **Cloudflare Pages Functions** (`/functions`).
 - SEO: sitemap, `robots.txt`, canonical, Open Graph, schema.org (`TravelAgency`, `TouristTrip`, `Accommodation`, `TouristDestination`, `FAQPage`, `BreadcrumbList`) y redirecciones 301 desde las URLs de WordPress.
 
+> 📘 Documentación completa de funciones del sitio y del panel: [docs/DOCUMENTACION.md](docs/DOCUMENTACION.md).
+
 ## Marca
 
 Extraída del sitio original (logo y tema Blocksy): naranjo `#f47800`, celeste del logo `#00a8e8`, azul marino `#192a3d`, pizarra `#3a4f66`, fondo `#f2f5f7`. Tipografías Montserrat (títulos) y Nunito Sans (texto). Los botones usan texto azul marino sobre naranjo (contraste 5.2:1; el blanco sobre naranjo no pasa WCAG). Logos en `src/assets/brand/`.
