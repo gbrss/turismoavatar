@@ -68,7 +68,26 @@ export const site = {
   ],
 } as const;
 
-export const nav = [
+import home from '../content/pages/home.json';
+
+/** Sección del home → enlace del menú que se oculta con ella (así el menú sigue lo que se muestra en el home). */
+const MENU_DE_SECCION: Record<string, string> = {
+  Experiences: '/experiencias',
+  Lodgings: '/alojamientos',
+  Escapadas: '/tercera-edad',
+  Destinos: '/destinos',
+  MediaGallery: '/galeria',
+  WhyUs: '/quienes-somos',
+  Cta: '/contacto',
+};
+/** Enlaces cuya sección está oculta en el home, salvo que otra sección visible del mismo tipo siga mostrándolos. */
+export const menuOculto = (() => {
+  const bloques = (home as { content: { type: string; props: { hidden?: boolean } }[] }).content;
+  const visibles = new Set(bloques.filter((b) => !b.props.hidden).map((b) => b.type));
+  return new Set(Object.entries(MENU_DE_SECCION).filter(([tipo]) => bloques.some((b) => b.type === tipo) && !visibles.has(tipo)).map(([, href]) => href));
+})();
+
+const navCompleto = [
   { href: '/experiencias', label: 'Experiencias' },
   { href: '/alojamientos', label: 'Alojamientos' },
   { href: '/programas', label: 'Programas' },
@@ -79,6 +98,7 @@ export const nav = [
   { href: '/quienes-somos', label: 'Nosotros' },
   { href: '/contacto', label: 'Contacto' },
 ] as const;
+export const nav = navCompleto.filter((i) => !menuOculto.has(i.href));
 
 export function whatsappLink(message?: string) {
   const text = message ?? `${site.whatsappGreeting} sus experiencias.`;

@@ -1,6 +1,7 @@
 // Secciones del home de Turismo Avatar como bloques editables.
 import type { ReactNode } from 'react';
 import { Img, Estrella, clp, fondo, linkProps, useSite, useWhatsapp, videoUrl, type Boton, type Fondo } from './core';
+import { menuOculto } from '@/data/site';
 
 type T = ReactNode; // texto: string en el sitio, editable en línea dentro del panel
 const linkCls = 'text-white/80 hover:text-white hover:underline hover:decoration-naranja hover:decoration-2 hover:underline-offset-8';
@@ -98,7 +99,7 @@ export function Hero(p: HeroProps) {
         <nav aria-label="¿Qué quieres vivir?" className="border-t border-white/15 bg-marino-900/40 backdrop-blur-sm">
           <ul className="wrap flex flex-wrap gap-x-7 gap-y-2 py-4 font-display text-[0.95rem] font-bold">
             {heroChips(data.categorias)
-              .filter((c) => !(p.ocultas ?? []).includes(c.key))
+              .filter((c) => !(p.ocultas ?? []).includes(c.key) && !menuOculto.has(c.href))
               .map((c) => (
                 <li key={c.key}>
                   <a href={c.href} className={linkCls}>
