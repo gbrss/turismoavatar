@@ -1,5 +1,5 @@
 import type { Env } from '../../../server/lib';
-import { clean } from '../../../server/lib';
+import { clean, TOMA_MIN } from '../../../server/lib';
 import { adminJson, type AdminUser } from '../../../server/admin';
 
 type Ctx = EventContext<Env, string, { user: AdminUser }>;
@@ -13,7 +13,14 @@ export const onRequestGet = async ({ request, env }: Ctx) => {
     const col = session.startsWith('msg-') ? 'id' : 'session_id';
     const val = session.startsWith('msg-') ? Number(session.slice(4)) : session;
     const { results } = await env.DB.prepare(`SELECT id, created_at, page, question, answer, engine, handoff, country FROM chat_logs WHERE ${col} = ?1 ORDER BY id`).bind(val).all();
-    return adminJson({ items: results });
+    // Atención en vivo (si la tabla aún no existe, el detalle sigue funcionando)
+    let staff: unknown[] = [];
+    let toma: unknown = null;
+    if (!session.startsWith('msg-')) {
+      staff = (await env.DB.prepare('SELECT id, created_at, author, body FROM chat_staff_msgs WHERE session_id = ?1 ORDER BY id').bind(session).all().catch(() => ({ results: [] }))).results;
+      toma = await env.DB.prepare(`SELECT agent, email, taken_at, last_at, released_at, last_at >= datetime('now', '-${TOMA_MIN} minutes') AND released_at IS NULL AS activa FROM chat_takeovers WHERE session_id = ?1`).bind(session).first().catch(() => null);
+    }
+    return adminJson({ items: results, staff, toma });
   }
   const dias = Math.min(Number(u.get('dias')) || 30, 365);
   const q = clean(u.get('q'), 80);

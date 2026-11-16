@@ -1,4 +1,4 @@
-import { type Env, type Catalog, json, bad, clean, getCatalog, clp, rateLimited } from '../../server/lib';
+import { type Env, type Catalog, json, bad, clean, getCatalog, clp, rateLimited, tomaActiva } from '../../server/lib';
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 
@@ -123,6 +123,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     .map((m) => ({ role: m.role, content: clean(m.content, 800) }));
   const last = messages.at(-1);
   if (!last || last.role !== 'user' || !last.content) return bad('Escribe una pregunta.');
+
+  // Una persona del equipo tomó la conversación: Cami se calla y el mensaje queda para el panel
+  const toma = await tomaActiva(env, payload.session);
+  if (toma) {
+    waitUntil(log(env, request, payload, last.content, '', 'persona', true));
+    return json({ human: { agent: toma.agent } });
+  }
 
   const catalog = await getCatalog(env, request);
   let reply = '';

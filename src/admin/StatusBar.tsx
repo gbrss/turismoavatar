@@ -81,7 +81,7 @@ export function StatusBar({
             <path d="M4 7h16M4 12h16M4 17h16" />
           </svg>
         </button>
-        <h1 className="order-1 min-w-0 flex-1 basis-24 truncate font-display text-xl font-extrabold sm:text-2xl">{title}</h1>
+        <h1 className="order-last min-w-0 flex-1 basis-24 truncate sm:order-none font-display text-xl font-extrabold sm:text-2xl">{title}</h1>
 
         {conDb && (
           <button type="button" onClick={onRefresh} aria-label={live === 'en-vivo' ? 'En vivo' : live === 'conectando' ? 'Conectando' : 'Sin conexión'} title="Se actualiza solo. Toca para actualizar ahora." className={cls(barra, 'px-2.5 text-xs sm:px-3')}>

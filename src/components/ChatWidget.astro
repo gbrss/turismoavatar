@@ -24,7 +24,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     </span>
     <div class="min-w-0 flex-1">
       <p id="chat-title" class="font-display text-[0.95rem] font-bold leading-tight">Cami · Turismo Avatar</p>
-      <p class="truncate text-xs text-white/70">En línea · responde al instante</p>
+      <p data-chat-status class="truncate text-xs text-white/70">En línea · responde al instante</p>
     </div>
     <button type="button" data-chat-close class="grid h-10 w-10 shrink-0 place-items-center rounded-full hover:bg-white/10">
       <span class="sr-only">Cerrar chat</span>
@@ -119,6 +119,18 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     border-top-left-radius: 0.3rem;
     box-shadow: 0 1px 2px rgb(25 42 61 / 0.08);
   }
+  .chat-staff {
+    background: #e7f5ec;
+    border-top-left-radius: 0.3rem;
+    box-shadow: 0 1px 2px rgb(25 42 61 / 0.08), inset 0 0 0 1px rgb(21 122 62 / 0.3);
+  }
+  .chat-note {
+    max-width: 100%;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-gris);
+  }
   .chat-user {
     margin-left: auto;
     background: var(--color-marino);
@@ -185,7 +197,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
 </style>
 
 <script>
-  type Msg = { role: 'user' | 'assistant'; content: string };
+  type Msg = { role: 'user' | 'assistant'; content: string; staff?: string };
   const root = document.querySelector<HTMLElement>('[data-chat]')!;
   const panel = document.getElementById('chat-panel')!;
   const backdrop = document.querySelector<HTMLElement>('[data-chat-backdrop]')!;
@@ -197,6 +209,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
   const quick = panel.querySelector<HTMLElement>('[data-chat-quick]')!;
   const teaser = root.querySelector<HTMLElement>('[data-teaser]')!;
   const pulse = root.querySelector<HTMLElement>('[data-pulse]')!;
+  const status = panel.querySelector<HTMLElement>('[data-chat-status]')!;
   const WA = 'https://wa.me/56949981427';
   const mobile = () => matchMedia('(max-width: 639px)').matches;
 
@@ -224,6 +237,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     if (open) {
       hideTeaser(true);
       loadTitles();
+      poll();
       log.scrollTop = log.scrollHeight;
       if (!mobile()) input.focus();
     } else openBtn.focus({ preventScroll: true });
@@ -352,15 +366,23 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     return frag;
   }
 
-  function add(role: Msg['role'], content: string, save = true) {
+  function add(role: Msg['role'], content: string, save = true, staff?: string) {
     const li = document.createElement('li');
-    li.className = role === 'user' ? 'chat-user' : 'chat-bot';
+    li.className = role === 'user' ? 'chat-user' : staff ? 'chat-bot chat-staff' : 'chat-bot';
     if (role === 'user') li.textContent = content;
-    else li.append(renderBot(content));
+    else {
+      if (staff) {
+        const who = document.createElement('span');
+        who.className = 'mb-0.5 block text-xs font-bold text-[#157a3e]';
+        who.textContent = `${staff} · equipo Turismo Avatar`;
+        li.append(who);
+      }
+      li.append(renderBot(content));
+    }
     log.append(li);
     log.scrollTop = log.scrollHeight;
     if (save) {
-      history.push({ role, content });
+      history.push(staff ? { role, content, staff } : { role, content });
       store.set('cami-history', JSON.stringify(history.slice(-20)));
     }
     return li;
@@ -391,7 +413,7 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
   // Restaurar la conversación al cambiar de página
   if (history.length) {
     loadTitles().then(() => {
-      history.forEach((m) => add(m.role, m.content, false));
+      history.forEach((m) => add(m.role, m.content, false, m.staff));
       quick.hidden = true;
     });
   }
@@ -410,9 +432,12 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
         body: JSON.stringify({ messages: history.slice(-10), page: location.pathname, session: sessionId() }),
       });
       if (!res.ok) throw new Error();
-      const data: { reply: string; handoff?: { label: string; href: string } } = await res.json();
+      const data: { reply?: string; handoff?: { label: string; href: string }; human?: { agent: string } } = await res.json();
       await loadTitles();
       t.remove();
+      // Una persona atiende: Cami no responde, el mensaje le llega al equipo
+      if (data.human) return setHuman(data.human.agent);
+      if (!data.reply) throw new Error();
       const li = add('assistant', data.reply);
       if (data.handoff) {
         // Un solo botón de WhatsApp: quitamos los enlaces de WhatsApp sueltos del mensaje
@@ -425,6 +450,59 @@ const sugerencias = ['¿Qué tours tienen?', 'Precios', 'Alojamientos', 'Quiero 
     }
   }
 
+  // ── Atención en vivo: una persona del equipo puede tomar la conversación ──
+  let humanAgent: string | null = null;
+  function note(text: string) {
+    const li = document.createElement('li');
+    li.className = 'chat-note';
+    li.textContent = text;
+    log.append(li);
+    log.scrollTop = log.scrollHeight;
+  }
+  function setHuman(agent: string | null) {
+    if (agent === humanAgent) return;
+    const before = humanAgent;
+    humanAgent = agent;
+    if (agent) {
+      status.textContent = `Te atiende ${agent} · equipo`;
+      if (!before) note(`${agent}, del equipo, se unió a la conversación. Escríbele aquí mismo.`);
+    } else {
+      status.textContent = 'En línea · responde al instante';
+      if (before) note('Cami retomó la conversación.');
+    }
+  }
+  let after = Number(store.get('cami-staff-after') ?? 0) || 0;
+  let polling = false;
+  let lastActivity = Date.now();
+  async function poll() {
+    if (polling || panel.hidden || document.hidden || !history.length) return;
+    // Sin actividad hace rato, consulta menos seguido
+    if (Date.now() - lastActivity > 120000 && Math.floor(Date.now() / 1000) % 15 >= 5) return;
+    polling = true;
+    try {
+      const r = await fetch(`/api/chat-poll?session=${encodeURIComponent(sessionId())}&after=${after}`, { cache: 'no-store' });
+      if (!r.ok) return;
+      const d: { human: { agent: string } | null; messages: { id: number; author: string; body: string }[] } = await r.json();
+      if (d.messages.length) {
+        await loadTitles();
+        lastActivity = Date.now();
+        setHuman(d.human?.agent ?? humanAgent);
+        for (const m of d.messages) {
+          after = Math.max(after, m.id);
+          add('assistant', m.body, true, m.author);
+        }
+        store.set('cami-staff-after', String(after));
+      }
+      setHuman(d.human?.agent ?? null);
+    } catch {
+      /* sin conexión: se reintenta */
+    } finally {
+      polling = false;
+    }
+  }
+  setInterval(poll, 5000);
+  document.addEventListener('visibilitychange', () => !document.hidden && poll());
+  form.addEventListener('submit', () => (lastActivity = Date.now()));
   form.addEventListener('submit', (e) => { e.preventDefault(); send(input.value); });
   quick.querySelectorAll<HTMLButtonElement>('[data-q]').forEach((b) => b.addEventListener('click', () => send(b.dataset.q!)));
 </script>

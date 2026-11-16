@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSilentReload } from "./live";
 import {
   api,
+  Btn,
   Empty,
   Loading,
   Panel,
@@ -31,6 +32,17 @@ interface Msg {
   engine: string;
   handoff: number;
 }
+interface Staff {
+  id: number;
+  created_at: string;
+  author: string;
+  body: string;
+}
+interface Toma {
+  agent: string;
+  email: string;
+  activa: number;
+}
 
 export default function Chats() {
   const { me, rev } = useAdmin();
@@ -55,6 +67,11 @@ export default function Chats() {
   } | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   const [msgs, setMsgs] = useState<Msg[] | null>(null);
+  const [staff, setStaff] = useState<Staff[]>([]);
+  const [toma, setToma] = useState<Toma | null>(null);
+  const [texto, setTexto] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const { toast } = useAdmin();
 
   const loadList = (silent = false) => {
     if (!me.servicios.db) return;
@@ -76,15 +93,49 @@ export default function Chats() {
   const loadMsgs = (silent = false) => {
     if (!sel) return;
     if (!silent) setMsgs(null);
-    api<{ items: Msg[] }>(
+    api<{ items: Msg[]; staff: Staff[]; toma: Toma | null }>(
       `/api/admin/chats?sesion=${encodeURIComponent(sel)}`,
-    ).then((r) =>
+    ).then((r) => {
+      setStaff(r.staff ?? []);
+      setToma(r.toma ?? null);
       setMsgs((prev) => {
         // Mensajes nuevos de la conversación abierta: baja al final
-        if (!prev || r.items.length > prev.length) setTimeout(alFinal, 30);
+        if (!prev || r.items.length + (r.staff?.length ?? 0) > prev.length) setTimeout(alFinal, 30);
         return r.items;
-      }),
-    );
+      });
+    });
+  };
+  const vivo = async (accion: "tomar" | "soltar" | "enviar") => {
+    if (!sel) return;
+    let nombre: string | undefined;
+    if (accion === "tomar") {
+      try {
+        nombre = localStorage.getItem("ta-agente") ?? undefined;
+      } catch {
+        /* sin almacenamiento */
+      }
+      if (!nombre) {
+        nombre = prompt("¿Con qué nombre te verá el cliente? (por ejemplo: Camila, del equipo)", "")?.trim();
+        if (!nombre) return;
+        try {
+          localStorage.setItem("ta-agente", nombre);
+        } catch {
+          /* sin almacenamiento */
+        }
+      }
+    }
+    setEnviando(true);
+    try {
+      await api("/api/admin/chat-live", { method: "POST", body: JSON.stringify({ sesion: sel, accion, texto, nombre }) });
+      if (accion === "enviar") setTexto("");
+      if (accion === "soltar") toast("Listo: Cami retoma la conversación.");
+      loadMsgs(true);
+    } catch (e) {
+      toast((e as Error).message, "error");
+      loadMsgs(true);
+    } finally {
+      setEnviando(false);
+    }
   };
   useEffect(() => {
     loadList();
@@ -215,27 +266,38 @@ export default function Chats() {
                   aria-label="Mensajes de la conversación"
                 >
                   <ol className="grid gap-3 pb-1">
-                    {msgs.map((m) => (
-                      <li key={m.id} className="grid gap-2">
-                        <p className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-marino px-4 py-2.5 text-white">
-                          {m.question}
-                        </p>
-                        <div className="max-w-[90%] rounded-2xl rounded-bl-md bg-niebla px-4 py-2.5">
-                          <p className="whitespace-pre-line">{m.answer}</p>
-                          <p className="mt-1.5 text-[11px] font-semibold text-gris">
-                            Cami · {fmtDateTime(m.created_at)} ·{" "}
-                            {m.engine === "ai"
-                              ? "IA"
-                              : m.engine === "humano"
-                                ? "derivó a persona"
-                                : "respuesta automática"}
-                            {m.handoff ? " · ofreció WhatsApp" : ""}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
+                    {[
+                      ...msgs.map((m) => ({ t: m.created_at, m, s: null as Staff | null })),
+                      ...staff.map((x) => ({ t: x.created_at, m: null as Msg | null, s: x })),
+                    ]
+                      .sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
+                      .map((e) =>
+                        e.s ? (
+                          <li key={`s${e.s.id}`} className="max-w-[90%] rounded-2xl rounded-bl-md bg-[#157a3e]/12 px-4 py-2.5 ring-1 ring-[#157a3e]/30">
+                            <p className="whitespace-pre-line">{e.s.body}</p>
+                            <p className="mt-1.5 text-[11px] font-semibold text-[#157a3e]">
+                              {e.s.author} (equipo) · {fmtDateTime(e.s.created_at)}
+                            </p>
+                          </li>
+                        ) : (
+                          <li key={e.m!.id} className="grid gap-2">
+                            <p className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-marino px-4 py-2.5 text-white">{e.m!.question}</p>
+                            {e.m!.engine === "persona" ? null : (
+                              <div className="max-w-[90%] rounded-2xl rounded-bl-md bg-niebla px-4 py-2.5">
+                                <p className="whitespace-pre-line">{e.m!.answer}</p>
+                                <p className="mt-1.5 text-[11px] font-semibold text-gris">
+                                  Cami · {fmtDateTime(e.m!.created_at)} ·{" "}
+                                  {e.m!.engine === "ai" ? "IA" : e.m!.engine === "humano" ? "derivó a persona" : "respuesta automática"}
+                                  {e.m!.handoff ? " · ofreció WhatsApp" : ""}
+                                </p>
+                              </div>
+                            )}
+                          </li>
+                        ),
+                      )}
                   </ol>
                 </div>
+                <Atencion sel={sel} toma={toma} yo={me.email} texto={texto} setTexto={setTexto} enviando={enviando} vivo={vivo} />
                 <p className="mt-4 text-xs text-gris">
                   Las conversaciones no guardan nombres ni teléfonos: si el
                   cliente siguió por WhatsApp, la verás en tu WhatsApp.
@@ -270,5 +332,73 @@ export default function Chats() {
         </Panel>
       </div>
     </div>
+  );
+}
+
+// Caja para atender al cliente en vivo
+function Atencion({
+  sel,
+  toma,
+  yo,
+  texto,
+  setTexto,
+  enviando,
+  vivo,
+}: {
+  sel: string;
+  toma: Toma | null;
+  yo: string;
+  texto: string;
+  setTexto: (t: string) => void;
+  enviando: boolean;
+  vivo: (a: "tomar" | "soltar" | "enviar") => void;
+}) {
+  if (sel.startsWith("msg-"))
+    return <p className="mt-4 rounded-xl bg-niebla p-3 text-sm text-gris">Esta conversación es antigua y no se puede atender en vivo.</p>;
+  const activa = Boolean(toma?.activa);
+  if (!activa)
+    return (
+      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl bg-niebla p-3">
+        <Btn onClick={() => vivo("tomar")} disabled={enviando}>
+          Tomar conversación
+        </Btn>
+        <p className="min-w-0 flex-1 text-sm text-gris">Cami deja de responder y tú le escribes al cliente directamente en el chat del sitio.</p>
+      </div>
+    );
+  if (toma && toma.email !== yo)
+    return <p className="mt-4 rounded-xl bg-naranja/15 p-3 text-sm font-semibold text-naranja-700">{toma.agent} está atendiendo esta conversación.</p>;
+  return (
+    <form
+      className="mt-4 grid gap-2 rounded-xl bg-[#157a3e]/10 p-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (texto.trim()) vivo("enviar");
+      }}
+    >
+      <p className="text-sm font-bold text-[#157a3e]">Atiendes como {toma?.agent}. Cami está en pausa.</p>
+      <textarea
+        className="input min-h-20"
+        value={texto}
+        onChange={(e) => setTexto(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            if (texto.trim()) vivo("enviar");
+          }
+        }}
+        placeholder="Escribe tu respuesta… (Enter envía, Shift+Enter salto de línea)"
+        maxLength={800}
+        aria-label="Respuesta al cliente"
+      />
+      <div className="flex flex-wrap items-center gap-2">
+        <Btn type="submit" disabled={enviando || !texto.trim()}>
+          Enviar
+        </Btn>
+        <Btn variant="ghost" onClick={() => vivo("soltar")} disabled={enviando}>
+          Devolver a Cami
+        </Btn>
+        <span className="text-xs text-gris">Si pasan 20 minutos sin que escribas, Cami retoma sola.</span>
+      </div>
+    </form>
   );
 }

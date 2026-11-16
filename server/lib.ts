@@ -125,3 +125,16 @@ export async function rateLimited(request: Request, bucket: string, max: number,
   await cache.put(key, new Response(String(count + 1), { headers: { 'cache-control': `max-age=${windowSec}` } }));
   return false;
 }
+
+/** Minutos sin actividad de la persona tras los cuales Cami retoma la conversación. */
+export const TOMA_MIN = 20;
+
+/** Atención humana vigente para una conversación (null si responde Cami). */
+export async function tomaActiva(env: Env, session: string | null | undefined): Promise<{ agent: string; taken_at: string } | null> {
+  if (!env.DB || !session || !/^[\w-]{8,40}$/.test(session)) return null;
+  try {
+    return await env.DB.prepare(`SELECT agent, taken_at FROM chat_takeovers WHERE session_id = ?1 AND released_at IS NULL AND last_at >= datetime('now', '-${TOMA_MIN} minutes')`).bind(session).first();
+  } catch {
+    return null; // tabla aún no creada: Cami sigue respondiendo
+  }
+}
