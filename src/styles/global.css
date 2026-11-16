@@ -451,3 +451,22 @@
   .ta-title { font-size: 1.3rem; }
   .ta-spark { width: 1.1rem; height: 1.1rem; }
 }
+
+/* ───────────── Panel de administración: tema oscuro ───────────── */
+html.admin-dark {
+  color-scheme: dark;
+  --color-niebla: #0d1722;
+  --color-roca: #2a3a4d;
+  --color-tinta: #e8eef4;
+  --color-gris: #a9b8c8;
+}
+html.admin-dark .bg-white { background-color: #15212f; }
+html.admin-dark .input,
+html.admin-dark .field input,
+html.admin-dark .field select,
+html.admin-dark .field textarea {
+  background: #0f1b29;
+  color: var(--color-tinta);
+}
+html.admin-dark .input::placeholder { color: #6f8196; }
+html.admin-dark .bg-niebla\/95 { background-color: rgb(13 23 34 / 0.95); }

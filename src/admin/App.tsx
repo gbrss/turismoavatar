@@ -9,6 +9,7 @@ import Leads from './Leads';
 import Fichas from './Fichas';
 import MediaLibrary from './Media';
 import { chime, useLive, useSilentReload, type Area, type Aviso } from './live';
+import { StatusBar, useTema } from './StatusBar';
 
 // El editor visual es pesado: se descarga solo al abrirlo
 const HomeEditor = lazy(() => import('./HomeEditor'));
@@ -193,6 +194,15 @@ export default function AdminApp() {
   }, [sinVer]);
 
   const go = (r: Ruta) => (location.hash = `/${r}`);
+  const { tema, alternar: alternarTema } = useTema();
+  // Con Cloudflare Access se cierra la sesión de verdad. Con contraseña de respaldo se invalidan las credenciales guardadas del navegador.
+  const cerrarSesion = () => {
+    if (me?.via === 'access') return void (location.href = '/cdn-cgi/access/logout');
+    const x = new XMLHttpRequest();
+    x.open('GET', '/admin-salir', true, 'cerrar', 'sesion');
+    x.onloadend = () => (location.href = '/sesion-cerrada');
+    x.send();
+  };
 
   if (error) return <p className="p-8 text-red-700">No se pudo abrir el panel: {error}</p>;
   if (!data || !me) return <Loading />;
@@ -245,31 +255,13 @@ export default function AdminApp() {
                 <span className="truncate text-white/60" title={me.email}>
                   {me.email}
                 </span>
-                {me.via === 'access' && (
-                  <a href="/cdn-cgi/access/logout" className="text-white/60 hover:text-white">
-                    Cerrar sesión
-                  </a>
-                )}
                 <span className="text-[11px] text-white/40">Sitio publicado: {fmtDate(data.builtAt, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
               </div>
             </div>
           </aside>
           {menu && <button type="button" aria-label="Cerrar menú" className="fixed inset-0 z-30 bg-marino-900/50 lg:hidden" onClick={() => setMenu(false)} />}
           <main className="min-w-0 px-4 pb-16 sm:px-8">
-            <header className="sticky top-0 z-20 -mx-4 mb-6 flex items-center gap-3 bg-niebla/95 px-4 py-4 backdrop-blur sm:-mx-8 sm:px-8">
-              <button type="button" onClick={() => setMenu(true)} className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-roca lg:hidden" aria-label="Abrir menú">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
-                  <path d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
-              </button>
-              <h1 className="flex-1 font-display text-2xl font-extrabold">{title}</h1>
-              {me.servicios.db && (
-                <button type="button" onClick={refrescar} title="Se actualiza solo. Toca para actualizar ahora." className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold ring-1 ring-roca">
-                  <span className={cls('h-2.5 w-2.5 rounded-full', live === 'en-vivo' ? 'animate-pulse bg-[#1f9d55]' : live === 'conectando' ? 'bg-naranja' : 'bg-red-600')} aria-hidden="true" />
-                  {live === 'en-vivo' ? 'En vivo' : live === 'conectando' ? 'Conectando…' : 'Sin conexión'}
-                </button>
-              )}
-            </header>
+            <StatusBar title={title} email={me.email} live={live} conDb={me.servicios.db} onRefresh={refrescar} onMenu={() => setMenu(true)} tema={tema} onTema={alternarTema} cerrar={cerrarSesion} />
             {ruta === 'inicio' && <Dashboard go={go} />}
             {ruta === 'reservas' && <Bookings />}
             {ruta === 'cami' && <Chats />}

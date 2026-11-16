@@ -12,6 +12,13 @@ import AdminApp from '@/admin/App';
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#192a3d" />
     <title>Panel · Turismo Avatar</title>
+    <script is:inline>
+      // Aplica el tema guardado antes de pintar, para que no parpadee
+      try {
+        var t = localStorage.getItem('ta-admin-tema');
+        if (t === 'oscuro' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('admin-dark');
+      } catch (e) {}
+    </script>
     <link rel="icon" href="/favicon-64.png" type="image/png" />
   </head>
   <body class="min-h-dvh bg-niebla antialiased">
