@@ -36,7 +36,7 @@ export interface SiteData {
     featured: boolean;
   }[];
   alojamientos: { id: string; title: string; location: string; capacity: number; beds: number; shared: boolean; pricePerNight: number; image: string }[];
-  programas: { id: string; title: string; group: string; days: number; priceFrom?: number; image?: string }[];
+  programas: { id: string; title: string; group: string; days: number; nights?: number; summary: string; priceFrom?: number; image?: string }[];
   destinos: { slug: string; name: string; summary: string; lat: number; lng: number; onMap?: boolean; count: number }[];
   faq: { q: string; a: string }[];
   galeria: { src: string; alt: string; full: string; ratio: number }[];

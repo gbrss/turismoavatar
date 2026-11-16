@@ -96,7 +96,7 @@ export async function getSiteData(opts: { extraKeys?: Iterable<string>; library?
       pricePerNight: a.data.pricePerNight,
       image: a.data.image,
     })),
-    programas: progs.map((p) => ({ id: p.id, title: p.data.title, group: p.data.group, days: p.data.days, priceFrom: p.data.priceFrom, image: p.data.image })),
+    programas: progs.map((p) => ({ id: p.id, title: p.data.title, group: p.data.group, days: p.data.days, nights: p.data.nights, summary: p.data.summary, priceFrom: p.data.priceFrom, image: p.data.image })),
     destinos: destinos.map((d) => ({
       slug: d.slug,
       name: d.name,

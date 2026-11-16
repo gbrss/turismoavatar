@@ -232,3 +232,174 @@
     height: 2px;
   }
 }
+
+/* ───────────── Escapadas Tercera Edad: botones y panel interactivos ───────────── */
+@layer components {
+  .esc-tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    overflow: hidden;
+    padding: 0.85rem 0.9rem;
+    border-radius: 1.25rem;
+    background: color-mix(in srgb, white 8%, transparent);
+    border: 2px solid color-mix(in srgb, white 14%, transparent);
+    color: white;
+    transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), background-color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .esc-tab:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--c) 70%, white);
+  }
+  .esc-tab[aria-selected='true'] {
+    background: var(--c);
+    border-color: color-mix(in srgb, var(--c) 60%, white);
+    box-shadow: 0 14px 30px -12px var(--c);
+    transform: translateY(-2px) scale(1.02);
+  }
+  .esc-num {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 999px;
+    background: white;
+    color: var(--c);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+  .esc-tab[aria-selected='true'] .esc-num {
+    animation: esc-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .esc-arrow {
+    flex: none;
+    font-weight: 800;
+    opacity: 0;
+    transform: translateX(-0.5rem);
+    transition: opacity 0.2s, transform 0.25s;
+  }
+  .esc-tab:hover .esc-arrow,
+  .esc-tab[aria-selected='true'] .esc-arrow {
+    opacity: 1;
+    transform: none;
+  }
+  .esc-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    background: white;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  [data-escapadas][data-play='1'] .esc-tab[aria-selected='true'] .esc-bar {
+    animation: esc-fill var(--esc-ms, 7s) linear forwards;
+  }
+  [data-escapadas]:hover .esc-bar,
+  [data-escapadas]:focus-within .esc-bar {
+    animation-play-state: paused !important;
+  }
+  .esc-stage {
+    position: relative;
+    isolation: isolate;
+    min-height: 30rem;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    background: #0e1b2a;
+  }
+  .esc-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0s 0.5s;
+  }
+  @media (min-width: 640px) {
+    .esc-panel {
+      padding: 2.5rem;
+    }
+  }
+  .esc-panel[data-on='1'] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s;
+  }
+  .esc-panel[data-on='1'] .esc-photo {
+    animation: kenburns 9s ease-out both;
+  }
+  .esc-panel[data-on='1'] > :not(div:first-child) {
+    animation: esc-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .esc-panel[data-on='1'] > :nth-child(3) { animation-delay: 0.05s; }
+  .esc-panel[data-on='1'] > :nth-child(4) { animation-delay: 0.1s; }
+  .esc-panel[data-on='1'] > :nth-child(5) { animation-delay: 0.15s; }
+  .esc-panel[data-on='1'] > :nth-child(6) { animation-delay: 0.2s; }
+  .esc-pill {
+    align-self: flex-start;
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    background: var(--c);
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  .esc-price {
+    padding: 0.55rem 1.1rem;
+    border-radius: 1rem;
+    background: var(--c);
+    animation: esc-glow 2.4s ease-in-out infinite;
+  }
+  .esc-cta {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ff8a2a, #e8680f);
+    color: white;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    box-shadow: 0 12px 28px -10px #e8680f;
+    transition: transform 0.2s;
+  }
+  .esc-cta:hover {
+    transform: translateY(-2px) scale(1.03);
+  }
+  .esc-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 35%, rgb(255 255 255 / 0.45) 50%, transparent 65%);
+    transform: translateX(-120%);
+    animation: esc-shine 3.5s ease-in-out infinite;
+  }
+  .esc-hand {
+    display: inline-block;
+    animation: esc-tap 1.4s ease-in-out infinite;
+  }
+  @keyframes esc-fill { to { transform: scaleX(1); } }
+  @keyframes esc-pop { 0% { transform: scale(0.6); } 100% { transform: scale(1); } }
+  @keyframes esc-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes esc-glow { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--c) 35%, transparent); } }
+  @keyframes esc-shine { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+  @keyframes esc-tap { 50% { transform: translateY(-6px) rotate(-8deg); } }
+}
+
+@media (max-width: 1023px) {
+  .esc-tab { gap: 0.5rem; padding: 0.75rem 0.65rem; }
+  .esc-arrow { display: none; }
+  .esc-num { width: 2rem; height: 2rem; font-size: 1rem; }
+  .esc-stage { min-height: 33rem; }
+  .esc-cta { font-size: 1.1rem; padding: 0.9rem 1.5rem; white-space: nowrap; }
+}

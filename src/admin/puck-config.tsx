@@ -1,6 +1,6 @@
 // Configuración del editor visual: qué bloques hay, sus campos (en español) y valores iniciales.
 import type { Config, Field } from '@puckeditor/core';
-import { Hero, Experiences, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from '@/blocks/home';
+import { Hero, Experiences, Escapadas, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from '@/blocks/home';
 import { TextImage, Banner, Cards, Testimonials, Video, Text } from '@/blocks/generic';
 import { ImageInput, VideoInput } from './Media';
 import type { AdminData } from './lib';
@@ -43,10 +43,11 @@ const hidden: Field = { type: 'radio', label: 'Visible en el sitio', options: [{
 
 export function makeConfig(d: AdminData): Config {
   const exps = d.site.experiencias.map((e) => ({ label: e.title, value: e.id }));
+  const progs = d.site.programas.filter((x) => x.group === 'tercera-edad').map((x) => ({ label: x.title, value: x.id }));
   const cats = Object.entries(d.site.categorias).map(([value, label]) => ({ label, value }));
   return {
     categories: {
-      home: { title: 'Secciones Turismo Avatar', components: ['Hero', 'Experiences', 'Promos', 'WhyUs', 'Destinos', 'Lodgings', 'MediaGallery', 'Business', 'Faq', 'Cta'] },
+      home: { title: 'Secciones Turismo Avatar', components: ['Hero', 'Experiences', 'Escapadas', 'Promos', 'WhyUs', 'Destinos', 'Lodgings', 'MediaGallery', 'Business', 'Faq', 'Cta'] },
       libres: { title: 'Bloques libres', components: ['TextImage', 'Banner', 'Cards', 'Testimonials', 'Video', 'Text'] },
     },
     root: {
@@ -120,6 +121,25 @@ export function makeConfig(d: AdminData): Config {
         },
         defaultProps: { title: 'Nuestras experiencias', text: '', linkLabel: 'Ver las {n} experiencias', modo: 'destacadas', elegidas: [], categoria: cats[0]?.value, limite: 4, fondo: 'claro', hidden: false },
         render: wrap(Experiences),
+      },
+      Escapadas: {
+        label: 'Escapadas Tercera Edad',
+        fields: {
+          eyebrow: text('Frase superior', true),
+          title: text('Título', true),
+          text: area('Texto', true),
+          fotos: {
+            type: 'array',
+            label: 'Foto de cada destino',
+            arrayFields: { programa: { type: 'select', label: 'Destino', options: progs }, image: image('Foto') },
+            getItemSummary: (i: any) => progs.find((e) => e.value === i.programa)?.label ?? 'Elige un destino',
+          } as Field,
+          ctaLabel: text('Texto del botón grande (vacío = sin botón)'),
+          autoplay: yesno('Cambiar de destino automáticamente'),
+          hidden,
+        },
+        defaultProps: { eyebrow: 'Vacaciones Tercera Edad · Escapadas 2026', title: 'Viaja, relájate y disfruta Chile', text: '4 destinos increíbles. Toca uno para ver el detalle.', fotos: [], ctaLabel: 'Haz clic y reserva', autoplay: true, hidden: false },
+        render: wrap(Escapadas),
       },
       Promos: {
         label: 'Promociones',

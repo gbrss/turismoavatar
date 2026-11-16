@@ -1,13 +1,14 @@
 // Mapa de bloques y render del contenido guardado por el editor (formato de datos de Puck).
 import type { ComponentType } from 'react';
 import { SiteProvider, type SiteData } from './core';
-import { Hero, Experiences, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from './home';
+import { Hero, Experiences, Escapadas, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from './home';
 import { TextImage, Banner, Cards, Testimonials, Video, Text } from './generic';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const blocks: Record<string, ComponentType<any>> = {
   Hero,
   Experiences,
+  Escapadas,
   Promos,
   WhyUs,
   Destinos,
