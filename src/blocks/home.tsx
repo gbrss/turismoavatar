@@ -20,6 +20,7 @@ export interface HeroProps {
   destacada: string;
   destacadaLabel: string;
   showNav: boolean;
+  ocultas?: string[];
 }
 export function Hero(p: HeroProps) {
   const { data } = useSite();
@@ -95,32 +96,31 @@ export function Hero(p: HeroProps) {
 
       {p.showNav && (
         <nav aria-label="¿Qué quieres vivir?" className="border-t border-white/15 bg-marino-900/40 backdrop-blur-sm">
-          <ul className="wrap flex gap-x-7 gap-y-2 overflow-x-auto whitespace-nowrap py-4 font-display text-[0.95rem] font-bold">
-            {Object.entries(data.categorias).map(([k, label]) => (
-              <li key={k}>
-                <a href={`/experiencias?categoria=${k}`} className={linkCls}>
-                  {label}
-                </a>
-              </li>
-            ))}
-            {[
-              ['/alojamientos', 'Alojamientos'],
-              ['/tercera-edad', 'Tercera edad'],
-              ['/rally-wrc', 'Rally WRC'],
-              ['/tienda', 'Tienda'],
-            ].map(([href, label]) => (
-              <li key={href}>
-                <a href={href} className={linkCls}>
-                  {label}
-                </a>
-              </li>
-            ))}
+          <ul className="wrap flex flex-wrap gap-x-7 gap-y-2 py-4 font-display text-[0.95rem] font-bold">
+            {heroChips(data.categorias)
+              .filter((c) => !(p.ocultas ?? []).includes(c.key))
+              .map((c) => (
+                <li key={c.key}>
+                  <a href={c.href} className={linkCls}>
+                    {c.label}
+                  </a>
+                </li>
+              ))}
           </ul>
         </nav>
       )}
     </section>
   );
 }
+
+/** Enlaces de la barra de categorías de la portada (el editor usa la misma lista para ocultarlos). */
+export const heroChips = (categorias: Record<string, string>) => [
+  ...Object.entries(categorias).map(([k, label]) => ({ key: k, label, href: `/experiencias?categoria=${k}` })),
+  { key: 'alojamientos', label: 'Alojamientos', href: '/alojamientos' },
+  { key: 'tercera-edad', label: 'Tercera edad', href: '/tercera-edad' },
+  { key: 'rally-wrc', label: 'Rally WRC', href: '/rally-wrc' },
+  { key: 'tienda', label: 'Tienda', href: '/tienda' },
+];
 
 /* ───────────── Tarjeta de experiencia ───────────── */
 export function ExperienceCard({ id }: { id: string }) {

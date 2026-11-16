@@ -1,6 +1,6 @@
 // Configuración del editor visual: qué bloques hay, sus campos (en español) y valores iniciales.
 import type { Config, Field } from '@puckeditor/core';
-import { Hero, Experiences, Escapadas, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from '@/blocks/home';
+import { Hero, heroChips, Experiences, Escapadas, Promos, WhyUs, Destinos, Lodgings, MediaGallery, Business, Faq, Cta } from '@/blocks/home';
 import { TextImage, Banner, Cards, Testimonials, Video, Text } from '@/blocks/generic';
 import { ImageInput, VideoInput } from './Media';
 import type { AdminData } from './lib';
@@ -78,6 +78,35 @@ export function makeConfig(d: AdminData): Config {
           destacada: { type: 'select', label: 'Tarjeta destacada', options: [{ label: 'Ninguna', value: '' }, ...exps] },
           destacadaLabel: text('Etiqueta de la tarjeta'),
           showNav: yesno('Mostrar barra de categorías'),
+          ocultas: {
+            type: 'custom',
+            label: 'Categorías de la barra',
+            render: ({ value, onChange }: any) => {
+              const off: string[] = value ?? [];
+              return (
+                <ul className="space-y-1">
+                  {heroChips(d.site.categorias).map((c) => {
+                    const oculto = off.includes(c.key);
+                    return (
+                      <li key={c.key} className="flex items-center justify-between gap-3 rounded-lg bg-niebla px-3 py-1.5">
+                        <span className={`text-sm font-semibold ${oculto ? 'text-gris line-through' : ''}`}>{c.label}</span>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={!oculto}
+                          aria-label={`${oculto ? 'Mostrar' : 'Ocultar'} ${c.label}`}
+                          onClick={() => onChange(oculto ? off.filter((k) => k !== c.key) : [...off, c.key])}
+                          className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${oculto ? 'bg-roca' : 'bg-[#1f9d55]'}`}
+                        >
+                          <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${oculto ? 'left-0.5' : 'left-[22px]'}`} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              );
+            },
+          } as Field,
           hidden,
         },
         defaultProps: {
@@ -94,6 +123,7 @@ export function makeConfig(d: AdminData): Config {
           destacada: '',
           destacadaLabel: 'La más reservada',
           showNav: false,
+          ocultas: [],
           hidden: false,
         },
         render: wrap(Hero),
