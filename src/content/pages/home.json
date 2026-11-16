@@ -55,7 +55,7 @@
         "ctaLabel": "Haz clic y reserva",
         "fondo": "blanco",
         "id": "Escapadas-tercera-edad",
-        "hidden": true
+        "hidden": false
       }
     },
     {
@@ -70,7 +70,7 @@
         "limite": 4,
         "fondo": "claro",
         "id": "Experiences-destacadas",
-        "hidden": true
+        "hidden": false
       }
     },
     {
